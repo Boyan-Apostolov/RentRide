@@ -1,6 +1,6 @@
 package nl.fontys.s3.rentride_be.business;
 
-import nl.fontys.s3.rentride_be.domain.City;
+import nl.fontys.s3.rentride_be.domain.city.City;
 import org.junit.jupiter.api.Test;
 
 class CityServiceTest {

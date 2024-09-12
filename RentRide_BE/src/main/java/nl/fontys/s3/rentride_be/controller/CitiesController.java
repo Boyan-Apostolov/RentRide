@@ -1,7 +1,10 @@
 package nl.fontys.s3.rentride_be.controller;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.domain.City;
+import nl.fontys.s3.rentride_be.business.useCases.city.GetCitiesUseCase;
+import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.domain.city.GetAllCitiesResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,15 +13,10 @@ import java.util.List;
 @RequestMapping("cities")
 @AllArgsConstructor
 public class CitiesController {
-    private CityService cityService;
+    private GetCitiesUseCase getCitiesUseCase;
 
     @GetMapping
-    public List<City> getCities() {
-        return this.cityService.getCities();
-    }
-
-    @PostMapping
-    public void addCity(@RequestBody City city) {
-        this.cityService.addCity(city);
+    public ResponseEntity<GetAllCitiesResponse> getAllCities() {
+        return ResponseEntity.ok(this.getCitiesUseCase.getCities());
     }
 }
