@@ -1,7 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.CityService;
 import nl.fontys.s3.rentride_be.domain.City;
 import org.springframework.web.bind.annotation.*;
 

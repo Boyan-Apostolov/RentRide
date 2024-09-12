@@ -1,12 +1,7 @@
 package nl.fontys.s3.rentride_be.business;
 
-import nl.fontys.s3.rentride_be.business.impl.CityServiceImp;
 import nl.fontys.s3.rentride_be.domain.City;
-import nl.fontys.s3.rentride_be.persistance.CityRepo;
-import nl.fontys.s3.rentride_be.persistance.impl.CityRepoImpl;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CityServiceTest {
 
