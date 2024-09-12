@@ -37,7 +37,7 @@ public class FakeCityRepository implements CityRepository {
     public CityEntity findById(long cityId) {
         return this.savedCities
                 .stream()
-                .filter(cityEntity -> cityEntity.getId() == cityId)
+                .filter(cityEntity -> cityEntity.getId().equals(cityId))  // Use equals for comparison
                 .findFirst()
                 .orElse(null);
     }
@@ -49,9 +49,11 @@ public class FakeCityRepository implements CityRepository {
 
     @Override
     public CityEntity save(CityEntity city) {
-        city.setId(NEXT_ID);
-        NEXT_ID++;
-        this.savedCities.add(city);
+        if (city.getId() == null) {
+            city.setId(NEXT_ID);
+            NEXT_ID++;
+            this.savedCities.add(city);
+        }
         return city;
     }
 

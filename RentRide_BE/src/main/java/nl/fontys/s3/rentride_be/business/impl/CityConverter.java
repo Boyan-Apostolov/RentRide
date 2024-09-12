@@ -7,6 +7,7 @@ final class CityConverter {
     private CityConverter() {}
 
     public static City convert(CityEntity cityEntity){
+        if(cityEntity == null) return null;
         return City.builder()
                 .id(cityEntity.getId())
                 .name(cityEntity.getName())
