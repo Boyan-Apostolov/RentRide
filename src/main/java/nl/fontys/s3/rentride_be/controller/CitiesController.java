@@ -17,6 +17,7 @@ public class CitiesController {
     private DeleteCityUseCase deleteCityUseCase;
     private CreateCityUseCase createCityUseCase;
     private UpdateCityUseCase updateCityUseCase;
+    private LookupCityUseCase lookupCityUseCase;
 
     @GetMapping("{id}")
     public ResponseEntity<City> getCity(@PathVariable(value = "id") final long id) {
@@ -48,9 +49,18 @@ public class CitiesController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updateCity(@PathVariable("id") long id,
-                                              @RequestBody @Valid UpdateCityRequest request) {
+                                           @RequestBody @Valid UpdateCityRequest request) {
         request.setId(id);
         updateCityUseCase.updateCity(request);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/lookupCity")
+    public ResponseEntity<GeoapifyResult> lookupCity(@RequestParam(value = "cityName") final String cityName) {
+        GeoapifyResult possibleCity = lookupCityUseCase.lookupCity(cityName);
+        if (possibleCity == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(possibleCity);
     }
 }
