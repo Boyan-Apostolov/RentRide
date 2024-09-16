@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UpdateCityRequestImpl implements UpdateCityUseCase {
+public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
     private CityRepository cityRepository;
 
     @Override
@@ -22,7 +22,7 @@ public class UpdateCityRequestImpl implements UpdateCityUseCase {
     private void verifyObjectExists(Long cityId){
         CityEntity cityOptional = this.cityRepository.findById(cityId);
         if (cityOptional == null) {
-            throw new NotFoundException("CITY");
+            throw new NotFoundException("CITY_NOT_FOUND");
         }
     }
 
