@@ -1,0 +1,8 @@
+[init]
+	defaultBranch = none
+[fetch]
+	recurseSubmodules = false
+[transfer]
+	bundleURI = true
+[http "https://git.fhict.nl"]
+	sslCAInfo = /Users/bobby/GitHub/rentride_be/builds/ct5n5F3Yg/0/I522311/rentride_be.tmp/CI_SERVER_TLS_CA_FILE
