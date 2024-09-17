@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.persistance.impl;
 
+import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.stereotype.Repository;
@@ -9,14 +10,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class FakeCityRepository implements CityRepository {
     private static long NEXT_ID = 1;
 
     private final List<CityEntity> savedCities;
-
-    private FakeCityRepository() {
-        this.savedCities = new ArrayList<>();
-    }
 
 
     @Override

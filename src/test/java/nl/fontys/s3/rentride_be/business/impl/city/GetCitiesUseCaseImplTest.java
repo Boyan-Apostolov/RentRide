@@ -40,7 +40,7 @@ class GetCitiesUseCaseImplTest {
 
         when(this.cityRepository.findAll()).thenReturn(cities);
 
-        List<City> actualCities = this.getCitiesUseCase.getCities().getCities();
+        List<City> actualCities = this.getCitiesUseCase.getCities();
         List<City> expectedCities = cities.stream().map(CityConverter::convert).toList();
 
         assertEquals(expectedCities, actualCities);
