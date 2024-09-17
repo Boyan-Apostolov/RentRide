@@ -35,7 +35,7 @@ public class CreateCarRequest {
     @NumberFormat
     @Min(0)
     @Max(1)
-    private CarTransmissionType transmissionType;
+    private Integer transmissionType;
 
     @NumberFormat
     @Min(1)

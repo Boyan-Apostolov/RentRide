@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.car.UpdateCarUseCase;
+import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
 import nl.fontys.s3.rentride_be.domain.car.UpdateCarRequest;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
@@ -44,7 +45,7 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
         carEntity.setRegistrationNumber(request.getRegistrationNumber());
         carEntity.setSeatsCount(request.getSeatsCount());
         carEntity.setFuelConsumption(request.getFuelConsumption());
-        carEntity.setTransmissionType(request.getTransmissionType());
+        carEntity.setTransmissionType(CarTransmissionType.values()[request.getTransmissionType()]);
         carEntity.setCity(request.getFoundCity());
 
 

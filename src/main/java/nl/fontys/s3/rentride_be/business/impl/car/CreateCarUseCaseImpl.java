@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.car.CreateCarUseCase;
+import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarResponse;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
@@ -46,7 +47,7 @@ public class CreateCarUseCaseImpl implements CreateCarUseCase {
                 .registrationNumber(request.getRegistrationNumber())
                 .fuelConsumption(request.getFuelConsumption())
                 .seatsCount(request.getSeatsCount())
-                .transmissionType(request.getTransmissionType())
+                .transmissionType(CarTransmissionType.values()[request.getTransmissionType()])
                 .city(request.getFoundCity())
                 .build();
 
