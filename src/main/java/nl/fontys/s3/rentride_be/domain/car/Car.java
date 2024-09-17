@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class Car {
+    private Long id;
     private String make;
     private String model;
     private String registrationNumber;
