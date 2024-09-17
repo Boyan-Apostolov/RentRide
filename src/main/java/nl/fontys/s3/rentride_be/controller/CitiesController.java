@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("cities")
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class CitiesController {
     }
 
     @GetMapping
-    public ResponseEntity<GetAllCitiesResponse> getAllCities() {
+    public ResponseEntity<List<City>> getAllCities() {
         return ResponseEntity.ok(this.getCitiesUseCase.getCities());
     }
 
