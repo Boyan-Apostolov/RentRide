@@ -1,7 +1,6 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
 import nl.fontys.s3.rentride_be.domain.city.City;
-import nl.fontys.s3.rentride_be.domain.city.GetAllCitiesResponse;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;

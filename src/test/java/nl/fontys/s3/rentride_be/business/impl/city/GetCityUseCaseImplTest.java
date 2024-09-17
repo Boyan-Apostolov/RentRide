@@ -1,4 +1,4 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
@@ -8,9 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;

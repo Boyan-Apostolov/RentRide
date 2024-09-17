@@ -1,7 +1,6 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
-import nl.fontys.s3.rentride_be.business.exception.CityAlreadyExistsException;
-import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
@@ -29,9 +28,9 @@ class CreateCityUseCaseImplTest {
     @Test
     public void createCity_withDuplicatedName_shouldThrowException() {
         when(this.cityRepository.existsByName("Eindhoven"))
-                .thenThrow(new CityAlreadyExistsException());
+                .thenThrow(new AlreadyExistsException("City"));
 
-        assertThrows(CityAlreadyExistsException.class, () ->
+        assertThrows(AlreadyExistsException.class, () ->
                 this.createCityUseCase.createCity(
                         CreateCityRequest.builder()
                                 .name("Eindhoven")

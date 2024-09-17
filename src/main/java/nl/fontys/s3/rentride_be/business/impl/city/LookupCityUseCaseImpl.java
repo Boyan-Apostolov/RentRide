@@ -1,6 +1,5 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.city.LookupCityUseCase;
 import nl.fontys.s3.rentride_be.domain.city.GeoapifyResponse;

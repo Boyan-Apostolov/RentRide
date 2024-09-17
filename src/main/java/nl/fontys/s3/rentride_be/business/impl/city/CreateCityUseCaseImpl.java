@@ -1,7 +1,7 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.exception.CityAlreadyExistsException;
+import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.business.useCases.city.CreateCityUseCase;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
@@ -17,7 +17,7 @@ public class CreateCityUseCaseImpl implements CreateCityUseCase {
     @Override
     public CreateCityResponse createCity(CreateCityRequest request) {
         if(cityRepository.existsByName(request.getName())) {
-            throw new CityAlreadyExistsException();
+            throw new AlreadyExistsException("City");
         }
 
         CityEntity savedCity = saveNewCity(request);

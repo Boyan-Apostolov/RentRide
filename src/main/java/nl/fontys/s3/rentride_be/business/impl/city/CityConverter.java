@@ -1,9 +1,9 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 
-final class CityConverter {
+public final class CityConverter {
     private CityConverter() {}
 
     public static City convert(CityEntity cityEntity){

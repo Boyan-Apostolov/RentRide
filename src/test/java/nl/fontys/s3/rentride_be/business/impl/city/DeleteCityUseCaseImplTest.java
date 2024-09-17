@@ -1,4 +1,4 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.city;
 
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import org.junit.jupiter.api.Test;
