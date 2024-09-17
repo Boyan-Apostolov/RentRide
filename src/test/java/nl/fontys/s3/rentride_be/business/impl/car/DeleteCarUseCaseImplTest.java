@@ -25,10 +25,9 @@ class DeleteCarUseCaseImplTest {
 
     @Test
     void deleteCar_shouldThrowErrorWhenCarDoesNotExist() {
-
         assertThrows(NotFoundException.class, () -> deleteCarUseCase.deleteCar(1L));
 
-        Mockito.verify(this.carRepository.findById(1L));
+        Mockito.verify(this.carRepository).existsById(1L);
     }
 
     @Test
