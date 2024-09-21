@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.city.*;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
@@ -21,8 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -198,5 +198,37 @@ class CitiesControllerTest {
                 .andExpect(content().json(expectedErrorResponse, false));
 
         verifyNoInteractions(createCityUseCase);
+    }
+    
+    @Test
+    public void deleteCity_shouldReturnNoContent_WhenCityIsFound() throws Exception {
+        mockMvc.perform(delete("/cities/1")
+                        .contentType(APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        verify(deleteCityUseCase).deleteCity(1L);
+    }
+
+    @Test
+    public void deleteCity_shouldThrowException_WhenCityIsNotFound() throws Exception {
+        doThrow(new NotFoundException("Delete->City")).when(deleteCityUseCase).deleteCity(1L);
+
+        String expectedErrorResponse = """
+                {
+                 "errors": [
+                         {
+                             "field": null,
+                             "error": "Delete->City_NOT_FOUND"
+                         }
+                     ]
+                }""";
+        mockMvc.perform(delete("/cities/1")
+                        .contentType(APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(expectedErrorResponse, false));
+
+        verify(deleteCityUseCase).deleteCity(1L);
     }
 }
