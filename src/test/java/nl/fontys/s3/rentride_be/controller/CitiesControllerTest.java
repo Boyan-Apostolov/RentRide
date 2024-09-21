@@ -6,6 +6,7 @@ import nl.fontys.s3.rentride_be.business.useCases.city.*;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
+import nl.fontys.s3.rentride_be.domain.city.UpdateCityRequest;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -199,7 +200,7 @@ class CitiesControllerTest {
 
         verifyNoInteractions(createCityUseCase);
     }
-    
+
     @Test
     public void deleteCity_shouldReturnNoContent_WhenCityIsFound() throws Exception {
         mockMvc.perform(delete("/cities/1")
@@ -230,5 +231,78 @@ class CitiesControllerTest {
                 .andExpect(content().json(expectedErrorResponse, false));
 
         verify(deleteCityUseCase).deleteCity(1L);
+    }
+
+
+    @Test
+    public void updateCity_shouldThrowException_WhenCityIsNotFound() throws Exception {
+        UpdateCityRequest validUpdateRequest = UpdateCityRequest.builder()
+                .id(1L)
+                .name("UpdatedCity")
+                .lat(50.5)
+                .lon(50.5)
+                .build();
+
+        doThrow(new NotFoundException("CITY")).when(updateCityUseCase).updateCity(validUpdateRequest);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String sampleRequestJson = objectMapper.writeValueAsString(validUpdateRequest);
+
+        mockMvc.perform(put("/cities/1")
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(sampleRequestJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(updateCityUseCase).updateCity(validUpdateRequest);
+    }
+
+    @Test
+    public void updateCity_shouldReturn204_WhenRequestValid() throws Exception {
+        UpdateCityRequest validUpdateRequest = UpdateCityRequest.builder()
+                .id(1L)
+                .name("UpdatedCity")
+                .lat(50.5)
+                .lon(50.5)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String sampleRequestJson = objectMapper.writeValueAsString(validUpdateRequest);
+
+        mockMvc.perform(put("/cities/1")
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(sampleRequestJson))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        verify(updateCityUseCase).updateCity(validUpdateRequest);
+    }
+
+    @Test
+    public void updateCity_shouldReturn400_WhenRequestInValid() throws Exception {
+        CreateCityRequest invalidUpdateRequest = CreateCityRequest.builder()
+                .name("UpdatedCity")
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String sampleRequestJson = objectMapper.writeValueAsString(invalidUpdateRequest);
+
+        String expectedErrorResponse = """
+        {
+            "errors": [
+                {"field": "lat", "error": "must not be null"},
+                {"field": "lon", "error": "must not be null"}
+            ]
+        }
+        """;
+
+        mockMvc.perform(put("/cities/1")
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(sampleRequestJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest()) // Expecting 400 Bad Request
+                .andExpect(content().json(expectedErrorResponse, false));
+
+        verifyNoInteractions(updateCityUseCase);
     }
 }

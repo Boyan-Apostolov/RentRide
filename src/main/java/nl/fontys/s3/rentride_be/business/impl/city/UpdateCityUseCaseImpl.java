@@ -22,7 +22,7 @@ public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
     private void verifyObjectExists(Long cityId){
         CityEntity cityOptional = this.cityRepository.findById(cityId);
         if (cityOptional == null) {
-            throw new NotFoundException("CITY_NOT_FOUND");
+            throw new NotFoundException("CITY");
         }
     }
 
