@@ -3,6 +3,8 @@ package nl.fontys.s3.rentride_be.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.fontys.s3.rentride_be.business.useCases.city.*;
 import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
+import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -51,7 +53,7 @@ class CitiesControllerTest {
 
 
     @Test
-    public void getCities_shouldReturn200WithEmptyListWhenNoCities() throws Exception {
+    public void getCities_shouldReturn200WithEmptyList_WhenNoCities() throws Exception {
         List<City> expectedCities = new ArrayList<>();
 
         when(getCitiesUseCase.getCities()).thenReturn(expectedCities);
@@ -71,7 +73,7 @@ class CitiesControllerTest {
     }
 
     @Test
-    public void getCities_shouldReturn200WithFullListWhenPresentCities() throws Exception{
+    public void getCities_shouldReturn200WithFullList_WhenPresentCities() throws Exception {
         List<City> expectedCities = List.of(
                 City.builder()
                         .id(1L)
@@ -103,7 +105,7 @@ class CitiesControllerTest {
     }
 
     @Test
-    public void getCity_shouldReturnOKWithContentWhenCityIsFound() throws Exception{
+    public void getCity_shouldReturn200WithContent_WhenCityIsFound() throws Exception {
         City expectedCity = City.builder()
                 .id(1L)
                 .name("Eindhoven")
@@ -127,7 +129,7 @@ class CitiesControllerTest {
     }
 
     @Test
-    public void getCity_shouldReturnNotFoundWithoutContentWhenCityIsNotFound() throws Exception {
+    public void getCity_shouldReturn400WithoutContent_WhenCityIsNotFound() throws Exception {
         when(getCityUseCase.getCity(1L)).thenReturn(null);
 
         mockMvc
@@ -138,4 +140,63 @@ class CitiesControllerTest {
         verify(getCityUseCase).getCity(1L);
     }
 
+    @Test
+    public void createCity_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
+        CreateCityRequest expectedCity = CreateCityRequest.builder()
+                .name("Eindhoven")
+                .lat(12.12)
+                .lon(12.12)
+                .build();
+
+        CreateCityResponse expectedResponse = CreateCityResponse
+                .builder()
+                .cityId(1L)
+                .build();
+
+        when(createCityUseCase.createCity(expectedCity))
+                .thenReturn(expectedResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String sampleRequestJson = objectMapper.writeValueAsString(expectedCity);
+        String expectedResponseJson = objectMapper.writeValueAsString(expectedResponse);
+
+        mockMvc.perform(post("/cities")
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(sampleRequestJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+                .andExpect(content().json(expectedResponseJson));
+
+        verify(createCityUseCase).createCity(expectedCity);
+    }
+
+    @Test
+    public void createCity_shouldCreateAndReturn400_WhenRequestInValid() throws Exception {
+        CreateCityRequest expectedCity = CreateCityRequest.builder()
+                .name("Eindhoven2")
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String sampleRequestJson = objectMapper.writeValueAsString(expectedCity);
+        String expectedErrorResponse = """
+                        {
+                    "errors": [
+                        {"field": "lon", "error": "must not be null"},
+                        {"field": "lat", "error": "must not be null"}
+                    ]
+                }
+                """;
+
+        mockMvc.perform(post("/cities")
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(sampleRequestJson))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(expectedErrorResponse, false));
+
+        verifyNoInteractions(createCityUseCase);
+    }
 }
