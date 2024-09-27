@@ -4,22 +4,30 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
+import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Component
 @AllArgsConstructor
 public class DatabaseDataInitializer {
     private CityRepository cityRepository;
     private CarRepository carRepository;
+    private UserRepository userRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initializeDatabase() {
         populateCities();
         populateCars();
+        populateUsers();
     }
 
     private void populateCities(){
@@ -68,6 +76,29 @@ public class DatabaseDataInitializer {
                             .city(this.cityRepository.findById(3))
                             .build()
             );
+        }
+    }
+
+    private void populateUsers() {
+        if(this.userRepository.count() == 0){
+            this.userRepository.save(UserEntity
+                    .builder()
+                            .Name("Boyan Apostolov")
+                            .Role(UserRole.Admin)
+                            .Email("admin@admin.com")
+                            .Password("12345678")
+                            .CustomerId("x_213")
+                            .BirthDate(new Date(2004,3,12))
+                    .build());
+            this.userRepository.save(UserEntity
+                    .builder()
+                    .Name("Some Customer")
+                    .Role(UserRole.Customer)
+                    .Email("customer@customer.com")
+                    .Password("12345678")
+                    .CustomerId("x_2134567")
+                    .BirthDate(new Date(2005,7,2))
+                    .build());
         }
     }
 }
