@@ -27,8 +27,8 @@ public class UpdateUserRequest {
     private String Password;
 
     @NumberFormat
-    @Min(1)
-    @Max(2)
+    @Min(0)
+    @Max(1)
     private Integer Role;
 
     @DateTimeFormat
