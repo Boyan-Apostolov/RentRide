@@ -11,6 +11,8 @@ public interface CityRepository {
 
     CityEntity findById(long cityId);
 
+    CityEntity findByName(String name);
+
     void deleteById(long cityId);
 
     CityEntity save(CityEntity city);

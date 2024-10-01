@@ -35,7 +35,16 @@ public class FakeCityRepository implements CityRepository {
     public CityEntity findById(long cityId) {
         return this.savedCities
                 .stream()
-                .filter(cityEntity -> cityEntity.getId().equals(cityId))  // Use equals for comparison
+                .filter(cityEntity -> cityEntity.getId().equals(cityId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public CityEntity findByName(String name){
+        return this.savedCities
+                .stream()
+                .filter(cityEntity -> cityEntity.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
     }
