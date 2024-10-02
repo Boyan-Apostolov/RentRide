@@ -64,9 +64,7 @@ class UpdateCarUseCaseImplTest {
                 .make("Ford")
                 .model("Fiesta")
                 .registrationNumber("BT2142KX")
-                .seatsCount(5)
                 .fuelConsumption(5.5)
-                .transmissionType(CarTransmissionType.Manual)
                 .city(this.cityRepository.findById(1L))
                 .build();
 
@@ -75,9 +73,7 @@ class UpdateCarUseCaseImplTest {
                 .make("Ford-edit")
                 .model("Fiestaa!")
                 .registrationNumber("BT2142KX")
-                .seatsCount(5)
                 .fuelConsumption(5.5)
-                .transmissionType(CarTransmissionType.Manual)
                 .city(this.cityRepository.findById(1L))
                 .build();
 

@@ -33,9 +33,8 @@ class GetCarsUseCaseImplTest {
                         .make("Ford")
                         .model("Fiesta")
                         .registrationNumber("BT2142KX")
-                        .seatsCount(5)
                         .fuelConsumption(5.5)
-                        .transmissionType(CarTransmissionType.Manual)
+                        .features(List.of())
                         .build()
         );
         cars.add(
@@ -43,9 +42,8 @@ class GetCarsUseCaseImplTest {
                         .make("VW")
                         .model("Tuaran")
                         .registrationNumber("BT7282KR")
-                        .seatsCount(5)
                         .fuelConsumption(5.5)
-                        .transmissionType(CarTransmissionType.Automatic)
+                        .features(List.of())
                         .build()
         );
 

@@ -52,6 +52,9 @@ class CitiesControllerTest {
     @MockBean
     private LookupCityUseCase lookupCityUseCase;
 
+    @MockBean
+    private GetRouteBetweenCitiesUseCase getRouteBetweenCitiesUseCase;
+
 
     @Test
     public void getCities_shouldReturn200WithEmptyList_WhenNoCities() throws Exception {
