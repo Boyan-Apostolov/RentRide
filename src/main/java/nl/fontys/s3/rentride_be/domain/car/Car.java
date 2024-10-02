@@ -15,8 +15,7 @@ public class Car {
     private String make;
     private String model;
     private String registrationNumber;
-    private Integer seatsCount;
-    private CarTransmissionType transmissionType;
+    private List<CarFeature> carFeatures;
     private Double fuelConsumption;
     private City city;
     private List<String> photosBase64;

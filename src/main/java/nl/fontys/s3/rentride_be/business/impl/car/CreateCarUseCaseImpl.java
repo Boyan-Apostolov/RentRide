@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.car.CreateCarUseCase;
-import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarResponse;
-import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
-import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
@@ -35,6 +32,8 @@ public class CreateCarUseCaseImpl implements CreateCarUseCase {
 
         CarEntity savedCar = saveNewCar(request);
 
+        //TODO: Save car features
+
         return CreateCarResponse.builder()
                 .carId(savedCar.getId())
                 .build();
@@ -46,8 +45,6 @@ public class CreateCarUseCaseImpl implements CreateCarUseCase {
                 .model(request.getModel())
                 .registrationNumber(request.getRegistrationNumber())
                 .fuelConsumption(request.getFuelConsumption())
-                .seatsCount(request.getSeatsCount())
-                .transmissionType(CarTransmissionType.values()[request.getTransmissionType()])
                 .city(request.getFoundCity())
                 .build();
 

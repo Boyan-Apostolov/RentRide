@@ -1,20 +1,18 @@
 package nl.fontys.s3.rentride_be;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
+import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
+import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
-import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
+import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -22,6 +20,7 @@ public class DatabaseDataInitializer {
     private CityRepository cityRepository;
     private CarRepository carRepository;
     private UserRepository userRepository;
+    private BookingRepository bookingRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initializeDatabase() {
@@ -47,33 +46,30 @@ public class DatabaseDataInitializer {
                             .model("Fiesta")
                             .registrationNumber("BT2142KX")
                             .fuelConsumption(6.1)
-                            .seatsCount(5)
-                            .transmissionType(CarTransmissionType.Manual)
                             .city(this.cityRepository.findById(1))
-                            .build()
-            );
-
-            this.carRepository.save(
-                    CarEntity.builder()
-                            .make("Volksawagen")
-                            .model("Tuaran")
-                            .registrationNumber("BT7287KR")
-                            .fuelConsumption(5.5)
-                            .seatsCount(5)
-                            .transmissionType(CarTransmissionType.Manual)
-                            .city(this.cityRepository.findById(2))
-                            .build()
-            );
-
-            this.carRepository.save(
-                    CarEntity.builder()
-                            .make("BMW")
-                            .model("M4")
-                            .registrationNumber("XAJ-2141-XZK")
-                            .fuelConsumption(10.5)
-                            .seatsCount(5)
-                            .transmissionType(CarTransmissionType.Automatic)
-                            .city(this.cityRepository.findById(3))
+                            .features(List.of(
+                                    CarFeatureEntity.builder()
+                                            .id(1L)
+                                            .featureType(CarFeatureType.Seats)
+                                            .featureText("5")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(2L)
+                                            .featureType(CarFeatureType.Doors)
+                                            .featureText("4")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(3L)
+                                            .featureType(CarFeatureType.Transmission)
+                                            .featureText("Manual")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(4L)
+                                            .featureType(CarFeatureType.Bonus)
+                                            .featureText("A/C")
+                                            .build()
+                            ))
+                            .photosBase64(List.of("https://www.lensrentals.com/blog/media/2015/11/Automotive-Photography-Guide-1.jpg"))
                             .build()
             );
         }
