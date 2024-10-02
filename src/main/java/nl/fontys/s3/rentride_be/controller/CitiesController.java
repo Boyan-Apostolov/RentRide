@@ -20,6 +20,7 @@ public class CitiesController {
     private CreateCityUseCase createCityUseCase;
     private UpdateCityUseCase updateCityUseCase;
     private LookupCityUseCase lookupCityUseCase;
+    private GetRouteBetweenCitiesUseCase getRouteBetweenCitiesUseCase;
 
     @GetMapping("{id}")
     public ResponseEntity<City> getCity(@PathVariable(value = "id") final long id) {
@@ -64,5 +65,12 @@ public class CitiesController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(possibleCity);
+    }
+
+    @GetMapping("/route")
+    public ResponseEntity<GetRouteResponse> getRoute(@RequestParam(value = "fromCity") final String fromCity,
+                                                     @RequestParam(value = "toCity") final String toCity){
+        GetRouteResponse response = getRouteBetweenCitiesUseCase.getRoute(fromCity, toCity);
+        return ResponseEntity.ok(response);
     }
 }
