@@ -13,6 +13,7 @@ public final class CityConverter {
                 .name(cityEntity.getName())
                 .lat(cityEntity.getLat())
                 .lon(cityEntity.getLon())
+                .depoAddress(cityEntity.getDepoAdress())
                 .build();
     }
 }

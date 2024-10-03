@@ -20,6 +20,9 @@ public class UpdateCityRequest {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String depoAddress;
+
     @NotNull
     @NumberFormat
     @Min(-90)

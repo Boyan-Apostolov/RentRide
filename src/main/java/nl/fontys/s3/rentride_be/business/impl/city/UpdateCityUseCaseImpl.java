@@ -32,6 +32,7 @@ public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
         cityEntity.setName(request.getName());
         cityEntity.setLat(request.getLat());
         cityEntity.setLon(request.getLon());
+        cityEntity.setDepoAdress(request.getDepoAddress());
 
         this.cityRepository.save(cityEntity);
     }

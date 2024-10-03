@@ -31,10 +31,10 @@ public class DatabaseDataInitializer {
 
     private void populateCities(){
         if(this.cityRepository.count() == 0){
-            this.cityRepository.save(CityEntity.builder().name("Eindhoven").lat(51.4231).lon(5.4623).build());
-            this.cityRepository.save(CityEntity.builder().name("Amsterdam").lat(52.3676).lon(4.9041).build());
-            this.cityRepository.save(CityEntity.builder().name("Breda").lat(51.5719).lon(4.7683).build());
-            this.cityRepository.save(CityEntity.builder().name("Utrecht").lat(52.0907).lon(5.1214).build());
+            this.cityRepository.save(CityEntity.builder().name("Eindhoven").lat(51.4231).lon(5.4623).depoAdress("Some street 1").build());
+            this.cityRepository.save(CityEntity.builder().name("Amsterdam").lat(52.3676).lon(4.9041).depoAdress("Some street 1").build());
+            this.cityRepository.save(CityEntity.builder().name("Breda").lat(51.5719).lon(4.7683).depoAdress("Some street 1").build());
+            this.cityRepository.save(CityEntity.builder().name("Utrecht").lat(52.0907).lon(5.1214).depoAdress("Some street 1").build());
         }
     }
 
@@ -69,7 +69,7 @@ public class DatabaseDataInitializer {
                                             .featureText("A/C")
                                             .build()
                             ))
-                            .photosBase64(List.of("https://www.lensrentals.com/blog/media/2015/11/Automotive-Photography-Guide-1.jpg"))
+                            .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()
             );
         }
