@@ -71,6 +71,41 @@ public class DatabaseDataInitializer {
                             ))
                             .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()
+
+            );
+
+            this.carRepository.save(
+                    CarEntity.builder()
+                            .make("Ford")
+                            .model("Fiesta 2")
+                            .registrationNumber("nederland")
+                            .fuelConsumption(9.1)
+                            .city(this.cityRepository.findById(2))
+                            .features(List.of(
+                                    CarFeatureEntity.builder()
+                                            .id(1L)
+                                            .featureType(CarFeatureType.Seats)
+                                            .featureText("5")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(2L)
+                                            .featureType(CarFeatureType.Doors)
+                                            .featureText("4")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(3L)
+                                            .featureType(CarFeatureType.Transmission)
+                                            .featureText("Auto")
+                                            .build(),
+                                    CarFeatureEntity.builder()
+                                            .id(4L)
+                                            .featureType(CarFeatureType.Bonus)
+                                            .featureText("Heat")
+                                            .build()
+                            ))
+                            .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
+                            .build()
+
             );
         }
     }

@@ -25,6 +25,7 @@ public class CarsController {
     private DeleteCarUseCase deleteCarUseCase;
     private CreateCarUseCase createCarUseCase;
     private UpdateCarUseCase updateCarUseCase;
+    private GetAvailableCarsUseCase getAvailableCarsUseCase;
 
     @GetMapping("{id}")
     public ResponseEntity<Car> getCar(@PathVariable(value = "id") final long id) {
@@ -43,8 +44,9 @@ public class CarsController {
 
     @PostMapping("availableCars")
     public ResponseEntity<List<Car>> getAvailableCars(@RequestBody @Valid GetAvailableCarsRequest request) {
-       //TODO: implement
-        return getAllCars();
+       //TODO: implement bookings and filter availability
+        List<Car> foundCars = getAvailableCarsUseCase.getAvailableCars(request);
+        return ResponseEntity.ok(foundCars);
     }
 
     @DeleteMapping("{id}")
