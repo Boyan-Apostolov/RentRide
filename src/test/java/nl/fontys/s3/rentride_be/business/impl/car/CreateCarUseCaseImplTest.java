@@ -89,9 +89,7 @@ class CreateCarUseCaseImplTest {
                         .make("Ford")
                         .model("Fiesta")
                         .registrationNumber("BT2142KX")
-                        .seatsCount(5)
                         .fuelConsumption(5.5)
-                        .transmissionType(0)
                         .cityId(1L)
                         .build()
         );

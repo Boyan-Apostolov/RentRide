@@ -22,9 +22,9 @@ public class GetRouteBetweenCitiesUseCaseImpl implements GetRouteBetweenCitiesUs
     private final CityRepository cityRepository;
 
     @Override
-    public GetRouteResponse getRoute(String fromCity, String toCity) {
-        CityEntity fromCityEntity = findCityByName(fromCity);
-        CityEntity toCityEntity = findCityByName(toCity);
+    public GetRouteResponse getRoute(Long fromCityId, Long toCityId) {
+        CityEntity fromCityEntity = findCityById(fromCityId);
+        CityEntity toCityEntity = findCityById(toCityId);
 
         String routeMapUrl = createRouteMapUrl(fromCityEntity, toCityEntity);
         String routingDistanceUrl = createRoutingDistanceUrl(fromCityEntity, toCityEntity);
@@ -37,10 +37,10 @@ public class GetRouteBetweenCitiesUseCaseImpl implements GetRouteBetweenCitiesUs
                 .build();
     }
 
-    private CityEntity findCityByName(String cityName) {
-        CityEntity cityEntity = cityRepository.findByName(cityName);
+    private CityEntity findCityById(Long cityId) {
+        CityEntity cityEntity = cityRepository.findById(cityId);
         if (cityEntity == null) {
-            throw new NotFoundException("City not found: " + cityName);
+            throw new NotFoundException("City not found: " + cityId);
         }
         return cityEntity;
     }

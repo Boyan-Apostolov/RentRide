@@ -46,7 +46,7 @@ public class CreateCarRequest {
     @Min(1)
     private Long cityId;
 
-    private List<String> photosBase64;
+    public List<String> photosBase64;
 
     private CityEntity foundCity;
 }
