@@ -21,21 +21,23 @@ public class GetAvailableCarsUseCaseImpl implements GetAvailableCarsUseCase {
         //TODO: Filter availability when implemented
 
         List<String> selectedFeatures = request.getSelectedFeatures();
+
         if (selectedFeatures != null && !selectedFeatures.isEmpty()) {
             return this.carRepository
                     .findAll()
                     .stream()
                     .filter(carEntity ->
-                            // Ensure all selected features are present in the car's features
                             selectedFeatures.stream().allMatch(sf ->
                                     carEntity.getFeatures().stream()
-                                            .anyMatch(cf -> cf.getFeatureText().contains(sf))
-                                    || carEntity.getMake().contains(sf)
+                                            .anyMatch(cf -> cf.getId() == Integer.parseInt(sf)) // Correctly compare IDs
+                                            || carEntity.getMake().contains(sf) // Also check if the car's make contains the feature string (if relevant)
                             )
                     )
                     .map(CarConverter::convert)
                     .toList();
         }
-        return this.carRepository.findAll().stream().map(CarConverter::convert).toList();
+        return this.carRepository.findAll().stream()
+                .map(CarConverter::convert)
+                .toList();
     }
 }

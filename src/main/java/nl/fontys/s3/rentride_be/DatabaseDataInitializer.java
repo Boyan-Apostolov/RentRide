@@ -2,10 +2,7 @@ package nl.fontys.s3.rentride_be;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
-import nl.fontys.s3.rentride_be.persistance.BookingRepository;
-import nl.fontys.s3.rentride_be.persistance.CarRepository;
-import nl.fontys.s3.rentride_be.persistance.CityRepository;
-import nl.fontys.s3.rentride_be.persistance.UserRepository;
+import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -21,12 +18,43 @@ public class DatabaseDataInitializer {
     private CarRepository carRepository;
     private UserRepository userRepository;
     private BookingRepository bookingRepository;
+    private CarFeatureRepository carFeatureRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initializeDatabase() {
         populateCities();
+        populateCarFeatures();
         populateCars();
         populateUsers();
+    }
+
+    private void populateCarFeatures() {
+        if(carFeatureRepository.count() == 0){
+            this.carFeatureRepository.save(CarFeatureEntity.builder()
+                            .featureType(CarFeatureType.Seats)
+                            .featureText("5")
+                    .build());
+
+            this.carFeatureRepository.save(CarFeatureEntity.builder()
+                    .featureType(CarFeatureType.Doors)
+                    .featureText("4")
+                    .build());
+
+            this.carFeatureRepository.save(CarFeatureEntity.builder()
+                    .featureType(CarFeatureType.Transmission)
+                    .featureText("Automatic")
+                    .build());
+
+            this.carFeatureRepository.save(CarFeatureEntity.builder()
+                    .featureType(CarFeatureType.Bonus)
+                    .featureText("AC")
+                    .build());
+
+            this.carFeatureRepository.save(CarFeatureEntity.builder()
+                    .featureType(CarFeatureType.Transmission)
+                    .featureText("Manual")
+                    .build());
+        }
     }
 
     private void populateCities(){
@@ -48,30 +76,12 @@ public class DatabaseDataInitializer {
                             .fuelConsumption(6.1)
                             .city(this.cityRepository.findById(1))
                             .features(List.of(
-                                    CarFeatureEntity.builder()
-                                            .id(1L)
-                                            .featureType(CarFeatureType.Seats)
-                                            .featureText("5")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(2L)
-                                            .featureType(CarFeatureType.Doors)
-                                            .featureText("4")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(3L)
-                                            .featureType(CarFeatureType.Transmission)
-                                            .featureText("Manual")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(4L)
-                                            .featureType(CarFeatureType.Bonus)
-                                            .featureText("A/C")
-                                            .build()
+                                    this.carFeatureRepository.findById(1),
+                                    this.carFeatureRepository.findById(2),
+                                    this.carFeatureRepository.findById(3)
                             ))
                             .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()
-
             );
 
             this.carRepository.save(
@@ -81,28 +91,11 @@ public class DatabaseDataInitializer {
                             .registrationNumber("nederland")
                             .fuelConsumption(9.1)
                             .city(this.cityRepository.findById(2))
-                            .features(List.of(
-                                    CarFeatureEntity.builder()
-                                            .id(1L)
-                                            .featureType(CarFeatureType.Seats)
-                                            .featureText("5")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(2L)
-                                            .featureType(CarFeatureType.Doors)
-                                            .featureText("4")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(3L)
-                                            .featureType(CarFeatureType.Transmission)
-                                            .featureText("Auto")
-                                            .build(),
-                                    CarFeatureEntity.builder()
-                                            .id(4L)
-                                            .featureType(CarFeatureType.Bonus)
-                                            .featureText("Heat")
-                                            .build()
-                            ))
+                                    .features(List.of(
+                                            this.carFeatureRepository.findById(2),
+                                            this.carFeatureRepository.findById(1),
+                                            this.carFeatureRepository.findById(5)
+                                    ))
                             .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()
 

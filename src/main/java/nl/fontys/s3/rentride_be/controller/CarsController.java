@@ -26,6 +26,7 @@ public class CarsController {
     private CreateCarUseCase createCarUseCase;
     private UpdateCarUseCase updateCarUseCase;
     private GetAvailableCarsUseCase getAvailableCarsUseCase;
+    private GetAllCarFeatures getAllCarFeatures;
 
     @GetMapping("{id}")
     public ResponseEntity<Car> getCar(@PathVariable(value = "id") final long id) {
@@ -47,6 +48,12 @@ public class CarsController {
        //TODO: implement bookings and filter availability
         List<Car> foundCars = getAvailableCarsUseCase.getAvailableCars(request);
         return ResponseEntity.ok(foundCars);
+    }
+
+    @GetMapping("features")
+    public ResponseEntity<List<CarFeature>> getAllFeatures() {
+        List<CarFeature> carFeatures = getAllCarFeatures.getAllCarFeatures();
+        return ResponseEntity.ok(carFeatures);
     }
 
     @DeleteMapping("{id}")
