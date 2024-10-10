@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.persistance.impl;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.CarFeatureRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CarFeatureEntity;
 import org.springframework.stereotype.Repository;
@@ -42,5 +43,24 @@ public class FakeCarFeatureRepository implements CarFeatureRepository {
     @Override
     public int count() {
         return this.savedFeatures.size();
+    }
+
+    @Override
+    public CarFeatureEntity findByFeatureText(String featureText) {
+        return this.savedFeatures
+                .stream()
+                .filter(carFeature -> carFeature.getFeatureText().equals(featureText))  // Use equals for comparison
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public CarFeatureEntity findByFeatureTextAndType(String currentRequestFeature, CarFeatureType featureType) {
+        return this.savedFeatures
+                .stream()
+                .filter(carFeature -> carFeature.getFeatureText().equals(currentRequestFeature)
+                        && carFeature.getFeatureType().equals(featureType))  // Use equals for comparison
+                .findFirst()
+                .orElse(null);
     }
 }
