@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.car.*;
 import nl.fontys.s3.rentride_be.business.useCases.city.GetCityUseCase;
-import nl.fontys.s3.rentride_be.domain.car.Car;
-import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
-import nl.fontys.s3.rentride_be.domain.car.CreateCarResponse;
-import nl.fontys.s3.rentride_be.domain.car.UpdateCarRequest;
+import nl.fontys.s3.rentride_be.domain.car.*;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
 import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
@@ -28,6 +25,8 @@ public class CarsController {
     private DeleteCarUseCase deleteCarUseCase;
     private CreateCarUseCase createCarUseCase;
     private UpdateCarUseCase updateCarUseCase;
+    private GetAvailableCarsUseCase getAvailableCarsUseCase;
+    private GetAllCarFeatures getAllCarFeatures;
 
     @GetMapping("{id}")
     public ResponseEntity<Car> getCar(@PathVariable(value = "id") final long id) {
@@ -42,6 +41,19 @@ public class CarsController {
     @GetMapping
     public ResponseEntity<List<Car>> getAllCars() {
         return ResponseEntity.ok(this.getCarsUseCase.getCars());
+    }
+
+    @PostMapping("availableCars")
+    public ResponseEntity<List<Car>> getAvailableCars(@RequestBody @Valid GetAvailableCarsRequest request) {
+       //TODO: implement bookings and filter availability
+        List<Car> foundCars = getAvailableCarsUseCase.getAvailableCars(request);
+        return ResponseEntity.ok(foundCars);
+    }
+
+    @GetMapping("features")
+    public ResponseEntity<List<CarFeature>> getAllFeatures() {
+        List<CarFeature> carFeatures = getAllCarFeatures.getAllCarFeatures();
+        return ResponseEntity.ok(carFeatures);
     }
 
     @DeleteMapping("{id}")

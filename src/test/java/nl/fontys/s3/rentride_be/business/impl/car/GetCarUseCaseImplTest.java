@@ -1,17 +1,17 @@
 package nl.fontys.s3.rentride_be.business.impl.car;
 
-import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
 import nl.fontys.s3.rentride_be.domain.car.Car;
-import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
-import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.CarFeatureEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -42,9 +42,8 @@ class GetCarUseCaseImplTest {
                 .make("Ford")
                 .model("Fiesta")
                 .registrationNumber("BT2142KX")
-                .seatsCount(5)
                 .fuelConsumption(5.5)
-                .transmissionType(CarTransmissionType.Manual)
+                .features(List.of())
                 .build();
 
         when(this.carRepository.findById(1L)).thenReturn(car);

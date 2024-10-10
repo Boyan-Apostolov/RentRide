@@ -19,6 +19,9 @@ public class CreateCityRequest {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String depoAddress;
+
     @NotNull
     @NumberFormat
     @Min(-90)

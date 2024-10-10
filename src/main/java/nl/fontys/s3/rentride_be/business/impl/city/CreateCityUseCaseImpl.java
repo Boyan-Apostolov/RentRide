@@ -32,6 +32,7 @@ public class CreateCityUseCaseImpl implements CreateCityUseCase {
                 .name(request.getName())
                 .lat(request.getLat())
                 .lon(request.getLon())
+                .depoAdress(request.getDepoAddress())
                 .build();
 
         return this.cityRepository.save(cityEntity);

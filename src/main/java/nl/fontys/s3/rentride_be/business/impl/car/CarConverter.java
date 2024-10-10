@@ -2,9 +2,8 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 
 import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
 import nl.fontys.s3.rentride_be.domain.car.Car;
-import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.domain.car.CarFeature;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 
 public final class CarConverter {
     private CarConverter() {}
@@ -17,9 +16,9 @@ public final class CarConverter {
                 .model(carEntity.getModel())
                 .registrationNumber(carEntity.getRegistrationNumber())
                 .fuelConsumption(carEntity.getFuelConsumption())
-                .seatsCount(carEntity.getSeatsCount())
-                .transmissionType(carEntity.getTransmissionType())
                 .city(CityConverter.convert(carEntity.getCity()))
+                .photosBase64(carEntity.getPhotosBase64())
+                .carFeatures(carEntity.getFeatures().stream().map(CarFeatureConverter::convert).toList())
                 .build();
     }
 }

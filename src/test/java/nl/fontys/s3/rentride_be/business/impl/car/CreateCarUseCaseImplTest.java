@@ -2,12 +2,8 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.car.CreateCarUseCase;
-import nl.fontys.s3.rentride_be.domain.car.CarTransmissionType;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
 import nl.fontys.s3.rentride_be.domain.car.CreateCarResponse;
-import nl.fontys.s3.rentride_be.domain.city.CreateCityRequest;
-import nl.fontys.s3.rentride_be.domain.city.CreateCityResponse;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
@@ -17,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,9 +75,7 @@ class CreateCarUseCaseImplTest {
                 .make("Ford")
                 .model("Fiesta")
                 .registrationNumber("BT2142KX")
-                .seatsCount(5)
                 .fuelConsumption(5.5)
-                .transmissionType(CarTransmissionType.Manual)
                 .build();
         when(this.carRepository.save(any(CarEntity.class))).thenReturn(carEntity);
 
@@ -95,10 +91,9 @@ class CreateCarUseCaseImplTest {
                         .make("Ford")
                         .model("Fiesta")
                         .registrationNumber("BT2142KX")
-                        .seatsCount(5)
                         .fuelConsumption(5.5)
-                        .transmissionType(0)
                         .cityId(1L)
+                        .features(List.of())
                         .build()
         );
 

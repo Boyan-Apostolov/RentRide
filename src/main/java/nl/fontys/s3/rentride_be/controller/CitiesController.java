@@ -68,9 +68,9 @@ public class CitiesController {
     }
 
     @GetMapping("/route")
-    public ResponseEntity<GetRouteResponse> getRoute(@RequestParam(value = "fromCity") final String fromCity,
-                                                     @RequestParam(value = "toCity") final String toCity){
-        GetRouteResponse response = getRouteBetweenCitiesUseCase.getRoute(fromCity, toCity);
+    public ResponseEntity<GetRouteResponse> getRoute(@RequestParam(value = "fromCity") final Long fromCityId,
+                                                     @RequestParam(value = "toCity") final Long toCityId){
+        GetRouteResponse response = getRouteBetweenCitiesUseCase.getRoute(fromCityId, toCityId);
         return ResponseEntity.ok(response);
     }
 }

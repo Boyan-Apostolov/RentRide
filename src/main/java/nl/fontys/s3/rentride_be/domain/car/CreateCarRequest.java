@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.persistance.entity.CarFeatureEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -27,10 +28,7 @@ public class CreateCarRequest {
     @NotBlank
     private String registrationNumber;
 
-    @NumberFormat
-    @Min(1)
-    @Max(7)
-    private Integer seatsCount;
+    private List<String> features;
 
     @NumberFormat
     @Min(0)
@@ -46,7 +44,9 @@ public class CreateCarRequest {
     @Min(1)
     private Long cityId;
 
-    private List<String> photosBase64;
+    public List<String> photosBase64;
 
     private CityEntity foundCity;
+
+    private List<CarFeatureEntity> foundFeatures;
 }

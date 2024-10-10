@@ -10,4 +10,5 @@ public class CityEntity {
     private String name;
     private Double lat;
     private Double lon;
+    private String depoAdress;
 }

@@ -52,6 +52,9 @@ class CitiesControllerTest {
     @MockBean
     private LookupCityUseCase lookupCityUseCase;
 
+    @MockBean
+    private GetRouteBetweenCitiesUseCase getRouteBetweenCitiesUseCase;
+
 
     @Test
     public void getCities_shouldReturn200WithEmptyList_WhenNoCities() throws Exception {
@@ -147,6 +150,7 @@ class CitiesControllerTest {
                 .name("Eindhoven")
                 .lat(12.12)
                 .lon(12.12)
+                .depoAddress("some str")
                 .build();
 
         CreateCityResponse expectedResponse = CreateCityResponse
@@ -177,6 +181,7 @@ class CitiesControllerTest {
     public void createCity_shouldCreateAndReturn400_WhenRequestInValid() throws Exception {
         CreateCityRequest expectedCity = CreateCityRequest.builder()
                 .name("Eindhoven2")
+                .depoAddress("some str")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -241,6 +246,7 @@ class CitiesControllerTest {
                 .name("UpdatedCity")
                 .lat(50.5)
                 .lon(50.5)
+                .depoAddress("some str")
                 .build();
 
         doThrow(new NotFoundException("CITY")).when(updateCityUseCase).updateCity(validUpdateRequest);
@@ -264,6 +270,7 @@ class CitiesControllerTest {
                 .name("UpdatedCity")
                 .lat(50.5)
                 .lon(50.5)
+                .depoAddress("some str")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -282,6 +289,7 @@ class CitiesControllerTest {
     public void updateCity_shouldReturn400_WhenRequestInValid() throws Exception {
         CreateCityRequest invalidUpdateRequest = CreateCityRequest.builder()
                 .name("UpdatedCity")
+                .depoAddress("some str")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
