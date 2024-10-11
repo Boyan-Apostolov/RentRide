@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import nl.fontys.s3.rentride_be.persistance.entity.CarFeatureEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -26,22 +27,15 @@ public class UpdateCarRequest {
 
     @NumberFormat
     @Min(1)
-    @Max(7)
-    private Integer seatsCount;
-
-    @NumberFormat
-    @Min(0)
-    @Max(1)
-    private Integer transmissionType;
-
-    @NumberFormat
-    @Min(1)
     @Max(20)
     private Double fuelConsumption;
 
     @NumberFormat
     @Min(1)
     private Long cityId;
+
+    private List<String> features;
+    private List<CarFeatureEntity> foundFeatures;
 
     private List<String> photosBase64;
 
