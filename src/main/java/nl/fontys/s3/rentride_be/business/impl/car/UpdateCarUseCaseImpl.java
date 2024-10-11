@@ -49,6 +49,8 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
     }
 
     private void prepareCarFeatures(UpdateCarRequest request) {
+        if(request.getFeatures() == null)return;
+
         List<CarFeatureEntity> foundFeatures = new ArrayList<>();
         for(int i = 0; i < request.getFeatures().size(); i++) {
             String currentRequestFeature = request.getFeatures().get(i);

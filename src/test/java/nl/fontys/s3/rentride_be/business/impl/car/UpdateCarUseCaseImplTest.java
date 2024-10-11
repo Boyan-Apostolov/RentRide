@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -39,9 +41,8 @@ class UpdateCarUseCaseImplTest {
                                 .make("Ford")
                                 .model("Fiesta")
                                 .registrationNumber("BT2142KX")
-                                .seatsCount(5)
                                 .fuelConsumption(5.5)
-                                .transmissionType(0)
+                                .foundFeatures(List.of())
                                 .build()
                 ));
 
@@ -65,6 +66,7 @@ class UpdateCarUseCaseImplTest {
                 .model("Fiesta")
                 .registrationNumber("BT2142KX")
                 .fuelConsumption(5.5)
+                .features(List.of())
                 .city(this.cityRepository.findById(1L))
                 .build();
 
@@ -74,6 +76,8 @@ class UpdateCarUseCaseImplTest {
                 .model("Fiestaa!")
                 .registrationNumber("BT2142KX")
                 .fuelConsumption(5.5)
+                .features(List.of())
+
                 .city(this.cityRepository.findById(1L))
                 .build();
 
@@ -86,9 +90,8 @@ class UpdateCarUseCaseImplTest {
                         .make("Ford-edit")
                         .model("Fiestaa!")
                         .registrationNumber("BT2142KX")
-                        .seatsCount(5)
                         .fuelConsumption(5.5)
-                        .transmissionType(0)
+                        .foundFeatures(List.of())
                         .cityId(1L)
                         .build()
         );
