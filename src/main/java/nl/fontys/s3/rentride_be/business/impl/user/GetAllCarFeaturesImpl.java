@@ -1,4 +1,4 @@
-package nl.fontys.s3.rentride_be.business.impl;
+package nl.fontys.s3.rentride_be.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.impl.car.CarFeatureConverter;
