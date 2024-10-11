@@ -1,0 +1,15 @@
+meta {
+  name: lookupCity
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:8080/cities/lookupCity?cityName=eindhoven
+  body: none
+  auth: none
+}
+
+params:query {
+  cityName: eindhoven
+}

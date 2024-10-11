@@ -31,11 +31,6 @@ public class CreateCarRequest {
     private List<String> features;
 
     @NumberFormat
-    @Min(0)
-    @Max(1)
-    private Integer transmissionType;
-
-    @NumberFormat
     @Min(1)
     @Max(20)
     private Double fuelConsumption;

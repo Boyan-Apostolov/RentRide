@@ -1,0 +1,28 @@
+meta {
+  name: updateCar
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8080/cars/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+          "make": "Test make - edited",
+          "model": "test model",
+          "registrationNumber": "V123KE",
+          "fuelConsumption": 5.5,
+          "cityId": 1,
+          "photosBase64": ["..."],
+          "features": [
+            "5", //seats
+            "4", //doors,
+            "1", // Transmission,
+            "AC" //Bonus
+          ]
+  }
+}

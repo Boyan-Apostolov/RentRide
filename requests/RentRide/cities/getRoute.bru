@@ -1,0 +1,16 @@
+meta {
+  name: getRoute
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8080/cities/route?fromCity=1&toCity=2
+  body: none
+  auth: none
+}
+
+params:query {
+  fromCity: 1
+  toCity: 2
+}

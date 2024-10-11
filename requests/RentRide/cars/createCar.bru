@@ -1,0 +1,28 @@
+meta {
+  name: createCar
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/cars
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+          "make": "Test make",
+          "model": "test model",
+          "registrationNumber": "V123KE",
+          "fuelConsumption": 5.5,
+          "cityId": 1,
+          "photosBase64": ["..."],
+          "features": [
+            "5", //seats
+            "4", //doors,
+            "1", // Transmission,
+            "AC" //Bonus
+          ]
+  }
+}

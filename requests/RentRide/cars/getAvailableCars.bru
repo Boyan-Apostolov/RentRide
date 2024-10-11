@@ -1,0 +1,24 @@
+meta {
+  name: getAvailableCars
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8080/cars/availableCars
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+     "fromCity": "Amsterdam",
+     "fromDateTime": "2024-10-11T10:00:00",
+     "toCity": "Breda",
+     "toDateTime": "2024-10-12T18:00:00",
+     "selectedFeatures": [
+        "1",
+        "2"
+     ]
+  }
+}
