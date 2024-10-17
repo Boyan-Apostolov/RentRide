@@ -19,4 +19,4 @@ test:
 deploy:
   stage: deploy
   script:
-    - ./sh dockerize.sh
+    - ./dockerize.sh
