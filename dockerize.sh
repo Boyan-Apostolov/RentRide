@@ -13,4 +13,4 @@ if [ "$(docker ps -a -q -f name=rentride_be_staging)" ]; then
 fi
 
 # Run the Docker container in net sem3_network_staging, exposing port 8090
-docker run -d --name rentride_be_staging -p 8090:8080 --net=sem3_network_staging --env spring_profiles_active=staging rentride-backend
+docker run -d --name rentride_be_staging -p 8090:8080 --network rentride_network --env SPRING_PROFILES_ACTIVE=staging rentride-backend
