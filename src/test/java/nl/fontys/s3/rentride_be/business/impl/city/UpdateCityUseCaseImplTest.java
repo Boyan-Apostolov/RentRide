@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,9 +47,9 @@ class UpdateCityUseCaseImplTest {
     void updateCity_withValidIdShouldUpdateTheEntity() {
         Long cityId = 1L;
 
-        CityEntity existingCity = CityEntity.builder()
+        Optional<CityEntity> existingCity = Optional.of(CityEntity.builder()
                 .id(cityId).name("Eindhoven").lat(50.0).lon(55.0)
-                .build();
+                .build());
 
         CityEntity updatedCity = CityEntity.builder()
                 .id(cityId).name("Eindhoven-update").lat(55.0).lon(60.0)
@@ -62,11 +64,12 @@ class UpdateCityUseCaseImplTest {
                         .build()
         );
 
-        assertEquals("Eindhoven-update", existingCity.getName());
-        assertEquals(55.0, existingCity.getLat());
-        assertEquals(60.0, existingCity.getLon());
 
-        verify(this.cityRepository).save(existingCity);
+        assertEquals("Eindhoven-update", existingCity.get().getName());
+        assertEquals(55.0, existingCity.get().getLat());
+        assertEquals(60.0, existingCity.get().getLon());
+
+        verify(this.cityRepository).save(existingCity.get());
         verify(this.cityRepository, times(2)).findById(cityId);
     }
 }

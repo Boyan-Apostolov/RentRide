@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,11 +80,11 @@ class CreateCarUseCaseImplTest {
                 .build();
         when(this.carRepository.save(any(CarEntity.class))).thenReturn(carEntity);
 
-        CityEntity cityEntity = CityEntity.builder()
+        Optional<CityEntity> cityEntity = Optional.of( CityEntity.builder()
                 .name("Eindhoven")
                 .lon(55.5)
                 .lat(53.3)
-                .build();
+                .build());
         when(this.cityRepository.findById(1L)).thenReturn(cityEntity);
 
         CreateCarResponse createdCar = this.createCarUseCase.createCar(

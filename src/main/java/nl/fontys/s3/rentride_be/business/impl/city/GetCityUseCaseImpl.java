@@ -13,6 +13,6 @@ public class GetCityUseCaseImpl implements GetCityUseCase {
 
     @Override
     public City getCity(Long cityId) {
-        return CityConverter.convert(this.cityRepository.findById(cityId));
+        return CityConverter.convert(this.cityRepository.findById(cityId).orElse(null));
     }
 }

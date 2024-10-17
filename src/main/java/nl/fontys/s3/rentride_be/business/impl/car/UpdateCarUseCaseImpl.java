@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -34,16 +35,16 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
     }
 
     private void prepareCity(UpdateCarRequest request) {
-        CityEntity cityOptional = this.cityRepository.findById(request.getCityId());
-        if (cityOptional == null) {
+        Optional<CityEntity> cityOptional = this.cityRepository.findById(request.getCityId());
+        if (cityOptional.isEmpty()) {
             throw new NotFoundException("Update->Car->City");
         }
-        request.setFoundCity(cityOptional);
+        request.setFoundCity(cityOptional.get());
     }
 
     private void verifyCarExists(Long carId){
-        CarEntity carOptional = this.carRepository.findById(carId);
-        if (carOptional == null) {
+        Optional<CarEntity> carOptional = this.carRepository.findById(carId);
+        if (carOptional.isEmpty()) {
             throw new NotFoundException("Update->Car");
         }
     }
@@ -56,7 +57,7 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
             String currentRequestFeature = request.getFeatures().get(i);
             CarFeatureType featureType = CarFeatureType.class.getEnumConstants()[i];
 
-            CarFeatureEntity foundFeature = this.carFeatureRepository.findByFeatureTextAndType(currentRequestFeature, featureType);
+            CarFeatureEntity foundFeature = this.carFeatureRepository.findByFeatureTextAndFeatureType(currentRequestFeature, featureType);
 
             if(foundFeature == null){
                 foundFeature = this.carFeatureRepository.save(CarFeatureEntity.builder()
@@ -71,7 +72,7 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
     }
 
     private void updateEntity(UpdateCarRequest request) {
-        CarEntity carEntity = this.carRepository.findById(request.getId());
+        CarEntity carEntity = this.carRepository.findById(request.getId()).get();
 
         carEntity.setMake(request.getMake());
         carEntity.setModel(request.getModel());

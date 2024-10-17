@@ -40,7 +40,8 @@ public class CarsController {
 
     @GetMapping
     public ResponseEntity<List<Car>> getAllCars() {
-        return ResponseEntity.ok(this.getCarsUseCase.getCars());
+        List<Car> cars = this.getCarsUseCase.getCars();
+        return ResponseEntity.ok(cars);
     }
 
     @PostMapping("availableCars")

@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,15 +35,15 @@ class GetCityUseCaseImplTest {
 
     @Test
     void getCity_ShouldReturnCityWithCorrectIdExists() {
-        CityEntity city = CityEntity.builder()
+        Optional<CityEntity> city = Optional.of(CityEntity.builder()
                 .id(1L).name("Eindhoven").lat(50.0).lon(55.0)
-                .build();
+                .build());
 
         when(this.cityRepository.findById(1L)).thenReturn(city);
 
         City foundCity = this.getCityUseCase.getCity(1L);
 
-        assertEquals(CityConverter.convert(city), foundCity);
+        assertEquals(CityConverter.convert(city.get()), foundCity);
 
         verify(this.cityRepository).findById(1L);
     }
