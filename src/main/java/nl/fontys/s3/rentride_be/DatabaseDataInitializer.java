@@ -24,7 +24,7 @@ public class DatabaseDataInitializer {
     public void initializeDatabase() {
         populateCities();
         populateCarFeatures();
-        populateCars();
+        //populateCars();
         populateUsers();
     }
 
@@ -74,12 +74,12 @@ public class DatabaseDataInitializer {
                             .model("Fiesta")
                             .registrationNumber("BT2142KX")
                             .fuelConsumption(6.1)
-                            .city(this.cityRepository.findById(1))
+                            .city(this.cityRepository.findById(1L).get())
                             .features(List.of(
-                                    this.carFeatureRepository.findById(1),
-                                    this.carFeatureRepository.findById(2),
-                                    this.carFeatureRepository.findById(3),
-                                    this.carFeatureRepository.findById(5)
+                                    this.carFeatureRepository.findById(1L).get(),
+                                    this.carFeatureRepository.findById(2L).get(),
+                                    this.carFeatureRepository.findById(3L).get(),
+                                    this.carFeatureRepository.findById(5L).get()
                             ))
                             .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()
@@ -91,12 +91,12 @@ public class DatabaseDataInitializer {
                             .model("Fiesta 2")
                             .registrationNumber("nederland")
                             .fuelConsumption(9.1)
-                            .city(this.cityRepository.findById(2))
+                            .city(this.cityRepository.findById(2L).get())
                                     .features(List.of(
-                                            this.carFeatureRepository.findById(1),
-                                            this.carFeatureRepository.findById(2),
-                                            this.carFeatureRepository.findById(4),
-                                            this.carFeatureRepository.findById(5)
+                                            this.carFeatureRepository.findById(1L).get(),
+                                            this.carFeatureRepository.findById(2L).get(),
+                                            this.carFeatureRepository.findById(4L).get(),
+                                            this.carFeatureRepository.findById(5L).get()
                                     ))
                             .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
                             .build()

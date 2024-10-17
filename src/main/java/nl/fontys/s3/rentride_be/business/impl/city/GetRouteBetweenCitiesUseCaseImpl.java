@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.city;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +41,11 @@ public class GetRouteBetweenCitiesUseCaseImpl implements GetRouteBetweenCitiesUs
     }
 
     private CityEntity findCityById(Long cityId) {
-        CityEntity cityEntity = cityRepository.findById(cityId);
-        if (cityEntity == null) {
+        Optional<CityEntity> cityEntity = cityRepository.findById(cityId);
+        if (cityEntity.isEmpty()) {
             throw new NotFoundException("City not found: " + cityId);
         }
-        return cityEntity;
+        return cityEntity.get();
     }
 
     private String createRouteMapUrl(CityEntity fromCityEntity, CityEntity toCityEntity) {

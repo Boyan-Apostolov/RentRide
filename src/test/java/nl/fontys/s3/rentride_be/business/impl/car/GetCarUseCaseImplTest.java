@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -37,20 +38,20 @@ class GetCarUseCaseImplTest {
 
     @Test
     void getCar_ShouldReturnCarWithCorrectIdExists() {
-        CarEntity car =  CarEntity.builder()
+        Optional<CarEntity> car =  Optional.of(CarEntity.builder()
                 .id(1L)
                 .make("Ford")
                 .model("Fiesta")
                 .registrationNumber("BT2142KX")
                 .fuelConsumption(5.5)
                 .features(List.of())
-                .build();
+                .build());
 
         when(this.carRepository.findById(1L)).thenReturn(car);
 
         Car foundCar = this.getCarUseCase.getCar(1L);
 
-        assertEquals(CarConverter.convert(car), foundCar);
+        assertEquals(CarConverter.convert(car.get()), foundCar);
 
         verify(this.carRepository).findById(1L);
     }

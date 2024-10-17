@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.car;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.car.GetAvailableCarsUseCase;
 import nl.fontys.s3.rentride_be.domain.car.Car;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
 public class GetAvailableCarsUseCaseImpl implements GetAvailableCarsUseCase {
     private CarRepository carRepository;
 
+    @Transactional
     @Override
     public List<Car> getAvailableCars(GetAvailableCarsRequest request) {
         //TODO: Filter availability when implemented

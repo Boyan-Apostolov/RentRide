@@ -8,6 +8,8 @@ import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
@@ -20,14 +22,14 @@ public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
     }
 
     private void verifyObjectExists(Long cityId){
-        CityEntity cityOptional = this.cityRepository.findById(cityId);
-        if (cityOptional == null) {
+        Optional<CityEntity> cityOptional = this.cityRepository.findById(cityId);
+        if (cityOptional.isEmpty()) {
             throw new NotFoundException("CITY");
         }
     }
 
     private void updateEntity(UpdateCityRequest request) {
-        CityEntity cityEntity = this.cityRepository.findById(request.getId());
+        CityEntity cityEntity = this.cityRepository.findById(request.getId()).get();
 
         cityEntity.setName(request.getName());
         cityEntity.setLat(request.getLat());
