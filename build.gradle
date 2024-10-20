@@ -36,6 +36,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.stripe:stripe-java:26.12.0'
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'mysql:mysql-connector-java:8.0.33'

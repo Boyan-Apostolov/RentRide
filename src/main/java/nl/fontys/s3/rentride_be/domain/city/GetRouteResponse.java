@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class GetRouteResponse {
-    private String responseBody;
+    private String distance;
+    private String time;
     private String imgUrl;
 }
