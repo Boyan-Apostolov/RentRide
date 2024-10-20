@@ -1,13 +1,8 @@
 package nl.fontys.s3.rentride_be.controller;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.impl.booking.GetBookingCostsImpl;
 import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingCosts;
-import nl.fontys.s3.rentride_be.business.useCases.car.GetCarUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
-import nl.fontys.s3.rentride_be.domain.car.Car;
-import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

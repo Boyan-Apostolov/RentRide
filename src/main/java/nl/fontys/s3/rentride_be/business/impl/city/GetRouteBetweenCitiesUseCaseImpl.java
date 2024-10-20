@@ -92,10 +92,10 @@ public class GetRouteBetweenCitiesUseCaseImpl implements GetRouteBetweenCitiesUs
                         String.format("%.2f", distance / 1000),
                         String.format("%.2f", time / 60 / 60)};
             } else {
-                throw new RuntimeException("Error fetching route distance: " + response.getStatusCode());
+                throw new NotFoundException("Error fetching route distance: " + response.getStatusCode());
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse route distance from API response", e);
+            throw new NotFoundException("Failed to parse route distance from API response");
         }
     }
 }

@@ -1,21 +1,14 @@
 package nl.fontys.s3.rentride_be.controller;
 
-import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.city.GetCityUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
 import nl.fontys.s3.rentride_be.domain.city.City;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
@@ -53,7 +46,9 @@ public class PaymentsController {
     }
 
     @GetMapping("/pay")
-    public ResponseEntity<String> createCheckoutSession(@RequestParam("fromCityId") Long fromCityId, @RequestParam("toCityId") Long toCityId, @RequestParam("price") Long price) {
+    public ResponseEntity<String> createCheckoutSession(@RequestParam("fromCityId") Long fromCityId,
+                                                        @RequestParam("toCityId") Long toCityId,
+                                                        @RequestParam("price") Double price) {
         //Todo: get booking id and get price
         City fromCity = getCityUseCase.getCity(fromCityId);
         City toCity = getCityUseCase.getCity(toCityId);

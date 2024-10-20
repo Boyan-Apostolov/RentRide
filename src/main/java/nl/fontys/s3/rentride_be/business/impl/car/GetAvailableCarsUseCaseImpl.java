@@ -8,12 +8,9 @@ import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.car.GetAvailableCarsRequest;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
-import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +25,7 @@ public class GetAvailableCarsUseCaseImpl implements GetAvailableCarsUseCase {
         GetRouteResponse routeData = getRouteBetweenCitiesUseCase.getRoute(Long.parseLong(request.getFromCity()), Long.parseLong(request.getToCity()));
         Double distance = Double.parseDouble(routeData.getDistance());
 
-        List<Car> availableCars = new ArrayList<>();
+        List<Car> availableCars;
         List<String> selectedFeatures = request.getSelectedFeatures();
 
         if (selectedFeatures != null && !selectedFeatures.isEmpty()) {

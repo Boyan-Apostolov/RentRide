@@ -5,7 +5,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,17 +22,18 @@ public class CreatePaymentSessionUseCaseImpl implements CreatePaymentSessionUseC
     }
 
     @Override
-    public String createPaymentSession(String description, Long price) throws StripeException {
+    public String createPaymentSession(String description, double price) throws StripeException {
         SessionCreateParams.LineItem.PriceData.ProductData productData =
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                         .setName(description) // Product name
                         .build();
 
+        Long priceInCents = (long) (price * 100);
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
                         .setCurrency("eur")
                         .setProductData(productData)
-                        .setUnitAmount(price * 100) // Amount in cents
+                        .setUnitAmount(priceInCents) // Amount in cents
                         .build();
 
         SessionCreateParams.LineItem lineItem =
