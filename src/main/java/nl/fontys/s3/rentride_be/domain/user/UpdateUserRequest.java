@@ -9,6 +9,7 @@ import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,21 +19,20 @@ public class UpdateUserRequest {
     private Long id;
 
     @NotBlank
-    private String Name;
+    private String name;
     @NotBlank
 
-    private String Email;
+    private String email;
 
     @NotBlank
-    private String Password;
+    private String password;
 
     @NumberFormat
     @Min(0)
     @Max(1)
-    private Integer Role;
+    private Integer role;
 
     @DateTimeFormat
-    private Date BirthDate;
+    private LocalDate birthDate;
 
-    private String CustomerId;
 }

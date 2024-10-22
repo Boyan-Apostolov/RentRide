@@ -13,12 +13,11 @@ public final class UserConverter {
         if(userEntity == null) return null;
         return User.builder()
                 .id(userEntity.getId())
-                .Email(userEntity.getEmail())
-                .Password(userEntity.getPassword())
-                .Role(userEntity.getRole())
-                .Name(userEntity.getName())
-                .BirthDate(userEntity.getBirthDate())
-                .CustomerId(userEntity.getCustomerId())
+                .email(userEntity.getEmail())
+                .password(userEntity.getPassword())
+                .role(userEntity.getRole())
+                .name(userEntity.getName())
+                .birthDate(userEntity.getBirthDate())
                 .build();
     }
 }
