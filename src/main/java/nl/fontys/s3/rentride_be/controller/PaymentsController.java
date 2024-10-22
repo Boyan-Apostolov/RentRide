@@ -2,8 +2,10 @@ package nl.fontys.s3.rentride_be.controller;
 
 import com.stripe.model.checkout.Session;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.city.GetCityUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
+import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class PaymentsController {
    private CreatePaymentSessionUseCase createPaymentSessionUseCase;
-   private GetCityUseCase getCityUseCase;
+   private GetBookingByIdUseCase getBookingByIdUseCase;
 
     @GetMapping("/success")
     public ResponseEntity success(@RequestParam("session_id") String sessionId) {
@@ -46,16 +48,12 @@ public class PaymentsController {
     }
 
     @GetMapping("/pay")
-    public ResponseEntity<String> createCheckoutSession(@RequestParam("fromCityId") Long fromCityId,
-                                                        @RequestParam("toCityId") Long toCityId,
-                                                        @RequestParam("price") Double price) {
-        //Todo: get booking id and get price
-        City fromCity = getCityUseCase.getCity(fromCityId);
-        City toCity = getCityUseCase.getCity(toCityId);
+    public ResponseEntity<String> createCheckoutSession(@RequestParam("bookingId") Long bookingId) {
+        Booking booking = getBookingByIdUseCase.getBookingById(bookingId);
 
-        String paymentDescription = String.format("Booking - (%s) -> (%s)", fromCity.getName(), toCity.getName());
+        String paymentDescription = String.format("Booking - (%s) -> (%s)", booking.getStartCity().getName(), booking.getEndCity().getName());
         try {
-            String url = this.createPaymentSessionUseCase.createPaymentSession(paymentDescription, price);
+            String url = this.createPaymentSessionUseCase.createPaymentSession(paymentDescription, booking.getTotalPrice());
 
             return ResponseEntity.ok(url);
         } catch (Exception e) {

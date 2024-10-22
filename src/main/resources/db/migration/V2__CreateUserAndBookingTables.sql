@@ -9,7 +9,8 @@ CREATE TABLE users (
 
 CREATE TABLE booking (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                         booking_status INT NOT NULL,
+                         status INT NOT NULL,
+                         coverage INT NOT NULL,
                          start_date_time TIMESTAMP NOT NULL,
                          end_date_time TIMESTAMP NOT NULL,
                          start_city_id BIGINT NOT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE booking (
                          car_id BIGINT NOT NULL,
                          user_id BIGINT NOT NULL,
                          distance BIGINT NOT NULL,
-                         total_price BIGINT NOT NULL,
+                         total_price DECIMAL(18,2) NOT NULL,
 
                          CONSTRAINT fk_booking_start_city FOREIGN KEY (start_city_id) REFERENCES city(id),
                          CONSTRAINT fk_booking_end_city FOREIGN KEY (end_city_id) REFERENCES city(id),

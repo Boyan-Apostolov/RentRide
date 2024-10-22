@@ -20,9 +20,14 @@ public class BookingEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "booking_status")
+    @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
-    private BookingStatus bookingStatus;
+    private BookingStatus status;
+
+    @NotNull
+    @Column(name = "coverage")
+    @Enumerated(EnumType.ORDINAL)
+    private BookingCoverage coverage;
 
     @NotNull
     @Column(name = "start_date_time")
@@ -58,9 +63,9 @@ public class BookingEntity {
 
     @NotNull
     @Column(name = "distance")
-    private Long distance;
+    private double distance;
 
     @NotNull
     @Column(name = "total_price")
-    private Long totalPrice;
+    private double totalPrice;
 }
