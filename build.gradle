@@ -56,7 +56,6 @@ sonar {
     properties {
         property "sonar.projectKey", "RentRide"
         property "sonar.projectName", "RentRide"
-        property "sonar.qualitygate.wait", true
     }
 }
 
