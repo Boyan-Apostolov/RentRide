@@ -12,6 +12,7 @@ import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,21 +22,19 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateUserRequest {
     @NotBlank
-    private String Name;
+    private String name;
     @NotBlank
 
-    private String Email;
+    private String email;
 
     @NotBlank
-    private String Password;
+    private String password;
 
     @NumberFormat
     @Min(0)
     @Max(1)
-    private Integer Role;
+    private Integer role;
 
     @DateTimeFormat
-    private Date BirthDate;
-
-    private String CustomerId;
+    private LocalDate birthDate;
 }

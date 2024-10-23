@@ -25,6 +25,6 @@ public class Booking {
     private City endCity;
     private Car car;
     private User user;
-    private Long distance;
-    private Long totalPrice;
+    private double distance;
+    private double totalPrice;
 }

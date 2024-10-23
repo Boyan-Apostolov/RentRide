@@ -1,22 +1,8 @@
 package nl.fontys.s3.rentride_be.persistance;
 
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByEmail(String email);
-
-    boolean existsById(long userId);
-
-    UserEntity findById(long userId);
-
-    void deleteById(long userId);
-
-    UserEntity save(UserEntity user);
-
-    List<UserEntity> findAll();
-
-    int count();
 }

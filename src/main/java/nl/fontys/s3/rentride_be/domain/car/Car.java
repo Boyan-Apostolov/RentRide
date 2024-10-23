@@ -19,4 +19,5 @@ public class Car {
     private Double fuelConsumption;
     private City city;
     private List<String> photosBase64;
+    private Double fuelPrice;
 }

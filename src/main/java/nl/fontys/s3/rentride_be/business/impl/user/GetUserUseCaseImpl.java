@@ -16,6 +16,6 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
 
     @Override
     public User getUser(Long carId) {
-        return UserConverter.convert(this.userRepository.findById(carId));
+        return UserConverter.convert(this.userRepository.findById(carId).orElse(null));
     }
 }

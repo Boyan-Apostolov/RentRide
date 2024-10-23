@@ -8,6 +8,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -109,21 +110,11 @@ public class DatabaseDataInitializer {
         if(this.userRepository.count() == 0){
             this.userRepository.save(UserEntity
                     .builder()
-                            .Name("Boyan Apostolov")
-                            .Role(UserRole.Admin)
-                            .Email("admin@admin.com")
-                            .Password("12345678")
-                            .CustomerId("x_213")
-                            .BirthDate(new Date(2004,3,12))
-                    .build());
-            this.userRepository.save(UserEntity
-                    .builder()
-                    .Name("Some Customer")
-                    .Role(UserRole.Customer)
-                    .Email("customer@customer.com")
-                    .Password("12345678")
-                    .CustomerId("x_2134567")
-                    .BirthDate(new Date(2005,7,2))
+                            .name("Boyan Apostolov")
+                            .role(UserRole.Admin)
+                            .email("admin@admin.com")
+                            .password("12345678")
+                    .birthDate(LocalDate.of(2004, 3, 12))
                     .build());
         }
     }

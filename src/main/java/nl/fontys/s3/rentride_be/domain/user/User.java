@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -12,10 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class User {
     private Long id;
-    private String Name;
-    private String Email;
-    private String Password;
-    private UserRole Role;
-    private Date BirthDate;
-    private String CustomerId;
+    private String name;
+    private String email;
+    private String password;
+    private UserRole role;
+    private LocalDate birthDate;
 }

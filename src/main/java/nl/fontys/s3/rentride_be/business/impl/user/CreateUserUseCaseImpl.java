@@ -32,12 +32,11 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
     private UserEntity saveNewUser(CreateUserRequest request) {
         UserEntity userEntity = UserEntity.builder()
-                .Email(request.getEmail())
-                .Password(request.getPassword())
-                .Role(UserRole.values()[request.getRole()])
-                .Name(request.getName())
-                .BirthDate(request.getBirthDate())
-                .CustomerId(request.getCustomerId())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .role(UserRole.values()[request.getRole()])
+                .name(request.getName())
+                .birthDate(request.getBirthDate())
                 .build();
 
         return this.userRepository.save(userEntity);

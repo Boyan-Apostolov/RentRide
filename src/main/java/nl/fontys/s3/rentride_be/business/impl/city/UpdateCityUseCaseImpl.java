@@ -29,7 +29,9 @@ public class UpdateCityUseCaseImpl implements UpdateCityUseCase {
     }
 
     private void updateEntity(UpdateCityRequest request) {
-        CityEntity cityEntity = this.cityRepository.findById(request.getId()).get();
+        Optional<CityEntity> foundCity = this.cityRepository.findById(request.getId());
+        if(foundCity.isEmpty()) return;
+        CityEntity cityEntity = foundCity.get();
 
         cityEntity.setName(request.getName());
         cityEntity.setLat(request.getLat());

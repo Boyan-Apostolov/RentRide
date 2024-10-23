@@ -14,7 +14,7 @@ public final class BookingConverter {
 
         return Booking.builder()
                 .id(booking.getId())
-                .bookingStatus(booking.getBookingStatus())
+                .bookingStatus(booking.getStatus())
                 .startCity(CityConverter.convert(booking.getStartCity()))
                 .endCity(CityConverter.convert(booking.getEndCity()))
                 .startDateTime(booking.getStartDateTime())
