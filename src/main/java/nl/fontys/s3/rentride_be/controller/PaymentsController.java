@@ -3,10 +3,11 @@ package nl.fontys.s3.rentride_be.controller;
 import com.stripe.model.checkout.Session;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingByIdUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.city.GetCityUseCase;
+import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
-import nl.fontys.s3.rentride_be.domain.city.City;
+import nl.fontys.s3.rentride_be.domain.booking.UpdateBookingStatusRequest;
+import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,20 +20,23 @@ import java.util.Objects;
 @RequestMapping("payments")
 @AllArgsConstructor
 public class PaymentsController {
+
    private CreatePaymentSessionUseCase createPaymentSessionUseCase;
    private GetBookingByIdUseCase getBookingByIdUseCase;
+   private UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
     @GetMapping("/success")
-    public ResponseEntity success(@RequestParam("session_id") String sessionId) {
+    public ResponseEntity success(@RequestParam("sessionId") String sessionId,
+                                  @RequestParam("bookingId") Long bookingId) {
         try {
             Session session = Session.retrieve(sessionId);
             String paymentStatus = session.getPaymentStatus();
 
             if (Objects.equals(paymentStatus, "paid")) {
-                //TODO: activate booking
-                return ResponseEntity.ok("Payment successful");
+                updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Paid);
+                return ResponseEntity.accepted().build();
             } else {
-                //TODO: cancel booking
+                updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Canceled);
                 return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
@@ -41,10 +45,9 @@ public class PaymentsController {
     }
 
     @GetMapping("/cancel")
-    public ResponseEntity cancel() {
-        //TODO: cancel booking
-
-        return ResponseEntity.ok("Payment cancelled");
+    public ResponseEntity cancel(@RequestParam("bookingId") Long bookingId) {
+        updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Canceled);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/pay")
@@ -53,7 +56,7 @@ public class PaymentsController {
 
         String paymentDescription = String.format("Booking - (%s) -> (%s)", booking.getStartCity().getName(), booking.getEndCity().getName());
         try {
-            String url = this.createPaymentSessionUseCase.createPaymentSession(paymentDescription, booking.getTotalPrice());
+            String url = this.createPaymentSessionUseCase.createPaymentSession(paymentDescription, booking);
 
             return ResponseEntity.ok(url);
         } catch (Exception e) {

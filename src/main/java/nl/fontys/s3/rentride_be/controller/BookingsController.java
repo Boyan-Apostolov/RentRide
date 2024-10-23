@@ -4,11 +4,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.booking.CreateBookingUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingCosts;
+import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
-import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
-import nl.fontys.s3.rentride_be.domain.car.CreateCarResponse;
+import nl.fontys.s3.rentride_be.domain.booking.UpdateBookingStatusRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookingsController {
     private GetBookingCosts getBookingCostsUseCase;
     private CreateBookingUseCase createBookingUseCase;
+    private UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
     @GetMapping("calculate-cost")
     public GetBookingCostsResponse getBookingCosts(@RequestParam(value = "carId") final long carId,
