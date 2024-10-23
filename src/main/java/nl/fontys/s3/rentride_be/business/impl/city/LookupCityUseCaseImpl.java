@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.InvalidObjectException;
+
 @Service
 @RequiredArgsConstructor
 public class LookupCityUseCaseImpl implements LookupCityUseCase {
@@ -31,7 +33,7 @@ public class LookupCityUseCaseImpl implements LookupCityUseCase {
             GeoapifyResponse geoapifyResponse = response.getBody();
 
             if (geoapifyResponse == null || geoapifyResponse.getResults().isEmpty()) {
-                throw new Exception("Invalid response from api");
+                throw new InvalidObjectException("Invalid response from api");
             }
 
             return geoapifyResponse

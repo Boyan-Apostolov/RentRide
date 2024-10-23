@@ -5,9 +5,7 @@ import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.useCases.user.UpdateUserUseCase;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
-import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 import org.springframework.stereotype.Service;
 

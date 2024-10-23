@@ -37,9 +37,4 @@ class DeleteCityUseCaseImplTest {
 
         verify(this.cityRepository).existsById(1L);
     }
-
-    @Test
-    void deleteCity_shouldThrowErrorIfCityHasCars() {
-        //TODO: Implement
-    }
 }

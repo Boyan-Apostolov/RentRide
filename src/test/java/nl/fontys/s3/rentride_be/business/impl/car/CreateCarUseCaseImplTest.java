@@ -35,43 +35,43 @@ class CreateCarUseCaseImplTest {
     private CreateCarUseCaseImpl createCarUseCase;
 
     @Test
-    public void createCar_withDuplicatedNumber_shouldThrowException() {
+     void createCar_withDuplicatedNumber_shouldThrowException() {
         String duplicatedRegNumber = "BT2142KX";
 
         when(this.carRepository.existsByRegistrationNumber(duplicatedRegNumber))
                 .thenThrow(new AlreadyExistsException("Car"));
 
+        CreateCarRequest createCarRequest = CreateCarRequest.builder()
+                .make("Ford")
+                .model("Fiesta")
+                .registrationNumber(duplicatedRegNumber)
+                .build();
+
         assertThrows(AlreadyExistsException.class, () ->
-                this.createCarUseCase.createCar(
-                        CreateCarRequest.builder()
-                                .make("Ford")
-                                .model("Fiesta")
-                                .registrationNumber(duplicatedRegNumber)
-                                .build()
-                )
+                this.createCarUseCase.createCar(createCarRequest)
         );
 
         verify(this.carRepository).existsByRegistrationNumber(duplicatedRegNumber);
     }
 
     @Test
-    public void createCar_withNonExistingCity_shouldThrowException() {
+     void createCar_withNonExistingCity_shouldThrowException() {
+        CreateCarRequest createCarRequest = CreateCarRequest.builder()
+                .make("Ford")
+                .model("Fiesta")
+                .registrationNumber("BT2142KX")
+                .cityId(1L)
+                .build();
+
         assertThrows(NotFoundException.class, () ->
-                this.createCarUseCase.createCar(
-                        CreateCarRequest.builder()
-                                .make("Ford")
-                                .model("Fiesta")
-                                .registrationNumber("BT2142KX")
-                                .cityId(1L)
-                                .build()
-                )
+                this.createCarUseCase.createCar(createCarRequest)
         );
 
         verify(this.cityRepository).findById(1L);
     }
 
     @Test
-    public void createCar_shouldCorrectlyAddTheCityWithValidRegNumber() {
+     void createCar_shouldCorrectlyAddTheCityWithValidRegNumber() {
         CarEntity carEntity = CarEntity.builder()
                 .make("Ford")
                 .model("Fiesta")

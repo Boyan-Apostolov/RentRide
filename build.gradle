@@ -56,6 +56,7 @@ sonar {
     properties {
         property "sonar.projectKey", "RentRide"
         property "sonar.projectName", "RentRide"
+        property "sonar.token", "sqp_2da0722553ac2ec00ade642033722979598cc0b0"
     }
 }
 

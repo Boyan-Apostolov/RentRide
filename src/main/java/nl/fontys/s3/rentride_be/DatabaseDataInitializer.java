@@ -9,8 +9,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -25,7 +23,6 @@ public class DatabaseDataInitializer {
     public void initializeDatabase() {
         populateCities();
         populateCarFeatures();
-        //populateCars();
         populateUsers();
     }
 
@@ -60,49 +57,11 @@ public class DatabaseDataInitializer {
 
     private void populateCities(){
         if(this.cityRepository.count() == 0){
-            this.cityRepository.save(CityEntity.builder().name("Eindhoven").lat(51.4231).lon(5.4623).depoAdress("Some street 1").build());
-            this.cityRepository.save(CityEntity.builder().name("Amsterdam").lat(52.3676).lon(4.9041).depoAdress("Some street 1").build());
-            this.cityRepository.save(CityEntity.builder().name("Breda").lat(51.5719).lon(4.7683).depoAdress("Some street 1").build());
-            this.cityRepository.save(CityEntity.builder().name("Utrecht").lat(52.0907).lon(5.1214).depoAdress("Some street 1").build());
-        }
-    }
-
-    private void populateCars(){
-        if(this.carRepository.count() == 0){
-            this.carRepository.save(
-                    CarEntity.builder()
-                            .make("Ford")
-                            .model("Fiesta")
-                            .registrationNumber("BT2142KX")
-                            .fuelConsumption(6.1)
-                            .city(this.cityRepository.findById(1L).get())
-                            .features(List.of(
-                                    this.carFeatureRepository.findById(1L).get(),
-                                    this.carFeatureRepository.findById(2L).get(),
-                                    this.carFeatureRepository.findById(3L).get(),
-                                    this.carFeatureRepository.findById(5L).get()
-                            ))
-                            .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
-                            .build()
-            );
-
-            this.carRepository.save(
-                    CarEntity.builder()
-                            .make("Ford")
-                            .model("Fiesta 2")
-                            .registrationNumber("nederland")
-                            .fuelConsumption(9.1)
-                            .city(this.cityRepository.findById(2L).get())
-                                    .features(List.of(
-                                            this.carFeatureRepository.findById(1L).get(),
-                                            this.carFeatureRepository.findById(2L).get(),
-                                            this.carFeatureRepository.findById(4L).get(),
-                                            this.carFeatureRepository.findById(5L).get()
-                                    ))
-                            .photosBase64(List.of("https://i.ibb.co/fXZvs3p/3592-BEF4-7226-4-B22-ACBE-FE58-D182-A90-D-1-105-c.jpg"))
-                            .build()
-
-            );
+            String street = "Some street";
+            this.cityRepository.save(CityEntity.builder().name("Eindhoven").lat(51.4231).lon(5.4623).depoAdress(street).build());
+            this.cityRepository.save(CityEntity.builder().name("Amsterdam").lat(52.3676).lon(4.9041).depoAdress(street).build());
+            this.cityRepository.save(CityEntity.builder().name("Breda").lat(51.5719).lon(4.7683).depoAdress(street).build());
+            this.cityRepository.save(CityEntity.builder().name("Utrecht").lat(52.0907).lon(5.1214).depoAdress(street).build());
         }
     }
 

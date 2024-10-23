@@ -2,7 +2,6 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 
 import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
 import nl.fontys.s3.rentride_be.domain.car.Car;
-import nl.fontys.s3.rentride_be.domain.car.CarFeature;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
 
 public final class CarConverter {

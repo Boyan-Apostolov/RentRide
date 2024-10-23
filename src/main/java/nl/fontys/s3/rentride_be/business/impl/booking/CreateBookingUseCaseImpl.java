@@ -6,17 +6,12 @@ import nl.fontys.s3.rentride_be.business.useCases.booking.CreateBookingUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
-import nl.fontys.s3.rentride_be.domain.car.CreateCarRequest;
-import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
