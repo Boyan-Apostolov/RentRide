@@ -1,6 +1,8 @@
 package nl.fontys.s3.rentride_be;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
@@ -9,6 +11,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -18,12 +22,33 @@ public class DatabaseDataInitializer {
     private UserRepository userRepository;
     private BookingRepository bookingRepository;
     private CarFeatureRepository carFeatureRepository;
+    private UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initializeDatabase() {
         populateCities();
         populateCarFeatures();
         populateUsers();
+
+        tryFixMissedBookings();
+    }
+
+    private void tryFixMissedBookings(){
+        LocalDateTime now = LocalDateTime.now();
+
+        // Find paid bookings with passed start time that should be ACTIVE
+        List<BookingEntity> paidBookings = bookingRepository.findPaidBookingsWithPassedStartTime(now);
+        for (BookingEntity booking : paidBookings) {
+            updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Active);
+            System.out.println("Paid booking activated: Booking ID " + booking.getId());
+        }
+
+        // Find missed bookings (bookings that should be marked as FINISHED)
+        List<BookingEntity> missedBookings = bookingRepository.findMissedBookings(now);
+        for (BookingEntity booking : missedBookings) {
+            updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Finished);
+            System.out.println("Missed booking fixed: Booking ID " + booking.getId());
+        }
     }
 
     private void populateCarFeatures() {
