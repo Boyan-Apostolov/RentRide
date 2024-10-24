@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.controller;
 import com.stripe.model.checkout.Session;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingByIdUseCase;
+import nl.fontys.s3.rentride_be.business.useCases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
@@ -21,9 +22,11 @@ import java.util.Objects;
 @AllArgsConstructor
 public class PaymentsController {
 
-   private CreatePaymentSessionUseCase createPaymentSessionUseCase;
-   private GetBookingByIdUseCase getBookingByIdUseCase;
-   private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+    private CreatePaymentSessionUseCase createPaymentSessionUseCase;
+    private GetBookingByIdUseCase getBookingByIdUseCase;
+    private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+
+    private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
 
     @GetMapping("/success")
     public ResponseEntity success(@RequestParam("sessionId") String sessionId,
@@ -31,9 +34,14 @@ public class PaymentsController {
         try {
             Session session = Session.retrieve(sessionId);
             String paymentStatus = session.getPaymentStatus();
+            Booking booking = getBookingByIdUseCase.getBookingById(bookingId);
+
 
             if (Objects.equals(paymentStatus, "paid")) {
                 updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Paid);
+
+                scheduleBookingJobsUseCase.scheduleStartAndEndJobs(booking.getId(), booking.getStartDateTime(), booking.getEndDateTime());
+
                 return ResponseEntity.accepted().build();
             } else {
                 updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Canceled);

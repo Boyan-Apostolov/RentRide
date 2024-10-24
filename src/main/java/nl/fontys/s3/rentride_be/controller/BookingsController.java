@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class BookingsController {
     private GetBookingCosts getBookingCostsUseCase;
     private CreateBookingUseCase createBookingUseCase;
-    private UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
     @GetMapping("calculate-cost")
     public GetBookingCostsResponse getBookingCosts(@RequestParam(value = "carId") final long carId,
