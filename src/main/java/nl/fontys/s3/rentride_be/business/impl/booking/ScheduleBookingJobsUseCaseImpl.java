@@ -5,18 +5,19 @@ import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
 import nl.fontys.s3.rentride_be.business.useCases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.quartz.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.InvalidObjectException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 @Service
 @AllArgsConstructor
 public class ScheduleBookingJobsUseCaseImpl implements ScheduleBookingJobsUseCase {
     private Scheduler scheduler;
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleBookingJobsUseCaseImpl.class);
 
     public void scheduleBookingStatusJob(Long bookingId, Date triggerTime, BookingStatus status) {
         try {
@@ -33,7 +34,7 @@ public class ScheduleBookingJobsUseCaseImpl implements ScheduleBookingJobsUseCas
 
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            System.out.println("Error scheduling job: " + e.getMessage());
+            logger.error("Error scheduling job: {}", e.getMessage());
         }
     }
 

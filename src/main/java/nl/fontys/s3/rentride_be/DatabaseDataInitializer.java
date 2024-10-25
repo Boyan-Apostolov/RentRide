@@ -2,10 +2,11 @@ package nl.fontys.s3.rentride_be;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
-import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,8 @@ public class DatabaseDataInitializer {
     private BookingRepository bookingRepository;
     private CarFeatureRepository carFeatureRepository;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void initializeDatabase() {
@@ -40,14 +43,14 @@ public class DatabaseDataInitializer {
         List<BookingEntity> paidBookings = bookingRepository.findPaidBookingsWithPassedStartTime(now);
         for (BookingEntity booking : paidBookings) {
             updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Active);
-            System.out.println("Paid booking activated: Booking ID " + booking.getId());
+            logger.info("Paid booking activated: Booking ID {}", booking.getId());
         }
 
         // Find missed bookings (bookings that should be marked as FINISHED)
         List<BookingEntity> missedBookings = bookingRepository.findMissedBookings(now);
         for (BookingEntity booking : missedBookings) {
             updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Finished);
-            System.out.println("Missed booking fixed: Booking ID " + booking.getId());
+            logger.info("Missed booking fixed: Booking ID {}", booking.getId());
         }
     }
 

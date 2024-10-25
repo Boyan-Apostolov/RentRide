@@ -11,6 +11,8 @@ import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
 import org.apache.commons.lang3.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
     private BookingRepository bookingRepository;
     private GetBookingsForCarUseCase getBookingsForCarUseCase;
     private MoveCarUseCase moveCarUseCase;
+
+    private static final Logger logger = LoggerFactory.getLogger(UpdateBookingStatusUseCaseImpl.class);
+
 
     @Override
     public void updateBookingStatus(Long bookingId, BookingStatus newStatus) {
@@ -39,7 +44,7 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
                 || (newStatus == BookingStatus.Active && bookingEntity.getStatus() == BookingStatus.Paid)
                 || (newStatus == BookingStatus.Finished && bookingEntity.getStatus() == BookingStatus.Active)) {
 
-            System.out.printf("UpdateStatus->For car id: %s, Status: %s%n",
+            logger.info("Update Status->For car id: {}, Status: {}",
                     bookingEntity.getCar().getId(),
                     newStatus.name());
 
@@ -62,7 +67,7 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
         CarEntity car = bookingEntity.getCar();
 
         if(!car.getCity().getId().equals(bookingEntity.getStartCity().getId())){
-            System.out.printf("Booking started with missing car->Moving car id: %s, To City Id: %s",
+            logger.info("Booking started with missing car -> Moving car id: {}, To City Id: {}",
                     bookingEntity.getCar().getId(),
                     bookingEntity.getStartCity().getId());
 
@@ -82,7 +87,7 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
                 .findFirst();
 
         if(!car.getCity().getId().equals(bookingEntity.getStartCity().getId()) && possibleBooking.isPresent()){
-            System.out.printf("Booking finished->Moving car id: %s, To City Id: %s",
+            logger.info("Booking finished->Moving car id: {}, To City Id: {}",
                     bookingEntity.getCar().getId(),
                     possibleBooking.get().getStartCity().getId());
 

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.useCases.city.LookupCityUseCase;
 import nl.fontys.s3.rentride_be.domain.city.GeoapifyResponse;
 import nl.fontys.s3.rentride_be.domain.city.GeoapifyResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.io.InvalidObjectException;
 @Service
 @RequiredArgsConstructor
 public class LookupCityUseCaseImpl implements LookupCityUseCase {
+    private static final Logger logger = LoggerFactory.getLogger(LookupCityUseCaseImpl.class);
+
     @Value("${API_KEY_GEOAPIFY}")
     private String geoapifyApiKey;
 
@@ -40,7 +44,7 @@ public class LookupCityUseCaseImpl implements LookupCityUseCase {
                     .getResults()
                     .get(0);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }
 
