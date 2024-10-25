@@ -5,13 +5,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder

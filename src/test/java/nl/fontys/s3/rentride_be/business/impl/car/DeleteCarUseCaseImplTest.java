@@ -1,7 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.car;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

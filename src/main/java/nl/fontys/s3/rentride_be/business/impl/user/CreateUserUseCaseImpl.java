@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
-import nl.fontys.s3.rentride_be.business.useCases.user.CreateUserUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.user.CreateUserUseCase;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserRequest;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserResponse;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;

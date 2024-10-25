@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.car.UpdateCarUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.car.UpdateCarUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.domain.car.UpdateCarRequest;
 import nl.fontys.s3.rentride_be.persistance.CarFeatureRepository;

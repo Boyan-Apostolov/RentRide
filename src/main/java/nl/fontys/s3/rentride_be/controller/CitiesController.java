@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.city.*;
+import nl.fontys.s3.rentride_be.business.use_cases.city.*;
 import nl.fontys.s3.rentride_be.domain.city.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

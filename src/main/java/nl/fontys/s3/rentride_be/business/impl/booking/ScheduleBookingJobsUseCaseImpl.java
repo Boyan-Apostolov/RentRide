@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
-import nl.fontys.s3.rentride_be.business.useCases.booking.ScheduleBookingJobsUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.quartz.*;
 import org.slf4j.Logger;

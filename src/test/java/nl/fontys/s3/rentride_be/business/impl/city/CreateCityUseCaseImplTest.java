@@ -26,7 +26,7 @@ class CreateCityUseCaseImplTest {
     private CreateCityUseCaseImpl createCityUseCase;
 
     @Test
-    public void createCity_withDuplicatedName_shouldThrowException() {
+    void createCity_withDuplicatedName_shouldThrowException() {
         when(this.cityRepository.existsByName("Eindhoven"))
                 .thenThrow(new AlreadyExistsException("City"));
 
@@ -44,7 +44,7 @@ class CreateCityUseCaseImplTest {
     }
 
     @Test
-    public void createCity_shouldCorrectlyAddTheCityWithValidName() {
+    void createCity_shouldCorrectlyAddTheCityWithValidName() {
         CityEntity cityEntity = CityEntity.builder()
                 .id(1L)
                 .name("Eindhoven")
@@ -65,6 +65,5 @@ class CreateCityUseCaseImplTest {
         assertEquals(cityEntity.getId(), createdCity.getCityId());
 
        verify(this.cityRepository).save(any(CityEntity.class));
-
     }
 }

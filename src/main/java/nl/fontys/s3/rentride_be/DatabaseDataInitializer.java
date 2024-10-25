@@ -1,7 +1,7 @@
 package nl.fontys.s3.rentride_be;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;

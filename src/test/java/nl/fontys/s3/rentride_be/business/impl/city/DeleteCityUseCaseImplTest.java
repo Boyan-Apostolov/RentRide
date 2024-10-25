@@ -2,7 +2,6 @@ package nl.fontys.s3.rentride_be.business.impl.city;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

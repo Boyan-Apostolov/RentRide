@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,15 +29,14 @@ class UpdateCityUseCaseImplTest {
         when(this.cityRepository.findById(1L))
                 .thenThrow(new NotFoundException("CITY_NOT_FOUND"));
 
-        assertThrows(NotFoundException.class,
-                () -> this.updateCityUseCase.updateCity(
-                UpdateCityRequest.builder()
-                        .id(1L)
-                        .name("test")
-                        .lat(12.12)
-                        .lon(12.12)
-                        .build()
-        ));
+        UpdateCityRequest request = UpdateCityRequest.builder()
+                .id(1L)
+                .name("test")
+                .lat(12.12)
+                .lon(12.12)
+                .build();
+
+        assertThrows(NotFoundException.class, () -> this.updateCityUseCase.updateCity(request));
 
         verify(this.cityRepository).findById(1L);
     }

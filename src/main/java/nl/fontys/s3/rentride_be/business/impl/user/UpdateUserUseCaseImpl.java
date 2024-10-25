@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.user.UpdateUserUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.user.UpdateUserUseCase;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;

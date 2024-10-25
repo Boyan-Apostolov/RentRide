@@ -2,12 +2,11 @@ package nl.fontys.s3.rentride_be.controller;
 
 import com.stripe.model.checkout.Session;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingByIdUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.booking.ScheduleBookingJobsUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.payment.CreatePaymentSessionUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
-import nl.fontys.s3.rentride_be.domain.booking.UpdateBookingStatusRequest;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,7 @@ public class PaymentsController {
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
 
     @GetMapping("/success")
-    public ResponseEntity success(@RequestParam("sessionId") String sessionId,
+    public ResponseEntity<String> success(@RequestParam("sessionId") String sessionId,
                                   @RequestParam("bookingId") Long bookingId) {
         try {
             Session session = Session.retrieve(sessionId);
@@ -53,7 +52,7 @@ public class PaymentsController {
     }
 
     @GetMapping("/cancel")
-    public ResponseEntity cancel(@RequestParam("bookingId") Long bookingId) {
+    public ResponseEntity<Void> cancel(@RequestParam("bookingId") Long bookingId) {
         updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Canceled);
         return ResponseEntity.ok().build();
     }

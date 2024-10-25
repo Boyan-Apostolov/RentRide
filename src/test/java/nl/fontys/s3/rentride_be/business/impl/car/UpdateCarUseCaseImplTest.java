@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,17 +34,16 @@ class UpdateCarUseCaseImplTest {
         when(this.carRepository.findById(1L))
                 .thenThrow(new NotFoundException("Car"));
 
-        assertThrows(NotFoundException.class,
-                () -> this.updateCarUseCase.updateCar(
-                        UpdateCarRequest.builder()
-                                .id(1L)
-                                .make("Ford")
-                                .model("Fiesta")
-                                .registrationNumber("BT2142KX")
-                                .fuelConsumption(5.5)
-                                .foundFeatures(List.of())
-                                .build()
-                ));
+        UpdateCarRequest request = UpdateCarRequest.builder()
+                .id(1L)
+                .make("Ford")
+                .model("Fiesta")
+                .registrationNumber("BT2142KX")
+                .fuelConsumption(5.5)
+                .foundFeatures(List.of())
+                .build();
+
+        assertThrows(NotFoundException.class, () -> this.updateCarUseCase.updateCar(request));
 
         verify(this.carRepository).findById(1L);
     }

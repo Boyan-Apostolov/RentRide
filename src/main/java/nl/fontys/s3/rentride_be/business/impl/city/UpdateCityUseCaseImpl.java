@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.city;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.city.UpdateCityUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.city.UpdateCityUseCase;
 import nl.fontys.s3.rentride_be.domain.city.UpdateCityRequest;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;

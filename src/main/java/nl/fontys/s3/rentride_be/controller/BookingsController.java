@@ -2,13 +2,11 @@ package nl.fontys.s3.rentride_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.booking.CreateBookingUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingCosts;
-import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.CreateBookingUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingCosts;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
-import nl.fontys.s3.rentride_be.domain.booking.UpdateBookingStatusRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.impl.car.CarFeatureConverter;
-import nl.fontys.s3.rentride_be.business.useCases.car.GetAllCarFeatures;
+import nl.fontys.s3.rentride_be.business.use_cases.car.GetAllCarFeatures;
 import nl.fontys.s3.rentride_be.domain.car.CarFeature;
 import nl.fontys.s3.rentride_be.persistance.CarFeatureRepository;
 import org.springframework.stereotype.Service;

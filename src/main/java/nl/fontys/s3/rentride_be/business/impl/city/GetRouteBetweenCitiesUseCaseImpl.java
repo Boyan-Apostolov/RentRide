@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;

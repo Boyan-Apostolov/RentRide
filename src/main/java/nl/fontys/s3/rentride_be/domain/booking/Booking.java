@@ -7,9 +7,6 @@ import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.domain.user.User;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
-import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
 
 import java.time.LocalDateTime;
 

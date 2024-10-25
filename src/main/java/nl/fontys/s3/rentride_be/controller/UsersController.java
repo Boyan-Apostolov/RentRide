@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.user.*;
+import nl.fontys.s3.rentride_be.business.use_cases.user.*;
 import nl.fontys.s3.rentride_be.domain.user.User;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserRequest;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserResponse;

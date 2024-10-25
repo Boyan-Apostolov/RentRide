@@ -7,14 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder

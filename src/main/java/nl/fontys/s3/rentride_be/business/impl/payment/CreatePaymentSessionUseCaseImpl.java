@@ -6,7 +6,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.payment.CreatePaymentSessionUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.payment.CreatePaymentSessionUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

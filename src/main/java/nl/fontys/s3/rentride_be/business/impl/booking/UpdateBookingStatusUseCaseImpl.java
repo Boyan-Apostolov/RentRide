@@ -2,9 +2,9 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingsForCarUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.booking.UpdateBookingStatusUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.car.MoveCarUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingsForCarUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.car.MoveCarUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;

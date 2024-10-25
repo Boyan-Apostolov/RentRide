@@ -2,10 +2,8 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
-import nl.fontys.s3.rentride_be.business.useCases.booking.CreateBookingUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.booking.ScheduleBookingJobsUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.CreateBookingUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
@@ -13,11 +11,7 @@ import nl.fontys.s3.rentride_be.persistance.CarRepository;
 import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
-import org.quartz.*;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 @AllArgsConstructor

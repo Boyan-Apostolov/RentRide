@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.domain.city;
 
-import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

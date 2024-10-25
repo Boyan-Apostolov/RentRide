@@ -23,7 +23,7 @@ class GetCarUseCaseImplTest {
     private CarRepository carRepository;
 
     @InjectMocks
-    private GetCarUseCaseImpl getCarUseCase;;
+    private GetCarUseCaseImpl getCarUseCase;
 
     @Test
     void getCar_ShouldReturnNullWhenCityDoesNotExist() {

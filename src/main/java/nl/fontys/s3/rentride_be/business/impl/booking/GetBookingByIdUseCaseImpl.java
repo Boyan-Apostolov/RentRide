@@ -1,7 +1,7 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.booking.GetBookingByIdUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;

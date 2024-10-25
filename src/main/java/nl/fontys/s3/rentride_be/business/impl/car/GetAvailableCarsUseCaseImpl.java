@@ -2,8 +2,8 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.useCases.car.GetAvailableCarsUseCase;
-import nl.fontys.s3.rentride_be.business.useCases.city.GetRouteBetweenCitiesUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.car.GetAvailableCarsUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.car.GetAvailableCarsRequest;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
