@@ -30,13 +30,15 @@ class CreateCityUseCaseImplTest {
         when(this.cityRepository.existsByName("Eindhoven"))
                 .thenThrow(new AlreadyExistsException("City"));
 
+        CreateCityRequest request = CreateCityRequest.builder()
+                .name("Eindhoven")
+                .lon(53.3)
+                .lat(55.9)
+                .build();
+        
         assertThrows(AlreadyExistsException.class, () ->
                 this.createCityUseCase.createCity(
-                        CreateCityRequest.builder()
-                                .name("Eindhoven")
-                                .lon(53.3)
-                                .lat(55.9)
-                                .build()
+                        request
                 )
         );
 
@@ -54,16 +56,18 @@ class CreateCityUseCaseImplTest {
 
         when(this.cityRepository.save(any(CityEntity.class))).thenReturn(cityEntity);
 
+        CreateCityRequest request = CreateCityRequest.builder()
+                .name("Eindhoven")
+                .lon(53.3)
+                .lat(55.9)
+                .build();
+
         CreateCityResponse createdCity = this.createCityUseCase.createCity(
-                CreateCityRequest.builder()
-                        .name("Eindhoven")
-                        .lon(53.3)
-                        .lat(55.9)
-                        .build()
+                request
         );
 
         assertEquals(cityEntity.getId(), createdCity.getCityId());
 
-       verify(this.cityRepository).save(any(CityEntity.class));
+        verify(this.cityRepository).save(any(CityEntity.class));
     }
 }
