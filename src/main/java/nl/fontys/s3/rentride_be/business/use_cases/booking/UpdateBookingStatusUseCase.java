@@ -4,4 +4,5 @@ import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 
 public interface UpdateBookingStatusUseCase {
     void updateBookingStatus(Long bookingId, BookingStatus newStatus);
+    void setBookingPaymentId(Long bookingId, String paymentId);
 }

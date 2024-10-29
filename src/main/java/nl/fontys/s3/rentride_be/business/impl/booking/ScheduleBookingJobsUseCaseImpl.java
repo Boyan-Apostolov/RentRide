@@ -5,6 +5,7 @@ import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -44,5 +46,20 @@ public class ScheduleBookingJobsUseCaseImpl implements ScheduleBookingJobsUseCas
 
         Date endDateParsed = Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant());
         scheduleBookingStatusJob(bookingId, endDateParsed, BookingStatus.Finished);
+    }
+
+    public void cancelJobsByBookingId(Long bookingId) {
+        try {
+            Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(Scheduler.DEFAULT_GROUP));
+
+            for (JobKey jobKey : jobKeys) {
+                if (jobKey.getName().startsWith("bookingStatusJob_" + bookingId)) {
+                    scheduler.deleteJob(jobKey);
+                    logger.info("Cancelled job with key: {}", jobKey);
+                }
+            }
+        } catch (SchedulerException e) {
+            logger.error("Error cancelling jobs for bookingId {}: {}", bookingId, e.getMessage());
+        }
     }
 }

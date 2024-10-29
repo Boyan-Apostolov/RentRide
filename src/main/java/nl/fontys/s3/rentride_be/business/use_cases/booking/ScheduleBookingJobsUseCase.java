@@ -4,4 +4,5 @@ import java.time.LocalDateTime;
 
 public interface ScheduleBookingJobsUseCase {
     void scheduleStartAndEndJobs(Long bookingId, LocalDateTime startDate, LocalDateTime endDate);
+    void cancelJobsByBookingId(Long bookingId);
 }

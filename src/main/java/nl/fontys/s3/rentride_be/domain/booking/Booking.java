@@ -1,5 +1,7 @@
 package nl.fontys.s3.rentride_be.domain.booking;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +26,5 @@ public class Booking {
     private User user;
     private double distance;
     private double totalPrice;
+    private String paymentId;
 }

@@ -69,6 +69,7 @@ public class CreateBookingUseCaseImpl implements CreateBookingUseCase {
                 .user(user)
                 .distance(distance)
                 .totalPrice(request.getTotalPrice())
+                .paymentId("")
                 .build();
 
 

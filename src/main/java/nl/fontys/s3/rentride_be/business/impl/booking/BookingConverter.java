@@ -23,6 +23,7 @@ public final class BookingConverter {
                 .car(CarConverter.convert(booking.getCar()))
                 .distance(booking.getDistance())
                 .totalPrice(booking.getTotalPrice())
+                .paymentId(booking.getPaymentId())
                 .build();
     }
 }

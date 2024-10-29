@@ -3,8 +3,10 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingsForCarUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.car.MoveCarUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.payment.RefundPaymentUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
@@ -24,6 +26,8 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
     private BookingRepository bookingRepository;
     private GetBookingsForCarUseCase getBookingsForCarUseCase;
     private MoveCarUseCase moveCarUseCase;
+    private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
+    private RefundPaymentUseCase refundPaymentUseCase;
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateBookingStatusUseCaseImpl.class);
 
@@ -37,9 +41,10 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
 
         BookingEntity bookingEntity = bookingEntityOptional.get();
 
-        //Allowed status changes : Unpaid -> Paid/ Unpaid -> Canceled/ Paid -> Active/  Active -> Finished
+        //Allowed status changes : Unpaid -> Paid/ Unpaid -> Canceled/ Paid -> Canceled/ Paid -> Active/  Active -> Finished
         if ((newStatus == BookingStatus.Paid && bookingEntity.getStatus() == BookingStatus.Unpaid)
                 || (newStatus == BookingStatus.Canceled && bookingEntity.getStatus() == BookingStatus.Unpaid)
+                || (newStatus == BookingStatus.Canceled && bookingEntity.getStatus() == BookingStatus.Paid)
                 || (newStatus == BookingStatus.Active && bookingEntity.getStatus() == BookingStatus.Paid)
                 || (newStatus == BookingStatus.Finished && bookingEntity.getStatus() == BookingStatus.Active)) {
 
@@ -54,7 +59,6 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
                 refundAndStopSchedule(bookingEntity);
             }
 
-
             if (bookingEntity.getStatus() == BookingStatus.Active) {
                 tryMoveCarAtStart(bookingEntity);
             }
@@ -62,17 +66,29 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
             if (bookingEntity.getStatus() == BookingStatus.Finished) {
                 tryMoveCarAtEnd(bookingEntity);
             }
-        } else {
-            throw new NotImplementedException("Invalid new status for Booking " + bookingEntity.getStatus() + "> " + newStatus);
         }
+    }
+
+    @Override
+    public void setBookingPaymentId(Long bookingId, String paymentId) {
+        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(bookingId);
+
+        if (bookingEntityOptional.isEmpty()) {
+            throw new NotFoundException("UpdateStatus->Booking");
+        }
+
+        BookingEntity bookingEntity = bookingEntityOptional.get();
+        bookingEntity.setPaymentId(paymentId);
+        bookingRepository.save(bookingEntity);
     }
 
     private void refundAndStopSchedule(BookingEntity bookingEntity){
         if(!bookingEntity.getPaymentId().isEmpty()){
-            //TODO: Refund stripe payment
+            refundPaymentUseCase.refundPayment(bookingEntity.getPaymentId());
         }
 
-        //TODO: Cancel scheduled jobs
+        logger.info("Canceling schedules for booking with id: {}", bookingEntity.getId());
+        scheduleBookingJobsUseCase.cancelJobsByBookingId(bookingEntity.getId());
     }
 
     private void tryMoveCarAtStart(BookingEntity bookingEntity) {
