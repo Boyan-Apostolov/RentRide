@@ -27,7 +27,6 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateBookingStatusUseCaseImpl.class);
 
-
     @Override
     public void updateBookingStatus(Long bookingId, BookingStatus newStatus) {
         Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(bookingId);
@@ -51,6 +50,11 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
             bookingEntity.setStatus(newStatus);
             bookingRepository.save(bookingEntity);
 
+            if (bookingEntity.getStatus() == BookingStatus.Canceled) {
+                refundAndStopSchedule(bookingEntity);
+            }
+
+
             if (bookingEntity.getStatus() == BookingStatus.Active) {
                 tryMoveCarAtStart(bookingEntity);
             }
@@ -61,6 +65,14 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
         } else {
             throw new NotImplementedException("Invalid new status for Booking " + bookingEntity.getStatus() + "> " + newStatus);
         }
+    }
+
+    private void refundAndStopSchedule(BookingEntity bookingEntity){
+        if(!bookingEntity.getPaymentId().isEmpty()){
+            //TODO: Refund stripe payment
+        }
+
+        //TODO: Cancel scheduled jobs
     }
 
     private void tryMoveCarAtStart(BookingEntity bookingEntity) {
