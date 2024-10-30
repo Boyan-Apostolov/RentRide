@@ -24,4 +24,5 @@ public class Booking {
     private User user;
     private double distance;
     private double totalPrice;
+    private String paymentId;
 }

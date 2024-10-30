@@ -2,6 +2,7 @@ package nl.fontys.s3.rentride_be.controller;
 
 import com.stripe.model.checkout.Session;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.impl.booking.UpdateBookingUseCaseImpl;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
@@ -33,10 +34,12 @@ public class PaymentsController {
         try {
             Session session = Session.retrieve(sessionId);
             String paymentStatus = session.getPaymentStatus();
+            String paymentId = session.getPaymentIntent();
+
             Booking booking = getBookingByIdUseCase.getBookingById(bookingId);
 
-
             if (Objects.equals(paymentStatus, "paid")) {
+                updateBookingStatusUseCase.setBookingPaymentId(bookingId, paymentId);
                 updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Paid);
 
                 scheduleBookingJobsUseCase.scheduleStartAndEndJobs(booking.getId(), booking.getStartDateTime(), booking.getEndDateTime());

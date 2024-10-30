@@ -19,6 +19,7 @@ CREATE TABLE booking (
                          user_id BIGINT NOT NULL,
                          distance BIGINT NOT NULL,
                          total_price DECIMAL(18,2) NOT NULL,
+                         payment_id nvarchar(50) not null,
 
                          CONSTRAINT fk_booking_start_city FOREIGN KEY (start_city_id) REFERENCES city(id),
                          CONSTRAINT fk_booking_end_city FOREIGN KEY (end_city_id) REFERENCES city(id),

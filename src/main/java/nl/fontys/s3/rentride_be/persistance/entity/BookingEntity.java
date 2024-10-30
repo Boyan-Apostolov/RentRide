@@ -68,4 +68,8 @@ public class BookingEntity {
     @NotNull
     @Column(name = "total_price")
     private double totalPrice;
+
+    @NotNull
+    @Column(name = "payment_id")
+    private String paymentId;
 }
