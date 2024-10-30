@@ -24,6 +24,7 @@ public class DatabaseDataInitializer {
     private UserRepository userRepository;
     private BookingRepository bookingRepository;
     private CarFeatureRepository carFeatureRepository;
+    private DamageRepository damageRepository;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
@@ -35,8 +36,50 @@ public class DatabaseDataInitializer {
         populateCarFeatures();
         populateUsers();
         populateCars();
+        populateDamages();
 
         tryFixMissedBookings();
+    }
+
+    private void populateDamages(){
+        if(this.damageRepository.count() == 0){
+            this.damageRepository.save(DamageEntity.builder()
+                            .name("Keys")
+                            .cost(10)
+                            .iconUrl("https://img.freepik.com/premium-vector/vector-design-lost-key-icon-style_1134108-11142.jpg")
+                    .build());
+
+            this.damageRepository.save(DamageEntity.builder()
+                    .name("Lights")
+                    .cost(10)
+                    .iconUrl("https://img.freepik.com/premium-vector/cracked-bulb-icon-outline-cracked-bulb-vector-icon-color-flat-isolated_96318-116440.jpg")
+                    .build());
+
+            this.damageRepository.save(DamageEntity.builder()
+                    .name("Cleanliness")
+                    .cost(10)
+                    .iconUrl("https://img.freepik.com/premium-vector/cleaning-icon_1301102-3298.jpg")
+                    .build());
+
+            this.damageRepository.save(DamageEntity.builder()
+                    .name("Windows")
+                    .cost(20)
+                    .iconUrl("https://img.freepik.com/free-vector/round-window-with-broken-glass_1308-73918.jpg?t=st=1730275178~exp=1730278778~hmac=8d6b5209cebad6f959c982a91d9723111a5ae2be1a97fe4bec50e5da07b70511")
+                    .build());
+
+            this.damageRepository.save(DamageEntity.builder()
+                    .name("Tires")
+                    .cost(30)
+                    .iconUrl("https://img.freepik.com/free-vector/tire-stack-cartoon-vector-icon-illustration-transportation-object-icon-isolated-flat-vector_138676-11542.jpg?t=st=1730275150~exp=1730278750~hmac=cf409131d28f37c7d4a3240f285d5b00894a852997ed3b91f22f8b6a8638a9c3")
+                    .build());
+
+
+            this.damageRepository.save(DamageEntity.builder()
+                    .name("Dents")
+                    .cost(50)
+                    .iconUrl("https://img.freepik.com/premium-vector/body-repair-color-icon_781202-1482.jpg")
+                    .build());
+        }
     }
 
     private void tryFixMissedBookings() {
