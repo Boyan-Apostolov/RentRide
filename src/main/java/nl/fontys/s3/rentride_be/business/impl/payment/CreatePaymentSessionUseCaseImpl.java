@@ -26,13 +26,13 @@ public class CreatePaymentSessionUseCaseImpl implements CreatePaymentSessionUseC
     }
 
     @Override
-    public String createPaymentSession(String description, Booking booking) throws StripeException {
+    public String createPaymentSession(String description, Long price, String paymentType, Long relatedEntityId) throws StripeException {
         SessionCreateParams.LineItem.PriceData.ProductData productData =
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                         .setName(description) // Product name
                         .build();
 
-        Long priceInCents = (long) (booking.getTotalPrice() * 100);
+        Long priceInCents = price * 100;
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
                         .setCurrency("eur")
@@ -50,8 +50,8 @@ public class CreatePaymentSessionUseCaseImpl implements CreatePaymentSessionUseC
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .addLineItem(lineItem)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(frontendUrl + "pay-handle?paymentType=booking&responseType=success&sessionId={CHECKOUT_SESSION_ID}&bookingId=" + booking.getId())
-                .setCancelUrl(frontendUrl + "pay-handle?paymentType=booking&responseType=cancel&bookingId=" + booking.getId())
+                .setSuccessUrl(frontendUrl + "pay-handle?paymentType=" + paymentType + "&responseType=success&sessionId={CHECKOUT_SESSION_ID}&entityId=" + relatedEntityId)
+                .setCancelUrl(frontendUrl + "pay-handle?paymentType=" + paymentType + "&responseType=cancel&entityId=" + relatedEntityId)
                 .build();
 
         Session session = Session.create(params);
