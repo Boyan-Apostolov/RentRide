@@ -26,13 +26,13 @@ public class CreatePaymentSessionUseCaseImpl implements CreatePaymentSessionUseC
     }
 
     @Override
-    public String createPaymentSession(String description, Long price, String paymentType, Long relatedEntityId) throws StripeException {
+    public String createPaymentSession(String description, Double price, String paymentType, Long relatedEntityId) throws StripeException {
         SessionCreateParams.LineItem.PriceData.ProductData productData =
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                         .setName(description) // Product name
                         .build();
 
-        Long priceInCents = price * 100;
+        Long priceInCents = (long)(price * 100);
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
                         .setCurrency("eur")

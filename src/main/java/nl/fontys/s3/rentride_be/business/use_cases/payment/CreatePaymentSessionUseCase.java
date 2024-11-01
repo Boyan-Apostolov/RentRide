@@ -4,5 +4,5 @@ import com.stripe.exception.StripeException;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 
 public interface CreatePaymentSessionUseCase {
-    String createPaymentSession(String description, Long price, String paymentType, Long relatedEntityId) throws StripeException;
+    String createPaymentSession(String description, Double price, String paymentType, Long relatedEntityId) throws StripeException;
 }

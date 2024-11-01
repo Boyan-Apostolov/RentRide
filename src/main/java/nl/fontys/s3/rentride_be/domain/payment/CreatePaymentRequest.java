@@ -13,8 +13,4 @@ public class CreatePaymentRequest {
     private double totalCost;
 
     private Long userId;
-
-    private Long bookingId;
-
-    private String paymentId;
 }
