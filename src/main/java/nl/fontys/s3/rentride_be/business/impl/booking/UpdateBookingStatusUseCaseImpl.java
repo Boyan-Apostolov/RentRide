@@ -12,7 +12,6 @@ import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,38 +32,34 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
 
     @Override
     public void updateBookingStatus(Long bookingId, BookingStatus newStatus) {
-        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(bookingId);
+        BookingEntity bookingEntity = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("UpdateStatus->Booking"));
 
-        if (bookingEntityOptional.isEmpty()) {
-            throw new NotFoundException("UpdateStatus->Booking");
-        }
-
-        BookingEntity bookingEntity = bookingEntityOptional.get();
-
-        //Allowed status changes : Unpaid -> Paid/ Unpaid -> Canceled/ Paid -> Canceled/ Paid -> Active/  Active -> Finished
-        if ((newStatus == BookingStatus.Paid && bookingEntity.getStatus() == BookingStatus.Unpaid)
-                || (newStatus == BookingStatus.Canceled && bookingEntity.getStatus() == BookingStatus.Unpaid)
-                || (newStatus == BookingStatus.Canceled && bookingEntity.getStatus() == BookingStatus.Paid)
-                || (newStatus == BookingStatus.Active && bookingEntity.getStatus() == BookingStatus.Paid)
-                || (newStatus == BookingStatus.Finished && bookingEntity.getStatus() == BookingStatus.Active)) {
-
+        if (isStatusTransitionValid(bookingEntity.getStatus(), newStatus)) {
             logger.info("Update Status->For car id: {}, Status: {}",
-                    bookingEntity.getCar().getId(),
-                    newStatus.name());
+                    bookingEntity.getCar().getId(), newStatus.name());
 
             bookingEntity.setStatus(newStatus);
             bookingRepository.save(bookingEntity);
+            handlePostStatusUpdateActions(bookingEntity);
+        }
+    }
 
-            if (bookingEntity.getStatus() == BookingStatus.Canceled) {
-                refundAndStopSchedule(bookingEntity);
-            }
+    private boolean isStatusTransitionValid(BookingStatus currentStatus, BookingStatus newStatus) {
+        return (newStatus == BookingStatus.Paid && currentStatus == BookingStatus.Unpaid)
+                || (newStatus == BookingStatus.Canceled && currentStatus == BookingStatus.Unpaid)
+                || (newStatus == BookingStatus.Canceled && currentStatus == BookingStatus.Paid)
+                || (newStatus == BookingStatus.Active && currentStatus == BookingStatus.Paid)
+                || (newStatus == BookingStatus.Finished && currentStatus == BookingStatus.Active);
+    }
 
-            if (bookingEntity.getStatus() == BookingStatus.Active) {
-                tryMoveCarAtStart(bookingEntity);
-            }
-
-            if (bookingEntity.getStatus() == BookingStatus.Finished) {
-                tryMoveCarAtEnd(bookingEntity);
+    private void handlePostStatusUpdateActions(BookingEntity bookingEntity) {
+        switch (bookingEntity.getStatus()) {
+            case Canceled -> refundAndStopSchedule(bookingEntity);
+            case Active -> tryMoveCarAtStart(bookingEntity);
+            case Finished -> tryMoveCarAtEnd(bookingEntity);
+            default -> {
+                // No action required for other statuses
             }
         }
     }

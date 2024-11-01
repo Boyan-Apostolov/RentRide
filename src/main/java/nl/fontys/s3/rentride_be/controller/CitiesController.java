@@ -40,8 +40,6 @@ public class CitiesController {
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         deleteCityUseCase.deleteCity(id);
         return ResponseEntity.noContent().build();
-
-        //TODO: Validate if there are cars in the city and move them to a GeneralCity
     }
 
     @PostMapping()

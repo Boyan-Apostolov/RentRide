@@ -6,6 +6,7 @@ import com.stripe.model.Refund;
 import com.stripe.param.RefundCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.RefundPaymentUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,9 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
 
             Refund refund = Refund.create(params);
 
-            return refund.getId(); // Return the refund ID or other relevant info
+            return refund.getId();
         } catch (StripeException e) {
-            throw new RuntimeException("Refund failed for payment ID: " + paymentId, e);
+            throw new NotFoundException("Refund failed for payment ID: " + paymentId);
         }
     }
 }

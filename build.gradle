@@ -45,6 +45,9 @@ dependencies {
     testRuntimeOnly 'com.h2database:h2'
 
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0'
+
 }
 
 tasks.named('test') {

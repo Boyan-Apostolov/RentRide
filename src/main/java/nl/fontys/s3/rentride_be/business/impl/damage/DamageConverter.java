@@ -1,11 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.damage;
 
-import nl.fontys.s3.rentride_be.business.impl.car.CarConverter;
-import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
-import nl.fontys.s3.rentride_be.business.impl.user.UserConverter;
-import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.damage.Damage;
-import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.DamageEntity;
 
 public class DamageConverter {
