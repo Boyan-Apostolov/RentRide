@@ -7,6 +7,7 @@ public final class CarFeatureConverter {
     private CarFeatureConverter() {}
 
     public static CarFeature convert(CarFeatureEntity featureEntity){
+        if(featureEntity == null) return null;
         return CarFeature.builder()
                 .id(featureEntity.getId())
                 .featureType(featureEntity.getFeatureType())

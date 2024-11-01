@@ -82,7 +82,7 @@ public class DatabaseDataInitializer {
         }
     }
 
-    private void tryFixMissedBookings() {
+    public void tryFixMissedBookings() {
         LocalDateTime now = LocalDateTime.now();
 
         // Find paid bookings with passed start time that should be ACTIVE

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class BookingConverterTest {
     @Test
@@ -46,5 +47,10 @@ class BookingConverterTest {
 
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void converterWithNullShouldReturnNull(){
+        assertNull(BookingConverter.convert(null));
     }
 }

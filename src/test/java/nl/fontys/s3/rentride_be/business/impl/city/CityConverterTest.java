@@ -5,6 +5,7 @@ import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CityConverterTest {
 
@@ -32,5 +33,10 @@ class CityConverterTest {
 
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void converterWithNullShouldReturnNull(){
+        assertNull(CityConverter.convert(null));
     }
 }

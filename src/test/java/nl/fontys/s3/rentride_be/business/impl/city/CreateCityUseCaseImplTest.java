@@ -27,19 +27,16 @@ class CreateCityUseCaseImplTest {
 
     @Test
     void createCity_withDuplicatedName_shouldThrowException() {
-        when(this.cityRepository.existsByName("Eindhoven"))
-                .thenThrow(new AlreadyExistsException("City"));
+        when(this.cityRepository.existsByName("Eindhoven")).thenReturn(true);
 
         CreateCityRequest request = CreateCityRequest.builder()
                 .name("Eindhoven")
                 .lon(53.3)
                 .lat(55.9)
                 .build();
-        
+
         assertThrows(AlreadyExistsException.class, () ->
-                this.createCityUseCase.createCity(
-                        request
-                )
+                this.createCityUseCase.createCity(request)
         );
 
         verify(this.cityRepository).existsByName("Eindhoven");

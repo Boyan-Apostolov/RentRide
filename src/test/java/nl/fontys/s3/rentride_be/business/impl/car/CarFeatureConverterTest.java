@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CarFeatureConverterTest {
     @Test
@@ -28,5 +29,10 @@ class CarFeatureConverterTest {
                 .build();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void converterWithNullShouldReturnNull(){
+        assertNull(CarFeatureConverter.convert(null));
     }
 }
