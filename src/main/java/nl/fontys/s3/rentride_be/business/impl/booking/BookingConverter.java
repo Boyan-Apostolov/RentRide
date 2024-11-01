@@ -24,6 +24,7 @@ public final class BookingConverter {
                 .distance(booking.getDistance())
                 .totalPrice(booking.getTotalPrice())
                 .paymentId(booking.getPaymentId())
+                .coverage(booking.getCoverage())
                 .build();
     }
 }

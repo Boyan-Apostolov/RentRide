@@ -6,6 +6,7 @@ import lombok.Data;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.city.City;
 import nl.fontys.s3.rentride_be.domain.user.User;
+import nl.fontys.s3.rentride_be.persistance.entity.BookingCoverage;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 
 import java.time.LocalDateTime;
@@ -25,4 +26,5 @@ public class Booking {
     private double distance;
     private double totalPrice;
     private String paymentId;
+    private BookingCoverage coverage;
 }
