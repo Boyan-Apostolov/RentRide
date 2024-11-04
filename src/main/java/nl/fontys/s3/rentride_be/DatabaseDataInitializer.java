@@ -2,9 +2,6 @@ package nl.fontys.s3.rentride_be;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.impl.car.CarConverter;
-import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
-import nl.fontys.s3.rentride_be.business.impl.user.UserConverter;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
@@ -28,6 +25,7 @@ public class DatabaseDataInitializer {
     private BookingRepository bookingRepository;
     private CarFeatureRepository carFeatureRepository;
     private DamageRepository damageRepository;
+    private ReviewRepository reviewRepository;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
@@ -42,6 +40,7 @@ public class DatabaseDataInitializer {
         populateDamages();
 
         populateBookings();
+        populateReviews();
 
         tryFixMissedBookings();
 
@@ -50,9 +49,70 @@ public class DatabaseDataInitializer {
         // today + 2days - today + 3days -> paid
         //today - 1h - today + 1 day - active
     }
+    private void populateReviews(){
+        if(reviewRepository.count() == 0){
+            reviewRepository.save(ReviewEntity.builder()
+                            .booking(bookingRepository.findById(1L).orElse(null))
+                            .text("I liked the experience")
+                            .carCondition(3)
+                            .carSpeed(5)
+                            .valueForMoney(4)
+                            .createdOn(LocalDateTime.now())
+                            .user(userRepository.findById(1L).orElse(null))
+                    .build());
+
+            reviewRepository.save(ReviewEntity.builder()
+                    .booking(bookingRepository.findById(2L).orElse(null))
+                    .text("Very dramatic")
+                    .carCondition(2)
+                    .carSpeed(3)
+                    .valueForMoney(3)
+                    .createdOn(LocalDateTime.now())
+                    .user(userRepository.findById(1L).orElse(null))
+                    .build());
+
+            reviewRepository.save(ReviewEntity.builder()
+                    .booking(bookingRepository.findById(3L).orElse(null))
+                    .text("Awesome in every way")
+                    .carCondition(5)
+                    .carSpeed(5)
+                    .valueForMoney(5)
+                    .createdOn(LocalDateTime.now())
+                    .user(userRepository.findById(1L).orElse(null))
+                    .build());
+        }
+    }
 
     private void populateBookings(){
         if(bookingRepository.count() == 0) {
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Finished)
+                    .startCity(this.cityRepository.findById(1L).orElse(null))
+                    .endCity(this.cityRepository.findById(2L).orElse(null))
+                    .startDateTime(LocalDateTime.of(2024, 10, 1, 10, 1))
+                    .endDateTime(LocalDateTime.of(2024, 10, 2, 10, 1))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(1L).orElse(null))
+                    .distance(50)
+                    .totalPrice(15)
+                    .paymentId("")
+                    .coverage(BookingCoverage.Premium)
+                    .build());
+
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Finished)
+                    .startCity(this.cityRepository.findById(1L).orElse(null))
+                    .endCity(this.cityRepository.findById(3L).orElse(null))
+                    .startDateTime(LocalDateTime.of(2024, 10, 1, 10, 1))
+                    .endDateTime(LocalDateTime.of(2024, 10, 3, 10, 1))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(3L).orElse(null))
+                    .distance(50)
+                    .totalPrice(25)
+                    .paymentId("")
+                    .coverage(BookingCoverage.No)
+                    .build());
+
             bookingRepository.save(BookingEntity.builder()
                     .status(BookingStatus.Finished)
                     .startCity(this.cityRepository.findById(1L).orElse(null))
