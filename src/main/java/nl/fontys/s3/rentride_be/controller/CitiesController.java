@@ -57,10 +57,10 @@ public class CitiesController {
     }
 
     @GetMapping("/lookupCity")
-    public ResponseEntity<GeoapifyResult> lookupCity(@RequestParam(value = "cityName") final String cityName) {
+    public ResponseEntity<Object> lookupCity(@RequestParam(value = "cityName") final String cityName) {
         GeoapifyResult possibleCity = lookupCityUseCase.lookupCity(cityName);
         if (possibleCity == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("City not found by API");
         }
         return ResponseEntity.ok().body(possibleCity);
     }

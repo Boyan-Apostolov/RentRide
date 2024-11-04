@@ -12,6 +12,7 @@ import nl.fontys.s3.rentride_be.domain.payment.CreatePaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.Payment;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import nl.fontys.s3.rentride_be.persistance.entity.PaymentEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,7 @@ public class PaymentsController {
 
             return ResponseEntity.accepted().build();
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cannot be created");
         }
     }
 
@@ -87,13 +88,14 @@ public class PaymentsController {
                 } else {
                     if(booking.getBookingStatus() == BookingStatus.Unpaid){
                         updateBookingStatusUseCase.updateBookingStatus(entityId, BookingStatus.Canceled);
-                        return ResponseEntity.badRequest().build();
+
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
                     }
 
                     return ResponseEntity.accepted().build();
                 }
             }else if(paymentType.equals("payment")){
-                if (!Objects.equals(paymentStatus, "paid")) return ResponseEntity.badRequest().build();
+                if (!Objects.equals(paymentStatus, "paid"))  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
 
                 setPaymentToPaid.setPaymentToPaid(entityId);
 
@@ -123,7 +125,7 @@ public class PaymentsController {
 
             return ResponseEntity.ok(url);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cannot be created");
         }
     }
 

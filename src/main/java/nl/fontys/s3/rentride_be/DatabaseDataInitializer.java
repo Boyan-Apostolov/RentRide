@@ -2,6 +2,9 @@ package nl.fontys.s3.rentride_be;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.impl.car.CarConverter;
+import nl.fontys.s3.rentride_be.business.impl.city.CityConverter;
+import nl.fontys.s3.rentride_be.business.impl.user.UserConverter;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
@@ -32,13 +35,80 @@ public class DatabaseDataInitializer {
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void initializeDatabase() {
-        populateCities();
         populateCarFeatures();
+        populateCities();
         populateUsers();
         populateCars();
         populateDamages();
 
+        populateBookings();
+
         tryFixMissedBookings();
+
+        //01. 11 - 2.11 - finished
+        //01. 11 - 2.11 - canceled
+        // today + 2days - today + 3days -> paid
+        //today - 1h - today + 1 day - active
+    }
+
+    private void populateBookings(){
+        if(bookingRepository.count() == 0) {
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Finished)
+                    .startCity(this.cityRepository.findById(1L).orElse(null))
+                    .endCity(this.cityRepository.findById(2L).orElse(null))
+                    .startDateTime(LocalDateTime.of(2024, 11, 1, 10, 1))
+                    .endDateTime(LocalDateTime.of(2024, 11, 2, 10, 1))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(1L).orElse(null))
+                    .distance(50)
+                    .totalPrice(15)
+                    .paymentId("")
+                    .coverage(BookingCoverage.Premium)
+                    .build());
+
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Canceled)
+                    .startCity(this.cityRepository.findById(2L).orElse(null))
+                    .endCity(this.cityRepository.findById(3L).orElse(null))
+                    .startDateTime(LocalDateTime.of(2024, 11, 1, 10, 1))
+                    .endDateTime(LocalDateTime.of(2024, 11, 2, 10, 1))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(2L).orElse(null))
+                    .distance(100)
+                    .totalPrice(40)
+                    .paymentId("")
+                    .coverage(BookingCoverage.Top)
+                    .build());
+
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Paid)
+                    .startCity(this.cityRepository.findById(2L).orElse(null))
+                    .endCity(this.cityRepository.findById(3L).orElse(null))
+                    .startDateTime(LocalDateTime.now().plusDays(2))
+                    .endDateTime(LocalDateTime.now().plusDays(3))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(3L).orElse(null))
+                    .distance(90)
+                    .totalPrice(45)
+                    .paymentId("")
+                    .coverage(BookingCoverage.No)
+                    .build());
+
+            bookingRepository.save(BookingEntity.builder()
+                    .status(BookingStatus.Active)
+                    .startCity(this.cityRepository.findById(3L).orElse(null))
+                    .endCity(this.cityRepository.findById(4L).orElse(null))
+                    .startDateTime(LocalDateTime.now().minusHours(2))
+                    .endDateTime(LocalDateTime.now().plusDays(1))
+                    .user(this.userRepository.findById(1L).orElse(null))
+                    .car(this.carRepository.findById(2L).orElse(null))
+                    .distance(54)
+                    .totalPrice(11.12)
+                    .paymentId("")
+                    .coverage(BookingCoverage.Premium)
+                    .build());
+        }
     }
 
     private void populateDamages(){
@@ -185,14 +255,7 @@ public class DatabaseDataInitializer {
                     .photosBase64(List.of("https://i.ibb.co/fr5q7JP/bmw-m-series-seo-overview-ms-04.jpg"))
                     .build();
 
-            List<CarFeatureEntity> features4 = List.of(
-                    carFeatureRepository.findById(1L).orElseThrow(() -> new RuntimeException(featureNotFoundText)),
-                    carFeatureRepository.findById(2L).orElseThrow(() -> new RuntimeException(featureNotFoundText)),
-                    carFeatureRepository.findById(3L).orElseThrow(() -> new RuntimeException(featureNotFoundText)),
-                    carFeatureRepository.findById(4L).orElseThrow(() -> new RuntimeException(featureNotFoundText)),
-                    carFeatureRepository.findById(5L).orElseThrow(() -> new RuntimeException(featureNotFoundText))
-            );
-            car4.setFeatures(features4);
+            car4.setFeatures(features2);
 
             this.carRepository.saveAll(List.of(car1, car2, car4));
         }
