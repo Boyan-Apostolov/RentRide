@@ -1,8 +1,8 @@
 package nl.fontys.s3.rentride_be.persistance;
 
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
@@ -15,9 +15,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     List<BookingEntity> findBookingsByCarIdOrderByStartDateTime(@Param("carId") Long carId);
 
-    @Query("SELECT b FROM BookingEntity b WHERE b.endDateTime < :currentTime AND b.status = 2")
-    List<BookingEntity> findMissedBookings(@Param("currentTime") LocalDateTime currentTime);
+    List<BookingEntity> findByEndDateTimeBeforeAndStatus(LocalDateTime endDateTime, BookingStatus status);
 
-    @Query("SELECT b FROM BookingEntity b WHERE b.startDateTime < :currentTime AND b.status = 1")
-    List<BookingEntity> findPaidBookingsWithPassedStartTime(@Param("currentTime") LocalDateTime currentTime);
+    List<BookingEntity> findByStartDateTimeBeforeAndStatus(LocalDateTime startDateTime, BookingStatus status);
 }

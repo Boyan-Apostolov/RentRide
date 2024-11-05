@@ -1,15 +1,14 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.use_cases.review.DeleteReviewUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.review.GetReviewsByCar;
-import nl.fontys.s3.rentride_be.domain.city.GeoapifyResult;
+import nl.fontys.s3.rentride_be.business.use_cases.review.UpdateReviewUseCase;
 import nl.fontys.s3.rentride_be.domain.review.Review;
-import org.springframework.http.HttpStatus;
+import nl.fontys.s3.rentride_be.domain.review.UpdateReviewRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,11 +17,27 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewsController {
     private GetReviewsByCar getReviewsByCar;
+    private DeleteReviewUseCase deleteReviewUseCase;
+    private UpdateReviewUseCase updateReviewUseCase;
 
     @GetMapping()
     public ResponseEntity<List<Review>> getReviews(@RequestParam(value = "carId") Long carId) {
        List<Review> reviews = this.getReviewsByCar.getReviewsByCar(carId);
 
         return ResponseEntity.ok().body(reviews);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        deleteReviewUseCase.deleteReview(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> updateReview(@PathVariable("id") long id,
+                                          @RequestBody @Valid UpdateReviewRequest request) {
+        request.setId(id);
+        updateReviewUseCase.updateReview(request);
+        return ResponseEntity.noContent().build();
     }
 }

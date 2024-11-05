@@ -216,14 +216,14 @@ public class DatabaseDataInitializer {
         LocalDateTime now = LocalDateTime.now();
 
         // Find paid bookings with passed start time that should be ACTIVE
-        List<BookingEntity> paidBookings = bookingRepository.findPaidBookingsWithPassedStartTime(now);
+        List<BookingEntity> paidBookings = bookingRepository.findByStartDateTimeBeforeAndStatus(now, BookingStatus.Paid);
         for (BookingEntity booking : paidBookings) {
             updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Active);
             logger.info("Paid booking activated: Booking ID {}", booking.getId());
         }
 
         // Find missed bookings (bookings that should be marked as FINISHED)
-        List<BookingEntity> missedBookings = bookingRepository.findMissedBookings(now);
+        List<BookingEntity> missedBookings = bookingRepository.findByEndDateTimeBeforeAndStatus(now, BookingStatus.Active);
         for (BookingEntity booking : missedBookings) {
             updateBookingStatusUseCase.updateBookingStatus(booking.getId(), BookingStatus.Finished);
             logger.info("Missed booking fixed: Booking ID {}", booking.getId());
