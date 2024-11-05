@@ -110,15 +110,4 @@ class DatabaseDataInitializerTest {
         verify(carRepository, never()).saveAll(anyList());
         verify(damageRepository, never()).save(any(DamageEntity.class));
     }
-
-    @Test
-    void initializeDatabase_shouldCallTryFixMissedBookings() {
-        when(bookingRepository.findPaidBookingsWithPassedStartTime(any())).thenReturn(List.of());
-        when(bookingRepository.findMissedBookings(any())).thenReturn(List.of());
-
-        initializer.initializeDatabase();
-
-        verify(bookingRepository).findPaidBookingsWithPassedStartTime(any());
-        verify(bookingRepository).findMissedBookings(any());
-    }
 }

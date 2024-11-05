@@ -5,19 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.fontys.s3.rentride_be.domain.booking.Booking;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class UpdateReviewRequest {
-    private Long id;
+public class CreateReviewRequest {
+    @NotNull
+    private Long userId;
+
+    @NotNull
+    private Long bookingId;
 
     @NotNull
     private String text;
-
-    private Booking booking;
 
     @NotNull
     private Integer valueForMoney;
