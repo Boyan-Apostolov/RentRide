@@ -60,33 +60,13 @@ public class DatabaseDataInitializer {
                             .createdOn(LocalDateTime.now())
                             .user(userRepository.findById(1L).orElse(null))
                     .build());
-
-            reviewRepository.save(ReviewEntity.builder()
-                    .booking(bookingRepository.findById(2L).orElse(null))
-                    .text("Very dramatic")
-                    .carCondition(2)
-                    .carSpeed(3)
-                    .valueForMoney(3)
-                    .createdOn(LocalDateTime.now())
-                    .user(userRepository.findById(1L).orElse(null))
-                    .build());
-
-            reviewRepository.save(ReviewEntity.builder()
-                    .booking(bookingRepository.findById(3L).orElse(null))
-                    .text("Awesome in every way")
-                    .carCondition(5)
-                    .carSpeed(5)
-                    .valueForMoney(5)
-                    .createdOn(LocalDateTime.now())
-                    .user(userRepository.findById(1L).orElse(null))
-                    .build());
         }
     }
 
     private void populateBookings(){
         if(bookingRepository.count() == 0) {
             bookingRepository.save(BookingEntity.builder()
-                    .status(BookingStatus.Finished)
+                    .status(BookingStatus.Rated)
                     .startCity(this.cityRepository.findById(1L).orElse(null))
                     .endCity(this.cityRepository.findById(2L).orElse(null))
                     .startDateTime(LocalDateTime.of(2024, 10, 1, 10, 1))
