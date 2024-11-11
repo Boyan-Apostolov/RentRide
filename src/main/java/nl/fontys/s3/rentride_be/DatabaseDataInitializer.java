@@ -27,6 +27,7 @@ public class DatabaseDataInitializer {
     private DamageRepository damageRepository;
     private ReviewRepository reviewRepository;
     private DiscountPlanRepository discountPlanRepository;
+    private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
 
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
@@ -45,6 +46,7 @@ public class DatabaseDataInitializer {
         populateReviews();
 
         populateDiscountPlans();
+        populatePurchasedDiscountPlans();
 
         tryFixMissedBookings();
 
@@ -53,6 +55,23 @@ public class DatabaseDataInitializer {
         // today + 2days - today + 3days -> paid
         //today - 1h - today + 1 day - active
     }
+
+    private void populatePurchasedDiscountPlans() {
+        if(discountPlanPurchaseRepository.count() == 0){
+            DiscountPlanEntity discountPlanEntity = discountPlanRepository.findById(1L).orElse(null);
+            discountPlanPurchaseRepository.save(DiscountPlanPurchaseEntity.builder()
+                            .discountPlan(discountPlanEntity)
+                            .purchaseDate(LocalDateTime.now())
+                            .remainingUses(discountPlanEntity.getRemainingUses())
+                            .user(userRepository.findById(1L).orElse(null))
+                            .id(DiscountPlanPurchaseKey.builder()
+                                    .discountPlanId(1L)
+                                    .userId(1L)
+                                    .build())
+                    .build());
+        }
+    }
+
     private void populateDiscountPlans(){
         if(discountPlanRepository.count() == 0){
             discountPlanRepository.save(DiscountPlanEntity.builder()
