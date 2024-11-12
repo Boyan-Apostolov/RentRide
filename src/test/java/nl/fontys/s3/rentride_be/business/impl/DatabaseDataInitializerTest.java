@@ -46,6 +46,9 @@ class DatabaseDataInitializerTest {
     @Mock
     private DiscountPlanRepository discountPlanRepository;
 
+    @Mock
+    private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
+
     @InjectMocks
     private DatabaseDataInitializer initializer;
 
@@ -59,6 +62,7 @@ class DatabaseDataInitializerTest {
         lenient().when(damageRepository.count()).thenReturn(0L);
         lenient().when(reviewRepository.count()).thenReturn(0L);
         lenient().when(bookingRepository.count()).thenReturn(0L);
+        lenient().when(discountPlanRepository.count()).thenReturn(0L);
 
         CarFeatureEntity seats = CarFeatureEntity.builder().id(1L).featureType(CarFeatureType.Seats).featureText("5").build();
         CarFeatureEntity doors = CarFeatureEntity.builder().id(2L).featureType(CarFeatureType.Doors).featureText("4").build();
@@ -77,12 +81,16 @@ class DatabaseDataInitializerTest {
         UserEntity user = UserEntity.builder().id(1L).name("Boyan Apostolov").build();
         CarEntity car1 = CarEntity.builder().id(1L).make("Ford").build();
         BookingEntity booking = BookingEntity.builder().id(1L).build();
+        DiscountPlanEntity discountPlan = DiscountPlanEntity.builder().id(1L).price(1).remainingUses(1).description("test").title("test").build();
+        DamageEntity damage = DamageEntity.builder().name("test").id(1L).cost(12).iconUrl("test").build();
 
         lenient().when(cityRepository.findById(1L)).thenReturn(Optional.of(city1));
         lenient().when(cityRepository.findById(2L)).thenReturn(Optional.of(city2));
         lenient().when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         lenient().when(carRepository.findById(1L)).thenReturn(Optional.of(car1));
         lenient().when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+        lenient().when(discountPlanRepository.findById(1L)).thenReturn(Optional.of(discountPlan));
+        lenient().when(damageRepository.findById(1L)).thenReturn(Optional.of(damage));
     }
 
     @Test
@@ -102,7 +110,8 @@ class DatabaseDataInitializerTest {
         when(carFeatureRepository.count()).thenReturn(1L);
         when(userRepository.count()).thenReturn(1L);
         when(carRepository.count()).thenReturn(1L);
-        when(damageRepository.count()).thenReturn(1L);
+        when(discountPlanRepository.count()).thenReturn(1L);
+        when(damageRepository.count()).thenReturn(1L); // Ensure damage data is considered "not empty"
 
         initializer.initializeDatabase();
 
@@ -111,5 +120,6 @@ class DatabaseDataInitializerTest {
         verify(userRepository, never()).save(any(UserEntity.class));
         verify(carRepository, never()).saveAll(anyList());
         verify(damageRepository, never()).save(any(DamageEntity.class));
+        verify(discountPlanRepository, never()).save(any(DiscountPlanEntity.class));
     }
 }

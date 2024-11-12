@@ -6,11 +6,14 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.GetDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.UpdateDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.*;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.discount.DiscountPlanPurchase;
+import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.CreatePaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.Payment;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
@@ -35,6 +38,8 @@ public class PaymentsController {
     private GetPaymentsByUser getPaymentsByUser;
     private SetPaymentToPaid setPaymentToPaid;
     private GetDiscountPlanPurchaseUseCase getDiscountPlanPurchaseUseCase;
+    private UpdateDiscountPlanPurchaseUseCase updateDiscountPlanPurchaseUseCase;
+    private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
 
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
 
@@ -98,7 +103,7 @@ public class PaymentsController {
                 DiscountPlanPurchase discountPlanPurchase = getDiscountPlanPurchaseUseCase.getDiscountPlanPurchaseByCurrentUserAndDiscountId(entityId);
 
                 if (!Objects.equals(paymentStatus, "paid")) {
-                    //TODO: delete discount plan
+                    deleteDiscountPlanPurchaseUseCase.deleteDiscountPlanPurchase(discountPlanPurchase.getUser().getId(), discountPlanPurchase.getDiscountPlan().getId());
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
                 }
 
@@ -109,7 +114,10 @@ public class PaymentsController {
                         .build());
 
                 setPaymentToPaid.setPaymentToPaid((paymentEntity.getId()));
-                //Todo: Activate the plan for the user (set the remaining uses to the ones from the discount plan)
+                updateDiscountPlanPurchaseUseCase.updateDiscountPlanPurchase(UpdateDiscountPaymentRequest.builder()
+                                .discountPlanId(discountPlanPurchase.getDiscountPlan().getId())
+                                .remainingUses(discountPlanPurchase.getDiscountPlan().getRemainingUses())
+                        .build());
             }
 
         } catch (Exception e) {

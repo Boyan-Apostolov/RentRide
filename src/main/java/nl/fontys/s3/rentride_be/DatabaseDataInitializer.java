@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
@@ -29,7 +30,9 @@ public class DatabaseDataInitializer {
     private DiscountPlanRepository discountPlanRepository;
     private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
 
+    private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
 
@@ -49,11 +52,17 @@ public class DatabaseDataInitializer {
         populatePurchasedDiscountPlans();
 
         tryFixMissedBookings();
+        tryFixEmptyDiscountPlanPurchases();
 
         //01. 11 - 2.11 - finished
         //01. 11 - 2.11 - canceled
         // today + 2days - today + 3days -> paid
         //today - 1h - today + 1 day - active
+    }
+
+    private void tryFixEmptyDiscountPlanPurchases() {
+        List<DiscountPlanPurchaseEntity> emptyDiscountPlanPurchases = discountPlanPurchaseRepository.findAllByRemainingUses(0);
+        discountPlanPurchaseRepository.deleteAll(emptyDiscountPlanPurchases);
     }
 
     private void populatePurchasedDiscountPlans() {

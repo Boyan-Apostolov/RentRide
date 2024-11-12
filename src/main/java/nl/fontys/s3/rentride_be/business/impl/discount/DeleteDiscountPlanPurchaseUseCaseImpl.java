@@ -1,0 +1,30 @@
+package nl.fontys.s3.rentride_be.business.impl.discount;
+
+import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
+import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseKey;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@AllArgsConstructor
+public class DeleteDiscountPlanPurchaseUseCaseImpl implements DeleteDiscountPlanPurchaseUseCase {
+    private DiscountPlanPurchaseRepository purchaseRepository;
+
+    @Override
+    public void deleteDiscountPlanPurchase(Long userId, Long discountPlanId) {
+        Optional<DiscountPlanPurchaseEntity> purchase = purchaseRepository.findByUserIdAndDiscountPlanId(userId, discountPlanId);
+        if(purchase.isEmpty()) throw new NotFoundException("DeleteDiscount->Entity");
+
+        purchaseRepository.deleteById(
+                DiscountPlanPurchaseKey.builder()
+                .userId(userId)
+                .discountPlanId(discountPlanId)
+                .build()
+        );
+    }
+}
