@@ -67,7 +67,7 @@ public class DatabaseDataInitializer {
 
     private void populatePurchasedDiscountPlans() {
         if(discountPlanPurchaseRepository.count() == 0){
-            DiscountPlanEntity discountPlanEntity = discountPlanRepository.findById(1L).orElse(null);
+            DiscountPlanEntity discountPlanEntity = discountPlanRepository.findById(1L).orElse(DiscountPlanEntity.builder().build());
             discountPlanPurchaseRepository.save(DiscountPlanPurchaseEntity.builder()
                             .discountPlan(discountPlanEntity)
                             .purchaseDate(LocalDateTime.now())

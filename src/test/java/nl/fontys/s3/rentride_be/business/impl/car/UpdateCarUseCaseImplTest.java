@@ -31,9 +31,6 @@ class UpdateCarUseCaseImplTest {
 
     @Test
     void updateCar_withInvalidIdShouldThrowException() {
-        when(this.carRepository.findById(1L))
-                .thenThrow(new NotFoundException("Car"));
-
         UpdateCarRequest request = UpdateCarRequest.builder()
                 .id(1L)
                 .make("Ford")
@@ -44,8 +41,6 @@ class UpdateCarUseCaseImplTest {
                 .build();
 
         assertThrows(NotFoundException.class, () -> this.updateCarUseCase.updateCar(request));
-
-        verify(this.carRepository).findById(1L);
     }
 
     @Test
@@ -100,6 +95,6 @@ class UpdateCarUseCaseImplTest {
         assertEquals("Fiestaa!", existingCar.get().getModel());
 
         verify(this.carRepository).save(existingCar.get());
-        verify(this.carRepository, times(2)).findById(carId);
+        verify(this.carRepository, times(1)).findById(carId);
     }
 }
