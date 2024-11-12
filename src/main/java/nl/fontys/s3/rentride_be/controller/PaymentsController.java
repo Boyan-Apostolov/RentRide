@@ -8,6 +8,7 @@ import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUs
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.GetDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.GetDiscountPlanPurchasesByUser;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.UpdateDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.*;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
@@ -17,6 +18,7 @@ import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.CreatePaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.Payment;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
+import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.PaymentEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("payments")
@@ -40,6 +43,7 @@ public class PaymentsController {
     private GetDiscountPlanPurchaseUseCase getDiscountPlanPurchaseUseCase;
     private UpdateDiscountPlanPurchaseUseCase updateDiscountPlanPurchaseUseCase;
     private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
+    private GetDiscountPlanPurchasesByUser getDiscountPlanPurchasesByUser;
 
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
 
@@ -61,7 +65,7 @@ public class PaymentsController {
 
             return ResponseEntity.ok(url);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cannot be created");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -94,30 +98,13 @@ public class PaymentsController {
                 return handlePaymentSuccessForBooking(entityId, paymentStatus, paymentId);
             } else if (paymentType.equals("payment")) {
                 if (!Objects.equals(paymentStatus, "paid"))
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
                 setPaymentToPaid.setPaymentToPaid(entityId);
 
                 return ResponseEntity.accepted().build();
             } else if (paymentType.equals("discount")) {
-                DiscountPlanPurchase discountPlanPurchase = getDiscountPlanPurchaseUseCase.getDiscountPlanPurchaseByCurrentUserAndDiscountId(entityId);
-
-                if (!Objects.equals(paymentStatus, "paid")) {
-                    deleteDiscountPlanPurchaseUseCase.deleteDiscountPlanPurchase(discountPlanPurchase.getUser().getId(), discountPlanPurchase.getDiscountPlan().getId());
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
-                }
-
-                PaymentEntity paymentEntity = createPaymentUseCase.createPayment(CreatePaymentRequest.builder()
-                        .description(String.format("Discount Plan: %s", discountPlanPurchase.getDiscountPlan().getTitle()))
-                        .totalCost(discountPlanPurchase.getDiscountPlan().getPrice())
-                        .userId(discountPlanPurchase.getUser().getId())
-                        .build());
-
-                setPaymentToPaid.setPaymentToPaid((paymentEntity.getId()));
-                updateDiscountPlanPurchaseUseCase.updateDiscountPlanPurchase(UpdateDiscountPaymentRequest.builder()
-                                .discountPlanId(discountPlanPurchase.getDiscountPlan().getId())
-                                .remainingUses(discountPlanPurchase.getDiscountPlan().getRemainingUses())
-                        .build());
+                return handlePaymentSuccessForDiscountPlan(entityId, paymentStatus);
             }
 
         } catch (Exception e) {
@@ -125,6 +112,30 @@ public class PaymentsController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    private ResponseEntity<String> handlePaymentSuccessForDiscountPlan(Long entityId, String paymentStatus) {
+        DiscountPlanPurchase discountPlanPurchase = getDiscountPlanPurchaseUseCase.getDiscountPlanPurchaseByCurrentUserAndDiscountId(entityId);
+
+        if (!Objects.equals(paymentStatus, "paid")) {
+            deleteDiscountPlanPurchaseUseCase.deleteDiscountPlanPurchase(discountPlanPurchase.getUser().getId(), discountPlanPurchase.getDiscountPlan().getId());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        PaymentEntity paymentEntity = createPaymentUseCase.createPayment(CreatePaymentRequest.builder()
+                .description(String.format("Discount Plan: %s", discountPlanPurchase.getDiscountPlan().getTitle()))
+                .totalCost(discountPlanPurchase.getDiscountPlan().getPrice())
+                .userId(discountPlanPurchase.getUser().getId())
+                .build());
+
+        setPaymentToPaid.setPaymentToPaid((paymentEntity.getId()));
+
+        updateDiscountPlanPurchaseUseCase.updateDiscountPlanPurchase(UpdateDiscountPaymentRequest.builder()
+                .discountPlanId(discountPlanPurchase.getDiscountPlan().getId())
+                .remainingUses(discountPlanPurchase.getDiscountPlan().getRemainingUses())
+                .build());
+
+        return ResponseEntity.accepted().build();
     }
 
     private ResponseEntity<String> handlePaymentSuccessForBooking(Long entityId, String paymentStatus, String paymentId) {
@@ -141,6 +152,17 @@ public class PaymentsController {
                     .build());
 
             setPaymentToPaid.setPaymentToPaid((paymentEntity.getId()));
+
+            List<DiscountPlanPurchase> purchasedPlans = getDiscountPlanPurchasesByUser.getDiscountPlanPurchasesByUser(null);
+            Optional<DiscountPlanPurchase> currentPlanOptional = purchasedPlans.stream().findFirst();
+            if (currentPlanOptional.isPresent()) {
+                DiscountPlanPurchase currentPlan = currentPlanOptional.get();
+
+                updateDiscountPlanPurchaseUseCase.updateDiscountPlanPurchase(UpdateDiscountPaymentRequest.builder()
+                                .discountPlanId(currentPlan.getDiscountPlan().getId())
+                                .remainingUses(currentPlan.getRemainingUses() - 1)
+                        .build());
+            }
 
             scheduleBookingJobsUseCase.scheduleStartAndEndJobs(booking.getId(), booking.getStartDateTime(), booking.getEndDateTime());
 

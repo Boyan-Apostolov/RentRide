@@ -10,5 +10,9 @@ import java.util.Optional;
 
 public interface DiscountPlanPurchaseRepository extends JpaRepository<DiscountPlanPurchaseEntity, DiscountPlanPurchaseKey> {
      Optional<DiscountPlanPurchaseEntity> findByUserIdAndDiscountPlanId(Long userId, Long discountPlanId);
+
+     List<DiscountPlanPurchaseEntity> findAllByUserIdOrderByRemainingUsesDesc(Long userId);
+
+
      List<DiscountPlanPurchaseEntity> findAllByRemainingUses(int remainingUses);
 }
