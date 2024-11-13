@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                         configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
 //                                .anyRequest().authenticated() TODO: Enable
                                 .anyRequest().permitAll()

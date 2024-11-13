@@ -1,4 +1,4 @@
-package nl.fontys.s3.rentride_be.configuration.security.token.exception;
+package nl.fontys.s3.rentride_be.business.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenDecoder;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
-import nl.fontys.s3.rentride_be.configuration.security.token.exception.InvalidAccessTokenException;
+import nl.fontys.s3.rentride_be.business.exception.InvalidAccessTokenException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenDecoder;
-import nl.fontys.s3.rentride_be.configuration.security.token.exception.InvalidAccessTokenException;
+import nl.fontys.s3.rentride_be.business.exception.InvalidAccessTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
