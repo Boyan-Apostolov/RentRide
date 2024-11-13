@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.business.impl.car;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.car.UpdateCarUseCase;
+import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.domain.car.UpdateCarRequest;
 import nl.fontys.s3.rentride_be.persistance.CarFeatureRepository;
@@ -26,8 +27,6 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
 
     @Override
     public void updateCar(UpdateCarRequest request) {
-        verifyCarExists(request.getId());
-
         prepareCity(request);
         prepareCarFeatures(request);
 
@@ -40,13 +39,6 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
             throw new NotFoundException("Update->Car->City");
         }
         request.setFoundCity(cityOptional.get());
-    }
-
-    private void verifyCarExists(Long carId){
-        Optional<CarEntity> carOptional = this.carRepository.findById(carId);
-        if (carOptional.isEmpty()) {
-            throw new NotFoundException("Update->Car");
-        }
     }
 
     private void prepareCarFeatures(UpdateCarRequest request) {
@@ -72,7 +64,11 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
     }
 
     private void updateEntity(UpdateCarRequest request) {
-        CarEntity carEntity = this.carRepository.findById(request.getId()).get();
+        Optional<CarEntity> carOptional = this.carRepository.findById(request.getId());
+        if (carOptional.isEmpty()) {
+            throw new NotFoundException("Update->Car");
+        }
+        CarEntity carEntity = carOptional.get();
 
         carEntity.setMake(request.getMake());
         carEntity.setModel(request.getModel());

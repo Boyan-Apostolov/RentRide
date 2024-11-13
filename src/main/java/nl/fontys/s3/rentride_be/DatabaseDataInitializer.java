@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
@@ -26,7 +27,12 @@ public class DatabaseDataInitializer {
     private CarFeatureRepository carFeatureRepository;
     private DamageRepository damageRepository;
     private ReviewRepository reviewRepository;
+    private DiscountPlanRepository discountPlanRepository;
+    private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
+
+    private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
 
@@ -42,12 +48,73 @@ public class DatabaseDataInitializer {
         populateBookings();
         populateReviews();
 
+        populateDiscountPlans();
+        populatePurchasedDiscountPlans();
+
         tryFixMissedBookings();
+        tryFixEmptyDiscountPlanPurchases();
 
         //01. 11 - 2.11 - finished
         //01. 11 - 2.11 - canceled
         // today + 2days - today + 3days -> paid
         //today - 1h - today + 1 day - active
+    }
+
+    private void tryFixEmptyDiscountPlanPurchases() {
+        List<DiscountPlanPurchaseEntity> emptyDiscountPlanPurchases = discountPlanPurchaseRepository.findAllByRemainingUses(0);
+        discountPlanPurchaseRepository.deleteAll(emptyDiscountPlanPurchases);
+    }
+
+    private void populatePurchasedDiscountPlans() {
+        if(discountPlanPurchaseRepository.count() == 0){
+            DiscountPlanEntity discountPlanEntity = discountPlanRepository.findById(1L).orElse(DiscountPlanEntity.builder().build());
+            discountPlanPurchaseRepository.save(DiscountPlanPurchaseEntity.builder()
+                            .discountPlan(discountPlanEntity)
+                            .purchaseDate(LocalDateTime.now())
+                            .remainingUses(discountPlanEntity.getRemainingUses())
+                            .user(userRepository.findById(1L).orElse(null))
+                            .id(DiscountPlanPurchaseKey.builder()
+                                    .discountPlanId(1L)
+                                    .userId(1L)
+                                    .build())
+                    .build());
+        }
+    }
+
+    private void populateDiscountPlans(){
+        if(discountPlanRepository.count() == 0){
+            discountPlanRepository.save(DiscountPlanEntity.builder()
+                    .title("Silver Plan")
+                    .description("Enjoy 15% discount on 10 rides!")
+                    .remainingUses(10)
+                    .discountValue(15)
+                    .price(80.00)
+                    .build());
+
+            discountPlanRepository.save(DiscountPlanEntity.builder()
+                    .title("Gold Plan")
+                    .description("Get 20% discount on 20 rides! Ideal for regular users.")
+                    .remainingUses(20)
+                    .discountValue(20)
+                    .price(150.00)
+                    .build());
+
+            discountPlanRepository.save(DiscountPlanEntity.builder()
+                    .title("Platinum Plan")
+                    .description("Unlock a 25% discount on unlimited rides without date restrictions.")
+                    .remainingUses(Integer.MAX_VALUE) // unlimited rides
+                    .discountValue(25)
+                    .price(2000.00)
+                    .build());
+
+            discountPlanRepository.save(DiscountPlanEntity.builder()
+                    .title("8 Warrior")
+                    .description("Special 30% discount on 8 rides, use anytime.")
+                    .remainingUses(8)
+                    .discountValue(30)
+                    .price(70.00)
+                    .build());
+        }
     }
     private void populateReviews(){
         if(reviewRepository.count() == 0){

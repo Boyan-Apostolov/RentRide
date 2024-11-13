@@ -4,43 +4,42 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-@Data
-@Builder
+@Table(name = "discount_plan")
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+@Builder
+@Data
+public class DiscountPlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "title")
     @NotNull
-    @Column(name = "name")
-    private String name;
+    private String title;
+
+    @Column(name = "description")
+    @NotNull
+    private String description;
+
+    @Column(name = "remaining_uses")
+    @NotNull
+    private Integer remainingUses;
+
+    @Column(name = "discount_value")
+    @NotNull
+    private Integer discountValue;
 
     @NotNull
-    @Column(name = "email")
-    private String email;
+    @Column(name = "price")
+    private double price;
 
-    @NotNull
-    @Column(name = "password")
-    private String password;
-
-    @NotNull
-    @Column(name = "role")
-    @Enumerated(EnumType.ORDINAL)
-    private UserRole role;
-
-    @NotNull
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "discountPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<DiscountPlanPurchaseEntity> purchases;
