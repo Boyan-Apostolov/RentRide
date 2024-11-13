@@ -39,7 +39,8 @@ public class WebSecurityConfig {
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                                 .requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
-                                .anyRequest().authenticated()
+//                                .anyRequest().authenticated() TODO: Enable
+                                .anyRequest().permitAll()
                 )
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);

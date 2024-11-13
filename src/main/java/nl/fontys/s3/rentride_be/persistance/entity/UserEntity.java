@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -31,10 +32,9 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    @NotNull
-    @Column(name = "role")
-    @Enumerated(EnumType.ORDINAL)
-    private UserRole role;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<UserRoleEntity> userRoles;
 
     @NotNull
     @Column(name = "birth_date")

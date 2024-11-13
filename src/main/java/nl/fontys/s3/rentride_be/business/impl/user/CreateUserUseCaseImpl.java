@@ -21,8 +21,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
             throw new AlreadyExistsException("User");
         }
 
-        //TODO: Set customer id from stripe
-
         UserEntity savedUser = saveNewUser(request);
 
         return CreateUserResponse.builder()
@@ -34,7 +32,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
         UserEntity userEntity = UserEntity.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .role(UserRole.values()[request.getRole()])
                 .name(request.getName())
                 .birthDate(request.getBirthDate())
                 .build();
