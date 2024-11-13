@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -48,6 +49,10 @@ class DatabaseDataInitializerTest {
 
     @Mock
     private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
 
     @InjectMocks
     private DatabaseDataInitializer initializer;
@@ -99,7 +104,7 @@ class DatabaseDataInitializerTest {
 
         verify(cityRepository, times(4)).save(any(CityEntity.class));
         verify(carFeatureRepository, times(5)).save(any(CarFeatureEntity.class));
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository, times(2)).save(any(UserEntity.class));
         verify(carRepository, atLeastOnce()).saveAll(anyList());
         verify(damageRepository, times(6)).save(any(DamageEntity.class));
     }

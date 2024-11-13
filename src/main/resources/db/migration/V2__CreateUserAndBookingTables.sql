@@ -1,11 +1,21 @@
 CREATE TABLE users (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
                       name VARCHAR(255) NOT NULL,
                       email VARCHAR(255) NOT NULL,
                       password VARCHAR(255) NOT NULL,
-                      role INT NOT NULL,
                       birth_date DATE NOT NULL
 );
+
+CREATE TABLE user_role
+(
+    id        int         NOT NULL AUTO_INCREMENT,
+    user_id   BIGINT         NOT NULL,
+    role_name varchar(50) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (user_id, role_name),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 
 CREATE TABLE booking (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,

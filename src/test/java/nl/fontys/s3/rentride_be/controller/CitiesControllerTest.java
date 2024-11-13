@@ -10,8 +10,11 @@ import nl.fontys.s3.rentride_be.domain.city.UpdateCityRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(CitiesController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@WithMockUser(username = "10@fontys.nl", roles = {"ADMIN"})
 class CitiesControllerTest {
 
     @Autowired
@@ -54,7 +59,7 @@ class CitiesControllerTest {
 
 
     @Test
-     void getCities_shouldReturn200WithEmptyList_WhenNoCities() throws Exception {
+    void getCities_shouldReturn200WithEmptyList_WhenNoCities() throws Exception {
         List<City> expectedCities = new ArrayList<>();
 
         when(getCitiesUseCase.getCities()).thenReturn(expectedCities);

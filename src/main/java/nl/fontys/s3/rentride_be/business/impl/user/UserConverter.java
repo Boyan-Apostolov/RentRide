@@ -12,7 +12,6 @@ public final class UserConverter {
                 .id(userEntity.getId())
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
-                .role(userEntity.getRole())
                 .name(userEntity.getName())
                 .birthDate(userEntity.getBirthDate())
                 .build();

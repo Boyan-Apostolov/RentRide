@@ -32,7 +32,6 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
         userEntity.setEmail(request.getEmail());
         userEntity.setPassword(request.getPassword());
         userEntity.setName(request.getName());
-        userEntity.setRole(UserRole.values()[request.getRole()]);
         userEntity.setBirthDate(request.getBirthDate());
         userEntity.setBirthDate(request.getBirthDate());
 

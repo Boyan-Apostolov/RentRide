@@ -26,11 +26,6 @@ public class CreateUserRequest {
     @NotBlank
     private String password;
 
-    @NumberFormat
-    @Min(0)
-    @Max(1)
-    private Integer role;
-
     @DateTimeFormat
     private LocalDate birthDate;
 }

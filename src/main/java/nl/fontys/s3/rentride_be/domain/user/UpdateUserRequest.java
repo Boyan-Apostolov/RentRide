@@ -24,11 +24,6 @@ public class UpdateUserRequest {
     @NotBlank
     private String password;
 
-    @NumberFormat
-    @Min(0)
-    @Max(1)
-    private Integer role;
-
     @DateTimeFormat
     private LocalDate birthDate;
 

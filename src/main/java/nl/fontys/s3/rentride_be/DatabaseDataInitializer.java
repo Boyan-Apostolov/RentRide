@@ -11,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -32,6 +34,8 @@ public class DatabaseDataInitializer {
 
     private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+
+    private PasswordEncoder passwordEncoder;
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
@@ -370,14 +374,28 @@ public class DatabaseDataInitializer {
 
     private void populateUsers() {
         if (this.userRepository.count() == 0) {
-            this.userRepository.save(UserEntity
+                    UserEntity adminUser = UserEntity
                     .builder()
                     .name("Boyan Apostolov")
-                    .role(UserRole.Admin)
                     .email("admin@admin.com")
-                    .password("12345678")
+                    .password(passwordEncoder.encode("12345678"))
                     .birthDate(LocalDate.of(2004, 3, 12))
-                    .build());
+                    .build();
+            UserRoleEntity adminRole = UserRoleEntity.builder().role(UserRole.ADMIN).user(adminUser).build();
+            adminUser.setUserRoles(Set.of(adminRole));
+            this.userRepository.save(adminUser);
+
+
+            UserEntity customerUser = UserEntity
+                    .builder()
+                    .name("Average Customer")
+                    .email("customer@customer.com")
+                    .password(passwordEncoder.encode("12345678"))
+                    .birthDate(LocalDate.of(2004, 3, 12))
+                    .build();
+            UserRoleEntity customerRole = UserRoleEntity.builder().role(UserRole.CUSTOMER).user(customerUser).build();
+            customerUser.setUserRoles(Set.of(customerRole));
+            this.userRepository.save(customerUser);
         }
     }
 }
