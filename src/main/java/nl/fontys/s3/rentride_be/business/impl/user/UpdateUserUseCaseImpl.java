@@ -6,7 +6,6 @@ import nl.fontys.s3.rentride_be.business.use_cases.user.UpdateUserUseCase;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

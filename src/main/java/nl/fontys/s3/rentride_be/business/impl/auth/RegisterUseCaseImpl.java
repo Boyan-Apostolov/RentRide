@@ -2,13 +2,10 @@ package nl.fontys.s3.rentride_be.business.impl.auth;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
-import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.user.CreateUserUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.s3.rentride_be.configuration.security.token.impl.AccessTokenImpl;
-import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
-import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -27,15 +24,6 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
     private AccessTokenEncoder accessTokenEncoder;
     private CreateUserUseCase createUserUseCase;
 
-    private String generateAccessToken(UserEntity user) {
-        List<String> roles = user.getUserRoles().stream()
-                .map(userRole -> userRole.getRole().toString())
-                .toList();
-
-        return accessTokenEncoder.encode(
-                new AccessTokenImpl(user.getEmail(), user.getId(), roles));
-    }
-
     @Override
     public void register(RegisterRequest registerRequest) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(registerRequest.getEmail());
@@ -43,7 +31,7 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
             throw new AlreadyExistsException("Register->Email");
         }
 
-        UserEntity createdUser = createUserUseCase.createUser(CreateUserRequest.builder()
+        createUserUseCase.createUser(CreateUserRequest.builder()
                 .email(registerRequest.getEmail())
                 .name(registerRequest.getName())
                 .birthDate(registerRequest.getBirthDate())

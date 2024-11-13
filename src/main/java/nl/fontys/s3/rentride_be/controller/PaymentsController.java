@@ -18,7 +18,6 @@ import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.CreatePaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.Payment;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
-import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.PaymentEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
