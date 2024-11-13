@@ -13,26 +13,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class LoginUseCaesImpl implements LoginUseCase {
+public class LoginUseCaseImpl implements LoginUseCase {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private AccessTokenEncoder accessTokenEncoder;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        UserEntity user = userRepository.findByEmail(loginRequest.getUsername());
-        if (user == null) {
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+        if (optionalUser.isEmpty()) {
             throw new NotFoundException("Login->User");
         }
+        UserEntity userEntity = optionalUser.get();
 
-        if (!matchesPassword(loginRequest.getPassword(), user.getPassword())) {
+        if (!matchesPassword(loginRequest.getPassword(), userEntity.getPassword())) {
             throw new IllegalArgumentException("Invalid Credentials");
         }
 
-        String accessToken = generateAccessToken(user);
+        String accessToken = generateAccessToken(userEntity);
         return LoginResponse.builder().accessToken(accessToken).build();
 
     }

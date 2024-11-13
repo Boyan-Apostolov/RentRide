@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.user.*;
 import nl.fontys.s3.rentride_be.domain.user.User;
-import nl.fontys.s3.rentride_be.domain.user.CreateUserRequest;
-import nl.fontys.s3.rentride_be.domain.user.CreateUserResponse;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +16,6 @@ import java.util.List;
 public class UsersController {
     private GetUserUseCase getUserUseCase;
     private GetUsersUseCase getUsersUseCase;
-    private DeleteUserUseCase deleteUserUseCase;
-    private CreateUserUseCase createUserUseCase;
     private UpdateUserUseCase updateUserUseCase;
 
     @GetMapping("{id}")
@@ -36,18 +31,6 @@ public class UsersController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(this.getUsersUseCase.getUsers());
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        deleteUserUseCase.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping()
-    public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
-        CreateUserResponse response = createUserUseCase.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("{id}")
