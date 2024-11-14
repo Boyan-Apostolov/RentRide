@@ -25,7 +25,7 @@ public class GetBookingCostsImpl implements GetBookingCosts {
     public GetBookingCostsResponse getBookingCosts(long carId, long fromCityId, long toCityId, long userId) {
         Long currentUserId = 1L;
         GetRouteResponse routeData = getRouteBetweenCitiesUseCase.getRoute(fromCityId, toCityId);
-        double distance = Double.parseDouble(routeData.getDistance());
+        double distance = routeData.getDistance() != null ? Double.parseDouble(routeData.getDistance()) : 0.0;
 
         Car car = getCarUseCase.getCar(carId);
         double fuelCost = (distance / 100) * car.getFuelConsumption();
