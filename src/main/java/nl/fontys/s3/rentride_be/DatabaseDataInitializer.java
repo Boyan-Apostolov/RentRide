@@ -295,7 +295,7 @@ public class DatabaseDataInitializer {
 
             this.carFeatureRepository.save(CarFeatureEntity.builder()
                     .featureType(CarFeatureType.Transmission)
-                    .featureText("Automatic")
+                    .featureText("Auto")
                     .build());
 
             this.carFeatureRepository.save(CarFeatureEntity.builder()
