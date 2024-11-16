@@ -24,8 +24,10 @@ public class BookingsController {
     private GetBookingCosts getBookingCostsUseCase;
     private CreateBookingUseCase createBookingUseCase;
     private GetBookingsForUserUseCase getBookingsForUserUseCase;
+    private GetBookingsForCarUseCase getBookingsForCarUseCase;
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
     private GetAllDamageUseCase getAllDamageUseCase;
+    private GetBookingHistoryMapUseCase getBookingHistoryMapUseCase;
 
     @GetMapping
     public ResponseEntity<List<Booking>> getBookings() {
@@ -48,6 +50,13 @@ public class BookingsController {
         return ResponseEntity.ok(allBookings);
     }
 
+    @GetMapping("by-car")
+    public ResponseEntity<List<Booking>> getCarBookings(@RequestParam(value = "carId") final long carId) {
+        List<Booking> allBookings = getBookingsForCarUseCase.getBookings(carId);
+
+        return ResponseEntity.ok(allBookings);
+    }
+
     @GetMapping("cancel")
     public ResponseEntity<Void> cancelBooking(@RequestParam(value = "bookingId") final long bookingId) {
         updateBookingStatusUseCase.updateBookingStatus(bookingId, BookingStatus.Canceled);
@@ -65,5 +74,14 @@ public class BookingsController {
     public ResponseEntity<CreateBookingResponse> createBooking(@RequestBody @Valid CreateBookingRequest request) {
         CreateBookingResponse response = createBookingUseCase.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("by-car-map")
+    public ResponseEntity<String> getCarBookingsMap(@RequestParam(value = "carId") final long carId) {
+        List<Booking> carBookings = getCarBookings(carId).getBody();
+
+        String mapUrl = getBookingHistoryMapUseCase.getBookingHistoryMap(carBookings);
+
+        return ResponseEntity.ok(mapUrl);
     }
 }
