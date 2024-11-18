@@ -26,12 +26,12 @@ public class LoginUseCaseImpl implements LoginUseCase {
     public LoginResponse login(LoginRequest loginRequest) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
         if (optionalUser.isEmpty()) {
-            throw new NotFoundException("Login->User");
+            throw new NotFoundException("USER");
         }
         UserEntity userEntity = optionalUser.get();
 
         if (!matchesPassword(loginRequest.getPassword(), userEntity.getPassword())) {
-            throw new IllegalArgumentException("Invalid Credentials");
+            throw new NotFoundException("VALID_CREDENTIALS");
         }
 
         String accessToken = generateAccessToken(userEntity);
