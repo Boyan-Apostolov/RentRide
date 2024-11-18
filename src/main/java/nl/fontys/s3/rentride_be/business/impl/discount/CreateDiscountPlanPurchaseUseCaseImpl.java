@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.business.impl.discount;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.CreateDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanRepository;
@@ -23,9 +24,11 @@ public class CreateDiscountPlanPurchaseUseCaseImpl implements CreateDiscountPlan
     private DiscountPlanRepository discountPlanRepository;
     private UserRepository userRepository;
 
+    private AccessToken requestAccessToken;
+
     @Override
     public void createDiscountPlanPurchase(CreateDiscountPaymentRequest request) {
-        Long currentUserId = 1L;
+        Long currentUserId = requestAccessToken.getUserId();
 
         Optional<DiscountPlanEntity> discountPlanOptional = this.discountPlanRepository.findById(request.getDiscountPlanId());
         if (discountPlanOptional.isEmpty()) throw new NotFoundException("CreateDiscountPlanPurchase->DiscountPlan");

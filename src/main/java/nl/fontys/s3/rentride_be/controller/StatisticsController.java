@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetStatisticsUseCase;
 import nl.fontys.s3.rentride_be.domain.statistics.GeneralStatisticsResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("statistics")
 @AllArgsConstructor
+@RolesAllowed({"ADMIN"})
 public class StatisticsController {
     private GetStatisticsUseCase getBookingStatisticsUseCase;
 

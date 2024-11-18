@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingCosts;
 import nl.fontys.s3.rentride_be.business.use_cases.car.GetCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
@@ -21,9 +22,11 @@ public class GetBookingCostsImpl implements GetBookingCosts {
     private GetCarUseCase getCarUseCase;
     private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
 
+    private AccessToken requestAccessToken;
+
     @Override
     public GetBookingCostsResponse getBookingCosts(long carId, long fromCityId, long toCityId, long userId) {
-        Long currentUserId = 1L;
+        Long currentUserId = requestAccessToken.getUserId();
         GetRouteResponse routeData = getRouteBetweenCitiesUseCase.getRoute(fromCityId, toCityId);
         double distance = routeData.getDistance() != null ? Double.parseDouble(routeData.getDistance()) : 0.0;
 

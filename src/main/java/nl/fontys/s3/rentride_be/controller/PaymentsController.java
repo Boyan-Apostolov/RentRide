@@ -38,6 +38,7 @@ public class PaymentsController {
     private CreatePaymentUseCase createPaymentUseCase;
     private UpdatePaymentUseCase updatePaymentUseCase;
     private GetPaymentsByUser getPaymentsByUser;
+    private GetPaymentsUseCase getPaymentsUseCase;
     private SetPaymentToPaid setPaymentToPaid;
     private GetDiscountPlanPurchaseUseCase getDiscountPlanPurchaseUseCase;
     private UpdateDiscountPlanPurchaseUseCase updateDiscountPlanPurchaseUseCase;
@@ -45,6 +46,13 @@ public class PaymentsController {
     private GetDiscountPlanPurchasesByUser getDiscountPlanPurchasesByUser;
 
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
+
+    @GetMapping()
+    public ResponseEntity<List<Payment>> getPayments() {
+        List<Payment> userPayments = getPaymentsUseCase.getPayments();
+
+        return ResponseEntity.ok(userPayments);
+    }
 
     @GetMapping("by-user")
     public ResponseEntity<List<Payment>> getPaymentsByUser(@RequestParam("userId") Long userId) {

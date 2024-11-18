@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.user.*;
@@ -34,6 +35,8 @@ public class UsersController {
     }
 
     @PutMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Void> updateUser(@PathVariable("id") long id,
                                            @RequestBody @Valid UpdateUserRequest request) {
         request.setId(id);

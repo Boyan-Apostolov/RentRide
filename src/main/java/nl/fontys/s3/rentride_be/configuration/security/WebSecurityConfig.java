@@ -38,9 +38,13 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cities/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/cars/availableCars").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cars/features").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/discountPlans").permitAll()
                                 .requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
-//                                .anyRequest().authenticated() TODO: Enable
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);

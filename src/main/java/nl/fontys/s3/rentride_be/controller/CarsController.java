@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.car.*;
@@ -52,18 +53,24 @@ public class CarsController {
     }
 
     @DeleteMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         deleteCarUseCase.deleteCar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping()
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<CreateCarResponse> createCar(@RequestBody @Valid CreateCarRequest request) {
         CreateCarResponse response = createCarUseCase.createCar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Void> updateCar(@PathVariable("id") long id,
                                            @RequestBody @Valid UpdateCarRequest request) {
         request.setId(id);

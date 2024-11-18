@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
@@ -30,6 +31,7 @@ public class BookingsController {
     private GetBookingHistoryMapUseCase getBookingHistoryMapUseCase;
 
     @GetMapping
+    @RolesAllowed({"ADMIN"})
     public ResponseEntity<List<Booking>> getBookings() {
         List<Booking> allBookings = getBookingsUseCase.getBookings();
 
@@ -37,6 +39,7 @@ public class BookingsController {
     }
 
     @GetMapping("damages")
+    @RolesAllowed({"ADMIN"})
     ResponseEntity<List<Damage>> getPossibleDamages() {
         List<Damage> damages = getAllDamageUseCase.getAllDamage();
 

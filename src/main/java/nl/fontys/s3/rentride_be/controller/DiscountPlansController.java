@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.CreateDiscountPlanPurchaseUseCase;
@@ -31,6 +32,8 @@ public class DiscountPlansController {
     }
 
     @DeleteMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<String> deleteDiscountPlan(@PathVariable("id") Long id) {
         deleteDiscountPlanUseCase.deleteDiscountPlan(id);
         return ResponseEntity.noContent().build();
@@ -38,6 +41,8 @@ public class DiscountPlansController {
     }
 
     @PostMapping()
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<CreateDiscountPlanResponse> createDiscountPlan(@RequestBody @Valid CreateDiscountPlanRequest request){
         CreateDiscountPlanResponse response = createDiscountPlanUseCase.createDiscountPlan(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

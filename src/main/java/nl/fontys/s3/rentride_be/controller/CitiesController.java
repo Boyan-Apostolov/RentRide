@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.city.*;
@@ -37,18 +38,24 @@ public class CitiesController {
     }
 
     @DeleteMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         deleteCityUseCase.deleteCity(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping()
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<CreateCityResponse> createCity(@RequestBody @Valid CreateCityRequest request) {
         CreateCityResponse response = createCityUseCase.createCity(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("{id}")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Void> updateCity(@PathVariable("id") long id,
                                            @RequestBody @Valid UpdateCityRequest request) {
         request.setId(id);
@@ -57,6 +64,8 @@ public class CitiesController {
     }
 
     @GetMapping("/lookupCity")
+    @RolesAllowed({"ADMIN"})
+
     public ResponseEntity<Object> lookupCity(@RequestParam(value = "cityName") final String cityName) {
         GeoapifyResult possibleCity = lookupCityUseCase.lookupCity(cityName);
         if (possibleCity == null) {
