@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 import nl.fontys.s3.rentride_be.business.impl.booking.GetBookingCostsImpl;
 import nl.fontys.s3.rentride_be.business.use_cases.car.GetCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
@@ -33,6 +34,9 @@ class GetBookingCostsImplTest {
     @Mock
     private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
 
+    @Mock
+    private AccessToken accessToken;
+
     @InjectMocks
     private GetBookingCostsImpl getBookingCosts;
 
@@ -52,6 +56,8 @@ class GetBookingCostsImplTest {
         discountPlan.setDiscountValue(10); // 10% discount
         discountPlanPurchase = new DiscountPlanPurchaseEntity();
         discountPlanPurchase.setDiscountPlan(discountPlan);
+
+        when(accessToken.getUserId()).thenReturn(1L);
     }
 
     @Test

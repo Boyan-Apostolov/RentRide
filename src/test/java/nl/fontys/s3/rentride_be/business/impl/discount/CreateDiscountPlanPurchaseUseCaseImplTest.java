@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.business.impl.discount;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanRepository;
@@ -31,6 +32,9 @@ class CreateDiscountPlanPurchaseUseCaseImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private AccessToken accessToken;
+
     @InjectMocks
     private CreateDiscountPlanPurchaseUseCaseImpl createDiscountPlanPurchaseUseCase;
 
@@ -48,6 +52,8 @@ class CreateDiscountPlanPurchaseUseCaseImplTest {
 
         mockUser = new UserEntity();
         mockUser.setId(1L);
+
+        when(accessToken.getUserId()).thenReturn(1L);
     }
 
     @Test

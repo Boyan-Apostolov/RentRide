@@ -2,9 +2,14 @@ package nl.fontys.s3.rentride_be.business.impl.discount;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
+import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
+import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +33,15 @@ class UpdateDiscountPlanPurchaseUseCaseImplTest {
 
     @InjectMocks
     private UpdateDiscountPlanPurchaseUseCaseImpl updateDiscountPlanPurchaseUseCase;
+
+    @Mock
+    private AccessToken accessToken;
+
+    @BeforeEach
+    void setUp() {
+        when(accessToken.getUserId()).thenReturn(1L);
+    }
+
 
     @Test
     void updateDiscountPlanPurchase_ShouldUpdateRemainingUses_WhenRemainingUsesIsGreaterThanZero() {
