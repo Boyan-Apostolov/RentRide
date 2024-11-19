@@ -50,14 +50,4 @@ public class WebSecurityConfig {
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
-            }
-        };
-    }
 }
