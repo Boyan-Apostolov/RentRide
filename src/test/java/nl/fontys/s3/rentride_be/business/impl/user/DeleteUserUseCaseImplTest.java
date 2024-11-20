@@ -1,7 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.user;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.impl.user.DeleteUserUseCaseImpl;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

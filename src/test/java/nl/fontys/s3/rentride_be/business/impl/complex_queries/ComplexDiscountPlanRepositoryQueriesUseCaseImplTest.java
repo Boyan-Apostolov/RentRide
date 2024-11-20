@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.complex_queries;
 
-import nl.fontys.s3.rentride_be.business.impl.complex_queries.ComplexDiscountPlanRepositoryQueriesUseCaseImpl;
 import nl.fontys.s3.rentride_be.domain.statistics.GroupingDto;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanEntity;

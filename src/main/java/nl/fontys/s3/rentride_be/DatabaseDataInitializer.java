@@ -2,6 +2,7 @@ package nl.fontys.s3.rentride_be;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
@@ -9,6 +10,7 @@ import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,48 +22,47 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DatabaseDataInitializer {
-    private CityRepository cityRepository;
-    private CarRepository carRepository;
-    private UserRepository userRepository;
-    private BookingRepository bookingRepository;
-    private CarFeatureRepository carFeatureRepository;
-    private DamageRepository damageRepository;
-    private ReviewRepository reviewRepository;
-    private DiscountPlanRepository discountPlanRepository;
-    private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
+    private final CityRepository cityRepository;
+    private final CarRepository carRepository;
+    private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+    private final CarFeatureRepository carFeatureRepository;
+    private final DamageRepository damageRepository;
+    private final ReviewRepository reviewRepository;
+    private final DiscountPlanRepository discountPlanRepository;
+    private final DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
 
-    private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
-    private UpdateBookingStatusUseCase updateBookingStatusUseCase;
+    private final DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
+    private final UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
+    @Value("${spring.profiles.active:default}")
+    private String activeProfile;
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void initializeDatabase() {
-        populateCarFeatures();
-        populateCities();
-        populateUsers();
-        populateCars();
-        populateDamages();
+        if (!"test".equals(activeProfile)) {
 
-        populateBookings();
-        populateReviews();
+            populateCarFeatures();
+            populateCities();
+            populateUsers();
+            populateCars();
+            populateDamages();
 
-        populateDiscountPlans();
-        populatePurchasedDiscountPlans();
+            populateBookings();
+            populateReviews();
 
-        tryFixMissedBookings();
-        tryFixEmptyDiscountPlanPurchases();
+            populateDiscountPlans();
+            populatePurchasedDiscountPlans();
 
-        //01. 11 - 2.11 - finished
-        //01. 11 - 2.11 - canceled
-        // today + 2days - today + 3days -> paid
-        //today - 1h - today + 1 day - active
+            tryFixMissedBookings();
+            tryFixEmptyDiscountPlanPurchases();        }
     }
 
     private void tryFixEmptyDiscountPlanPurchases() {

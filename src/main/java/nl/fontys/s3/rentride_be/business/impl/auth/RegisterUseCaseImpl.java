@@ -5,7 +5,6 @@ import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.user.CreateUserUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
-import nl.fontys.s3.rentride_be.configuration.security.token.impl.AccessTokenImpl;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
 import nl.fontys.s3.rentride_be.domain.user.CreateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -13,7 +12,6 @@ import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

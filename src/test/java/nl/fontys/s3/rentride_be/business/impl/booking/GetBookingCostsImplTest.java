@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
-import nl.fontys.s3.rentride_be.business.impl.booking.GetBookingCostsImpl;
 import nl.fontys.s3.rentride_be.business.use_cases.car.GetCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;

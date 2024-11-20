@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.complex_queries;
 
-import nl.fontys.s3.rentride_be.business.impl.complex_queries.ComplexReviewRepositoryQueriesUseCaseImpl;
 import nl.fontys.s3.rentride_be.persistance.ReviewRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.ReviewEntity;
 import org.junit.jupiter.api.BeforeEach;

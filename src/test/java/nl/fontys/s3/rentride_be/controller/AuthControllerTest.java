@@ -2,10 +2,8 @@ package nl.fontys.s3.rentride_be.controller;
 
 import nl.fontys.s3.rentride_be.business.use_cases.auth.LoginUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
-import nl.fontys.s3.rentride_be.controller.AuthController;
 import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
-import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

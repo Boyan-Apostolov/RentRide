@@ -2,7 +2,6 @@ package nl.fontys.s3.rentride_be.controller;
 
 import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
 import nl.fontys.s3.rentride_be.business.use_cases.damage.GetAllDamageUseCase;
-import nl.fontys.s3.rentride_be.controller.BookingsController;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;

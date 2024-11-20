@@ -1,7 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.review;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.impl.review.UpdateReviewUseCaseImpl;
 import nl.fontys.s3.rentride_be.domain.review.UpdateReviewRequest;
 import nl.fontys.s3.rentride_be.persistance.ReviewRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.ReviewEntity;

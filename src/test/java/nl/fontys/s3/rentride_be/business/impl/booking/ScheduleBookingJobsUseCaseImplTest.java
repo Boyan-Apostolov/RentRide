@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
-import nl.fontys.s3.rentride_be.business.impl.booking.ScheduleBookingJobsUseCaseImpl;
 import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

@@ -69,7 +69,7 @@ sonar {
     properties {
         property "sonar.projectKey", "RentRide"
         property "sonar.projectName", "RentRide"
-        property "sonar.exclusions", "src/main/java/nl/fontys/s3/rentride_be/configuration/**,src/main/java/nl/fontys/s3/rentride_be/DatabaseDataInitializer.java"
+        property "sonar.exclusions", "src/main/java/nl/fontys/s3/rentride_be/configuration/**,src/main/java/nl/fontys/s3/rentride_be/DatabaseDataInitializer.java,src/main/java/nl/fontys/s3/rentride_be/RentRideBeApplication.java"
         property "sonar.token", "sqp_2da0722553ac2ec00ade642033722979598cc0b0"
     }
 }
