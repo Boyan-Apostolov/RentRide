@@ -36,7 +36,7 @@ public class GetBookingCostsImpl implements GetBookingCosts {
         double tollFees = (fuelCost + serviceCosts) * 0.10;
         double totalWithoutDiscount = fuelCost + serviceCosts + tollFees;
 
-        List<DiscountPlanPurchaseEntity> purchasedPlans = discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(currentUserId);
+        List<DiscountPlanPurchaseEntity> purchasedPlans = discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(currentUserId);
         Optional<DiscountPlanPurchaseEntity> currentPlanOptional = purchasedPlans.stream().findFirst();
 
         double userDiscounts = currentPlanOptional.map(discountPlanPurchaseEntity -> (totalWithoutDiscount * discountPlanPurchaseEntity.getDiscountPlan().getDiscountValue() / 100)).orElse(0.0);

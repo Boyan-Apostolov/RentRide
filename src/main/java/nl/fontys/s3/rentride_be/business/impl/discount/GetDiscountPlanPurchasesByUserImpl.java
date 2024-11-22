@@ -25,7 +25,7 @@ private DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
         }
         return
                 this.discountPlanPurchaseRepository
-                        .findAllByUserIdOrderByRemainingUsesDesc(userId)
+                        .findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(userId)
                         .stream().map(DiscountPlanPurchaseConverter::convert)
                         .toList();
     }
