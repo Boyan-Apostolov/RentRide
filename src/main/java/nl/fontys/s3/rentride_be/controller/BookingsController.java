@@ -70,7 +70,7 @@ public class BookingsController {
     public GetBookingCostsResponse getBookingCosts(@RequestParam(value = "carId") final long carId,
                                                    @RequestParam(value = "fromCityId") final long fromCityId,
                                                    @RequestParam(value = "toCityId") final long toCityId) {
-        return getBookingCostsUseCase.getBookingCosts(carId, fromCityId, toCityId, 0);
+        return getBookingCostsUseCase.getBookingCosts(carId, fromCityId, toCityId);
     }
 
     @PostMapping()

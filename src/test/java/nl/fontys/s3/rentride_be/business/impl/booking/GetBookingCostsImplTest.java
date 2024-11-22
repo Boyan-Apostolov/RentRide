@@ -65,7 +65,7 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of());
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L, 1L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 
         double distance = 150.0;
         double fuelCost = (distance / 100) * car.getFuelConsumption(); // Fuel cost calculation
@@ -86,7 +86,7 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of(discountPlanPurchase));
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L, 1L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 
         double distance = 150.0;
         double fuelCost = (distance / 100) * car.getFuelConsumption(); // Fuel cost calculation
@@ -108,7 +108,7 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of());
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L, 1L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 
         assertEquals(0.0, response.getFuelCost());
         assertEquals(0.0, response.getServiceFees());

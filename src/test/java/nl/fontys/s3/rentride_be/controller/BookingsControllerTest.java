@@ -116,12 +116,12 @@ class BookingsControllerTest {
 
     @Test
     void getBookingCosts_ShouldReturnBookingCosts() {
-        when(getBookingCostsUseCase.getBookingCosts(2L, 1L, 3L, 0L)).thenReturn(bookingCostsResponse);
+        when(getBookingCostsUseCase.getBookingCosts(2L, 1L, 3L)).thenReturn(bookingCostsResponse);
 
         GetBookingCostsResponse response = bookingsController.getBookingCosts(2L, 1L, 3L);
 
         assertEquals(10.0, response.getFuelCost());
-        verify(getBookingCostsUseCase, times(1)).getBookingCosts(2L, 1L, 3L, 0L);
+        verify(getBookingCostsUseCase, times(1)).getBookingCosts(2L, 1L, 3L);
     }
 
     @Test

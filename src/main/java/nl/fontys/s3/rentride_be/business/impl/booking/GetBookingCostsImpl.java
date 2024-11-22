@@ -25,7 +25,7 @@ public class GetBookingCostsImpl implements GetBookingCosts {
     private AccessToken requestAccessToken;
 
     @Override
-    public GetBookingCostsResponse getBookingCosts(long carId, long fromCityId, long toCityId, long userId) {
+    public GetBookingCostsResponse getBookingCosts(long carId, long fromCityId, long toCityId) {
         Long currentUserId = requestAccessToken.getUserId();
         GetRouteResponse routeData = getRouteBetweenCitiesUseCase.getRoute(fromCityId, toCityId);
         double distance = routeData.getDistance() != null ? Double.parseDouble(routeData.getDistance()) : 0.0;

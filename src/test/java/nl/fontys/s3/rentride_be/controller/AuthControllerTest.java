@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.LoginUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
 import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
-import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
