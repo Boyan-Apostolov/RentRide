@@ -1,11 +1,10 @@
 package nl.fontys.s3.rentride_be.domain.discount;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
 
@@ -15,9 +14,11 @@ import org.springframework.format.annotation.NumberFormat;
 @NoArgsConstructor
 public class CreateDiscountPlanRequest {
     @NotNull
+    @Size(min = 3, max = 255)
     private String title;
 
     @NotNull
+    @Size(min = 3, max = 255)
     private String description;
 
     @NotNull
@@ -28,6 +29,7 @@ public class CreateDiscountPlanRequest {
     @NotNull
     @NumberFormat
     @Min(1)
+    @Max(100)
     private Integer discountValue;
 
     @NotNull

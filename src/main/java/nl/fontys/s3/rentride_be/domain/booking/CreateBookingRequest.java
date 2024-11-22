@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.domain.booking;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class CreateBookingRequest {
 
     @NotNull
     @Min(0)
+    @Max(2)
     private int coverage;
     @NotNull
     @Min(0)
@@ -32,6 +34,7 @@ public class CreateBookingRequest {
     @NotNull
     private LocalDateTime endDateTime;
     @Min(0)
+
     private double totalPrice;
     @Min(0)
     private long userId;

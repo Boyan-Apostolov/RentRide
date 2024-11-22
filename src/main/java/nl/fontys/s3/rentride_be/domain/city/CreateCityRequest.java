@@ -1,9 +1,6 @@
 package nl.fontys.s3.rentride_be.domain.city;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +13,11 @@ import org.springframework.format.annotation.NumberFormat;
 @AllArgsConstructor
 public class CreateCityRequest {
     @NotBlank
+    @Size(min = 1, max = 255)
     private String name;
 
     @NotBlank
+    @Size(min = 1, max = 255)
     private String depoAddress;
 
     @NotNull

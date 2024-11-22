@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -135,43 +136,113 @@ class CarsControllerTest {
         verify(deleteCarUseCase).deleteCar(1L);
     }
 
+    @Test
+    void createCar_shouldCreateAndReturn400_WhenRequestInValid() throws Exception {
+        CreateCarRequest request = CreateCarRequest.builder()
+                .make("A")
+                .model("B")
+                .registrationNumber("123")
+                .features(null)
+                .fuelConsumption(null)
+                .cityId(null)
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        String expectedErrorResponse = """
+            {
+                "errors": [
+                    {"field": "make", "error": "size must be between 2 and 50"},
+                    {"field": "model", "error": "size must be between 2 and 50"},
+                    {"field": "features", "error": "must not be empty"}
+                ]
+            }
+            """;
+
+        mockMvc.perform(post("/cars")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(expectedErrorResponse, false));
+
+        verifyNoInteractions(createCarUseCase);
+    }
 
     @Test
-    void createCar_shouldReturn201_WhenRequestValid() throws Exception {
+    void createCar_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
         CreateCarRequest request = CreateCarRequest.builder()
                 .make("Toyota")
                 .model("Corolla")
                 .registrationNumber("ABC123")
+                .features(List.of("GPS", "Airbags"))
+                .fuelConsumption(10.0)
+                .cityId(1L)
                 .build();
-        CreateCarResponse response = CreateCarResponse.builder().carId(1L).build();
 
-        when(createCarUseCase.createCar(request)).thenReturn(response);
+        CreateCarResponse response = CreateCarResponse.builder()
+                .carId(1L)
+                .build();
+
+        when(createCarUseCase.createCar(any(CreateCarRequest.class))).thenReturn(response);
+
+        String requestJson = objectMapper.writeValueAsString(request);
+        String responseJson = objectMapper.writeValueAsString(response);
 
         mockMvc.perform(post("/cars")
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+                .andExpect(content().json(responseJson, true));
 
-        verify(createCarUseCase).createCar(request);
+        verify(createCarUseCase, times(1)).createCar(any(CreateCarRequest.class));
     }
 
     @Test
-    void updateCar_shouldReturn204_WhenRequestValid() throws Exception {
+    void updateCar_shouldUpdateAndReturn400_WhenRequestInValid() throws Exception {
         UpdateCarRequest request = UpdateCarRequest.builder()
-                .id(1L)
+                .make("") // Invalid
+                .model("") // Invalid
+                .build(); // Missing fields like registrationNumber, fuelConsumption, and cityId.
+
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        String expectedErrorResponse = """
+            {
+                "errors": [
+                    {"field": "make", "error": "must not be blank"},
+                    {"field": "registrationNumber", "error": "must not be blank"},
+                    {"field": "model", "error": "must not be blank"}
+                ]
+            }
+            """;
+
+        mockMvc.perform(put("/cars/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(expectedErrorResponse, false));
+
+        verifyNoInteractions(updateCarUseCase);
+    }
+
+    @Test
+    void updateCar_shouldUpdateAndReturn204_WhenRequestValid() throws Exception {
+        UpdateCarRequest request = UpdateCarRequest.builder()
                 .make("Toyota")
-                .model("UpdatedModel")
+                .model("Corolla")
                 .registrationNumber("ABC123")
+                .fuelConsumption(8.0)
+                .cityId(1L)
+                .features(List.of("GPS", "Airbags"))
                 .build();
 
-        mockMvc.perform(put("/cars/1")
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(put("/cars/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
                 .andExpect(status().isNoContent());
 
-        verify(updateCarUseCase).updateCar(request);
+        verify(updateCarUseCase, times(1)).updateCar(any(UpdateCarRequest.class));
     }
 }

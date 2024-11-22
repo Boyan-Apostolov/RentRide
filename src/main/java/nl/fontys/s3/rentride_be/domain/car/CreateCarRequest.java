@@ -1,8 +1,6 @@
 package nl.fontys.s3.rentride_be.domain.car;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,14 +17,18 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateCarRequest {
     @NotBlank
+    @Size(min = 2, max = 50)
     private String make;
 
     @NotBlank
+    @Size(min = 2, max = 50)
     private String model;
 
     @NotBlank
+    @Size(min = 2, max = 10)
     private String registrationNumber;
 
+    @NotEmpty
     private List<String> features;
 
     @NumberFormat
