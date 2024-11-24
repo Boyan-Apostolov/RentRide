@@ -1,5 +1,3 @@
-DELIMITER //
-
 -- Procedure: Calculate total distance for a specific car
 CREATE PROCEDURE sum_distance_by_car(IN car_id_input BIGINT)
 BEGIN
@@ -7,7 +5,6 @@ BEGIN
     FROM booking
     WHERE car_id = car_id_input;
 END;
-//
 
 -- Procedure: Calculate total distance across all cars
 CREATE PROCEDURE sum_all_distances()
@@ -15,7 +12,6 @@ BEGIN
     SELECT COALESCE(SUM(distance), 0) AS total_distance
     FROM booking;
 END;
-//
 
 -- Procedure: Calculate total price for a specific car
 CREATE PROCEDURE sum_price_by_car(IN car_id_input BIGINT)
@@ -24,7 +20,6 @@ BEGIN
     FROM booking
     WHERE car_id = car_id_input;
 END;
-//
 
 -- Procedure: Calculate total price across all cars
 CREATE PROCEDURE sum_all_prices()
@@ -32,7 +27,6 @@ BEGIN
     SELECT COALESCE(SUM(total_price), 0) AS total_price
     FROM booking;
 END;
-//
 
 -- Procedure: Get the most popular cars
 CREATE PROCEDURE get_most_popular_cars()
@@ -45,7 +39,6 @@ BEGIN
     GROUP BY c.make, c.model
     ORDER BY `value` DESC;
 END;
-//
 
 -- Procedure: Get the most popular trips
 CREATE PROCEDURE get_most_popular_trips()
@@ -59,7 +52,6 @@ BEGIN
     GROUP BY sc.name, ec.name
     ORDER BY `value` DESC;
 END;
-//
 
 -- Procedure: Get bookings per month
 CREATE PROCEDURE get_bookings_per_month()
@@ -71,11 +63,6 @@ BEGIN
     GROUP BY MONTH(start_date_time), MONTHNAME(start_date_time)
     ORDER BY MONTH(start_date_time) DESC;
 END;
-//
-
-DELIMITER ;
-
-DELIMITER //
 
 -- Procedure: Calculate average ratings by car ID
 CREATE PROCEDURE avg_ratings_by_car_id(IN car_id_input BIGINT)
@@ -86,12 +73,7 @@ BEGIN
              JOIN booking b ON r.booking_id = b.id
     WHERE b.car_id = car_id_input;
 END;
-//
 
-DELIMITER ;
-
-
-DELIMITER //
 
 -- Procedure: Get most bought discount plans
 CREATE PROCEDURE get_most_bought_discount_plans()
@@ -108,6 +90,3 @@ BEGIN
     ORDER BY
         purchase_count DESC;
 END;
-//
-
-DELIMITER ;

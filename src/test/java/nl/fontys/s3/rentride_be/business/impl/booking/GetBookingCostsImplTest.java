@@ -63,7 +63,7 @@ class GetBookingCostsImplTest {
     void getBookingCosts_ShouldCalculateCostsWithoutDiscount() {
         when(getRouteBetweenCitiesUseCase.getRoute(1L, 2L)).thenReturn(routeResponse);
         when(getCarUseCase.getCar(1L)).thenReturn(car);
-        when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of());
+        when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of());
 
         GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 
@@ -84,7 +84,7 @@ class GetBookingCostsImplTest {
     void getBookingCosts_ShouldApplyDiscount_WhenUserHasDiscountPlan() {
         when(getRouteBetweenCitiesUseCase.getRoute(1L, 2L)).thenReturn(routeResponse);
         when(getCarUseCase.getCar(1L)).thenReturn(car);
-        when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of(discountPlanPurchase));
+        when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of(discountPlanPurchase));
 
         GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 
@@ -106,7 +106,7 @@ class GetBookingCostsImplTest {
     void getBookingCosts_ShouldHandleEmptyRouteResponseGracefully() {
         when(getRouteBetweenCitiesUseCase.getRoute(1L, 2L)).thenReturn(new GetRouteResponse());
         when(getCarUseCase.getCar(1L)).thenReturn(car);
-        when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(1L)).thenReturn(List.of());
+        when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of());
 
         GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
 

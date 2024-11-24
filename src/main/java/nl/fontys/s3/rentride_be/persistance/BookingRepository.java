@@ -1,7 +1,5 @@
 package nl.fontys.s3.rentride_be.persistance;
 
-import jakarta.persistence.SqlResultSetMapping;
-import nl.fontys.s3.rentride_be.domain.statistics.GroupingDto;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     List<BookingEntity> findAllByCarId(Long carId);

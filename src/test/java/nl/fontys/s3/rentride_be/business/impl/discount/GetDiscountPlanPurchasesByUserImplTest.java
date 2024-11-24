@@ -47,25 +47,25 @@ class GetDiscountPlanPurchasesByUserImplTest {
 
     @Test
     void getDiscountPlanPurchasesByUser_ShouldReturnPurchasesForProvidedUserId() {
-        when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(101L))
+        when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(101L))
                 .thenReturn(List.of(discountPlanPurchaseEntity1, discountPlanPurchaseEntity2));
 
         List<DiscountPlanPurchase> result = getDiscountPlanPurchasesByUser.getDiscountPlanPurchasesByUser(101L);
 
         assertEquals(2, result.size());
-        verify(discountPlanPurchaseRepository, times(1)).findAllByUserIdOrderByRemainingUsesDesc(101L);
+        verify(discountPlanPurchaseRepository, times(1)).findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(101L);
     }
 
     @Test
     void getDiscountPlanPurchasesByUser_ShouldReturnPurchasesForCurrentUserId_WhenUserIdIsNull() {
         when(requestAccessToken.getUserId()).thenReturn(101L);
-        when(discountPlanPurchaseRepository.findAllByUserIdOrderByRemainingUsesDesc(101L))
+        when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(101L))
                 .thenReturn(List.of(discountPlanPurchaseEntity1, discountPlanPurchaseEntity2));
 
         List<DiscountPlanPurchase> result = getDiscountPlanPurchasesByUser.getDiscountPlanPurchasesByUser(null);
 
         assertEquals(2, result.size());
         verify(requestAccessToken, times(1)).getUserId();
-        verify(discountPlanPurchaseRepository, times(1)).findAllByUserIdOrderByRemainingUsesDesc(101L);
+        verify(discountPlanPurchaseRepository, times(1)).findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(101L);
     }
 }
