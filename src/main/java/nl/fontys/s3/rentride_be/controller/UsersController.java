@@ -19,7 +19,7 @@ public class UsersController {
     private GetUserUseCase getUserUseCase;
     private GetUsersUseCase getUsersUseCase;
     private UpdateUserUseCase updateUserUseCase;
-    private UpdateUserEmailsUseCase updateUserEmailsUseCase;
+    private UpdateUserEmailSettingsUseCase updateUserEmailsUseCase;
 
     @GetMapping("currentUserProfile")
     public ResponseEntity<User> getCurrentUserProfile() {

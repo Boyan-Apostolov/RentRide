@@ -84,13 +84,13 @@ class BookingsControllerTest {
 
     @Test
     void getUserBookings_ShouldReturnUserBookings() {
-        when(getBookingsForUserUseCase.getBookingsForUser(1L)).thenReturn(List.of(booking));
+        when(getBookingsForUserUseCase.getBookingsForUser()).thenReturn(List.of(booking));
 
-        ResponseEntity<List<Booking>> response = bookingsController.getUserBookings(1L);
+        ResponseEntity<List<Booking>> response = bookingsController.getUserBookings();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
-        verify(getBookingsForUserUseCase, times(1)).getBookingsForUser(1L);
+        verify(getBookingsForUserUseCase, times(1)).getBookingsForUser();
     }
 
     @Test

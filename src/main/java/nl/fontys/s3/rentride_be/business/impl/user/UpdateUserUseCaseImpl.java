@@ -48,7 +48,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
         }
 
         Optional<UserEntity> optionalUserByEmail = userRepository.findByEmail(request.getEmail());
-        if (optionalUserByEmail.isEmpty() || optionalUserByEmail.get().getId() == userEntity.getId()) {
+        if (optionalUserByEmail.isEmpty() || Objects.equals(optionalUserByEmail.get().getId(), userEntity.getId())) {
             userEntity.setEmail(request.getEmail());
         } else {
             throw new InvalidOperationException("Email already exists");

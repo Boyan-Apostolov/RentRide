@@ -2,7 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.user;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.use_cases.user.UpdateUserEmailsUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.user.UpdateUserEmailSettingsUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserEmailSettingsRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UpdateUserEmailsUseCaseImpl implements UpdateUserEmailsUseCase {
+public class UpdateUserEmailSettingsUseCaseImpl implements UpdateUserEmailSettingsUseCase {
     private final UserRepository userRepository;
     private AccessToken requestAccessToken;
     @Override
