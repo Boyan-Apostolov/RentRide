@@ -55,9 +55,8 @@ public class PaymentsController {
     }
 
     @GetMapping("by-user")
-    public ResponseEntity<List<Payment>> getPaymentsByUser(@RequestParam("userId") Long userId) {
-        //TODO: Use session to validate if user has same id
-        List<Payment> userPayments = getPaymentsByUser.getPaymentsByUser(userId);
+    public ResponseEntity<List<Payment>> getPaymentsByUser() {
+        List<Payment> userPayments = getPaymentsByUser.getPaymentsBySessionUser();
 
         return ResponseEntity.ok(userPayments);
     }

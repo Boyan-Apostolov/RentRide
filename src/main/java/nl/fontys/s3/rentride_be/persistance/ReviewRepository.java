@@ -11,6 +11,8 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
 
     List<ReviewEntity> findAllByBooking_CarId(Long carId);
 
+    List<ReviewEntity> findAllByUser_Id(Long carId);
+
     @Query(value = "CALL avg_ratings_by_car_id(:carId);", nativeQuery = true)
     Double getAverageRatingsByCar(@Param("carId") Long carId);
 }

@@ -5,5 +5,5 @@ import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import java.util.List;
 
 public interface GetBookingsForUserUseCase {
-    List<Booking> getBookingsForUser(Long userId);
+    List<Booking> getBookingsForUser();
 }
