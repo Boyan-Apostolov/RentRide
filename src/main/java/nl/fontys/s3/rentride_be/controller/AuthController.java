@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.LoginUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenDecoder;
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
@@ -21,6 +24,8 @@ public class AuthController {
 
     private final LoginUseCase loginUseCase;
     private final RegisterUseCase registerUseCase;
+    private final AccessTokenEncoder accessTokenEncoder;
+    private final AccessTokenDecoder accessTokenDecoder;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
@@ -35,5 +40,16 @@ public class AuthController {
                 .email(registerRequest.getEmail())
                 .password(registerRequest.getPassword())
                 .build());
+    }
+
+    @PostMapping("/renew")
+    public ResponseEntity<LoginResponse> renewAccessToken(@RequestBody LoginResponse accessTokenRequest) {
+        AccessToken accessToken = accessTokenDecoder.decode(accessTokenRequest.getAccessToken());
+
+        String newAccessToken = accessTokenEncoder.encode(accessToken);
+
+        LoginResponse response = LoginResponse.builder().accessToken(newAccessToken).build();
+
+        return ResponseEntity.ok(response);
     }
 }
