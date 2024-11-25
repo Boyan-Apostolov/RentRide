@@ -381,7 +381,10 @@ public class DatabaseDataInitializer {
                     .email("admin@admin.com")
                     .password(passwordEncoder.encode("12345678"))
                     .birthDate(LocalDate.of(2004, 3, 12))
-                    .build();
+                            .bookingsEmails(true)
+                            .damageEmails(true)
+                            .promoEmails(false)
+                            .build();
             UserRoleEntity adminRole = UserRoleEntity.builder().role(UserRole.ADMIN).user(adminUser).build();
             adminUser.setUserRoles(Set.of(adminRole));
             this.userRepository.save(adminUser);

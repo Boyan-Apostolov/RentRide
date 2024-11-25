@@ -3,7 +3,10 @@ CREATE TABLE users (
                       name VARCHAR(255) NOT NULL,
                       email VARCHAR(255) NOT NULL,
                       password VARCHAR(255) NOT NULL,
-                      birth_date DATE NOT NULL
+                      birth_date DATE NOT NULL,
+                    damage_emails bit not null,
+                    promo_emails bit not null,
+                    booking_emails bit not null
 );
 
 CREATE TABLE user_role
