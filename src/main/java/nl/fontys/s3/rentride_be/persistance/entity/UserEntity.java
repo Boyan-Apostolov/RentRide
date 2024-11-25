@@ -32,6 +32,18 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @NotNull
+    @Column(name = "booking_emails")
+    private boolean bookingsEmails;
+
+    @NotNull
+    @Column(name = "damage_emails")
+    private boolean damageEmails;
+
+    @NotNull
+    @Column(name = "promo_emails")
+    private boolean promoEmails;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;

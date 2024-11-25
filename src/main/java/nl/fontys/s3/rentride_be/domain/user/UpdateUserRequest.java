@@ -18,8 +18,9 @@ public class UpdateUserRequest {
 
     private String email;
 
-    @NotBlank
-    private String password;
+    private String currentPassword;
+
+    private String newPassword;
 
     @DateTimeFormat
     private LocalDate birthDate;

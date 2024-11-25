@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
+import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
@@ -28,6 +29,9 @@ class GetBookingsForUserUseCaseImplTest {
     private BookingEntity bookingEntity1;
     private BookingEntity bookingEntity2;
 
+    @Mock
+    private AccessToken accessToken;
+
     @BeforeEach
     void setUp() {
         bookingEntity1 = BookingEntity.builder()
@@ -43,6 +47,8 @@ class GetBookingsForUserUseCaseImplTest {
                 .endDateTime(LocalDateTime.of(2023, 11, 6, 10, 0))
                 .totalPrice(300.0)
                 .build();
+
+        when(accessToken.getUserId()).thenReturn(1L);
     }
 
     @Test
@@ -50,7 +56,7 @@ class GetBookingsForUserUseCaseImplTest {
         Long userId = 1L;
         when(bookingRepository.findByUserId(userId)).thenReturn(List.of(bookingEntity1, bookingEntity2));
 
-        List<Booking> result = getBookingsForUserUseCase.getBookingsForUser(userId);
+        List<Booking> result = getBookingsForUserUseCase.getBookingsForUser();
 
         assertEquals(2, result.size());
         assertEquals(bookingEntity1.getId(), result.get(0).getId());
@@ -64,7 +70,7 @@ class GetBookingsForUserUseCaseImplTest {
         Long userId = 1L;
         when(bookingRepository.findByUserId(userId)).thenReturn(List.of());
 
-        List<Booking> result = getBookingsForUserUseCase.getBookingsForUser(userId);
+        List<Booking> result = getBookingsForUserUseCase.getBookingsForUser();
 
         assertEquals(0, result.size());
 

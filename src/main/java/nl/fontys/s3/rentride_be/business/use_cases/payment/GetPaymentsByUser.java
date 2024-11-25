@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GetPaymentsByUser {
     List<Payment> getPaymentsByUser(Long userId);
+
+    List<Payment> getPaymentsBySessionUser();
 }

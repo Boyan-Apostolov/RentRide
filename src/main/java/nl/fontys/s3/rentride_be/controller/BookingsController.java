@@ -47,8 +47,8 @@ public class BookingsController {
     }
 
     @GetMapping("by-user")
-    public ResponseEntity<List<Booking>> getUserBookings(@RequestParam(value = "userId") final long userId) {
-        List<Booking> allBookings = getBookingsForUserUseCase.getBookingsForUser(userId);
+    public ResponseEntity<List<Booking>> getUserBookings() {
+        List<Booking> allBookings = getBookingsForUserUseCase.getBookingsForUser();
 
         return ResponseEntity.ok(allBookings);
     }

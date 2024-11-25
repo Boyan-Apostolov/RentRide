@@ -2,10 +2,7 @@ package nl.fontys.s3.rentride_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.use_cases.review.CreateReviewUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.review.DeleteReviewUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.review.GetReviewsByCar;
-import nl.fontys.s3.rentride_be.business.use_cases.review.UpdateReviewUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.review.*;
 import nl.fontys.s3.rentride_be.domain.review.CreateReviewRequest;
 import nl.fontys.s3.rentride_be.domain.review.Review;
 import nl.fontys.s3.rentride_be.domain.review.UpdateReviewRequest;
@@ -22,10 +19,18 @@ public class ReviewsController {
     private DeleteReviewUseCase deleteReviewUseCase;
     private UpdateReviewUseCase updateReviewUseCase;
     private CreateReviewUseCase createReviewUseCase;
+    private GetReviewsByUser getReviewsByUser;
 
     @GetMapping()
     public ResponseEntity<List<Review>> getReviews(@RequestParam(value = "carId") Long carId) {
        List<Review> reviews = this.getReviewsByCar.getReviewsByCar(carId);
+
+        return ResponseEntity.ok().body(reviews);
+    }
+
+    @GetMapping("by-user")
+    public ResponseEntity<List<Review>> getReviewsByUser() {
+        List<Review> reviews = this.getReviewsByUser.getReviewsByUser();
 
         return ResponseEntity.ok().body(reviews);
     }

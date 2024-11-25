@@ -14,6 +14,9 @@ public final class UserConverter {
                 .password(userEntity.getPassword())
                 .name(userEntity.getName())
                 .birthDate(userEntity.getBirthDate())
+                .bookingsEmails(userEntity.isBookingsEmails())
+                .damageEmails(userEntity.isDamageEmails())
+                .promoEmails(userEntity.isPromoEmails())
                 .build();
     }
 }

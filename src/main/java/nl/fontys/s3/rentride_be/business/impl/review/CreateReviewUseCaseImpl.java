@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.business.impl.review;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.exception.InvalidOperationException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.review.CreateReviewUseCase;
 import nl.fontys.s3.rentride_be.domain.review.CreateReviewRequest;
@@ -28,6 +29,9 @@ public class CreateReviewUseCaseImpl implements CreateReviewUseCase {
         Optional<BookingEntity> booking = bookingRepository.findById(request.getBookingId());
         if(booking.isEmpty()) throw new NotFoundException("AddReview->Booking");
         BookingEntity bookingEntity = booking.get();
+
+        if(bookingEntity.getStatus() != BookingStatus.Finished)
+            throw new InvalidOperationException("Booking already rated");
 
         Optional<UserEntity> user = userRepository.findById(request.getUserId());
         if(user.isEmpty()) throw new NotFoundException("AddReview->User");
