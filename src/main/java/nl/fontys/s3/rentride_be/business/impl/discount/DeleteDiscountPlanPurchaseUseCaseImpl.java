@@ -1,5 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.discount;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
@@ -14,17 +15,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DeleteDiscountPlanPurchaseUseCaseImpl implements DeleteDiscountPlanPurchaseUseCase {
     private DiscountPlanPurchaseRepository purchaseRepository;
-
+    @Transactional
     @Override
     public void deleteDiscountPlanPurchase(Long userId, Long discountPlanId) {
         Optional<DiscountPlanPurchaseEntity> purchase = purchaseRepository.findByUserIdAndDiscountPlanId(userId, discountPlanId);
         if(purchase.isEmpty()) throw new NotFoundException("DeleteDiscount->Entity");
 
-        purchaseRepository.deleteById(
-                DiscountPlanPurchaseKey.builder()
-                .userId(userId)
-                .discountPlanId(discountPlanId)
-                .build()
-        );
+        purchaseRepository.delete(purchase.get());
     }
 }

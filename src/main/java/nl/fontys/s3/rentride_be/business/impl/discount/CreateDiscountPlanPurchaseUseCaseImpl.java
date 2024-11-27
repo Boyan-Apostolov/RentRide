@@ -5,6 +5,7 @@ import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.CreateDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
+import nl.fontys.s3.rentride_be.domain.discount.DiscountPlanPurchase;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -27,7 +28,7 @@ public class CreateDiscountPlanPurchaseUseCaseImpl implements CreateDiscountPlan
     private AccessToken requestAccessToken;
 
     @Override
-    public void createDiscountPlanPurchase(CreateDiscountPaymentRequest request) {
+    public DiscountPlanPurchase createDiscountPlanPurchase(CreateDiscountPaymentRequest request) {
         Long currentUserId = requestAccessToken.getUserId();
 
         Optional<DiscountPlanEntity> discountPlanOptional = this.discountPlanRepository.findById(request.getDiscountPlanId());
@@ -38,16 +39,20 @@ public class CreateDiscountPlanPurchaseUseCaseImpl implements CreateDiscountPlan
         if (optionalUser.isEmpty()) throw new NotFoundException("CreateDiscountPlanPurchase->User");
         UserEntity userEntity = optionalUser.get();
 
-        discountPlanPurchaseRepository.save(DiscountPlanPurchaseEntity.builder()
-                        .discountPlan(discountPlanEntity)
-                        .user(userEntity)
-                        .purchaseDate(LocalDateTime.now())
-                        .remainingUses(0)
-                        .id(DiscountPlanPurchaseKey.builder()
-                                .discountPlanId(discountPlanEntity.getId())
-                                .userId(userEntity.getId())
-                                .build())
-                .build());
+        DiscountPlanPurchaseEntity purchaseEntity = DiscountPlanPurchaseEntity.builder()
+                .discountPlan(discountPlanEntity)
+                .user(userEntity)
+                .purchaseDate(LocalDateTime.now())
+                .remainingUses(0)
+                .id(DiscountPlanPurchaseKey.builder()
+                        .discountPlanId(discountPlanEntity.getId())
+                        .userId(userEntity.getId())
+                        .build())
+                .build();
+
+        discountPlanPurchaseRepository.save(purchaseEntity);
+
+        return DiscountPlanPurchaseConverter.convert(purchaseEntity);
 
     }
 }

@@ -39,7 +39,7 @@ public class DiscountPlanEntity {
     @Column(name = "price")
     private double price;
 
-    @OneToMany(mappedBy = "discountPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "discountPlan", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<DiscountPlanPurchaseEntity> purchases;

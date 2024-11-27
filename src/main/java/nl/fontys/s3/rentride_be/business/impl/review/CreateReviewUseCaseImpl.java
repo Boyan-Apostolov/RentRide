@@ -26,6 +26,7 @@ public class CreateReviewUseCaseImpl implements CreateReviewUseCase {
 
     @Override
     public void createReview(CreateReviewRequest request) {
+
         Optional<BookingEntity> booking = bookingRepository.findById(request.getBookingId());
         if(booking.isEmpty()) throw new NotFoundException("AddReview->Booking");
         BookingEntity bookingEntity = booking.get();

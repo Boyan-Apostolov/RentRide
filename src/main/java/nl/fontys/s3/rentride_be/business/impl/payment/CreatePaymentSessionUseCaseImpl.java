@@ -50,7 +50,7 @@ public class CreatePaymentSessionUseCaseImpl implements CreatePaymentSessionUseC
                 .addLineItem(lineItem)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl(frontendUrl + "pay-handle?paymentType=" + paymentType + "&responseType=success&sessionId={CHECKOUT_SESSION_ID}&entityId=" + relatedEntityId)
-                .setCancelUrl(frontendUrl + "pay-handle?paymentType=" + paymentType + "&responseType=cancel&entityId=" + relatedEntityId)
+                .setCancelUrl(frontendUrl + "pay-handle?paymentType=" + paymentType + "&responseType=cancel&sessionId={CHECKOUT_SESSION_ID}&entityId=" + relatedEntityId)
                 .build();
 
         Session session = Session.create(params);

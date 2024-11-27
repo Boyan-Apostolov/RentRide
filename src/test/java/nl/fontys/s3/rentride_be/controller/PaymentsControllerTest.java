@@ -50,7 +50,7 @@ class PaymentsControllerTest {
     @Mock
     private GetPaymentsUseCase getPaymentsUseCase;
     @Mock
-    private SetPaymentToPaid setPaymentToPaid;
+    private UpdatePaymentStatusUseCase updatePaymentStatusUseCase;
     @Mock
     private GetDiscountPlanPurchaseUseCase getDiscountPlanPurchaseUseCase;
     @Mock

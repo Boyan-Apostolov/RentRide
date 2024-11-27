@@ -25,17 +25,17 @@ public class CreateReviewRequest {
     private String text;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private Integer valueForMoney;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private Integer carCondition;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private Integer carSpeed;
 }
