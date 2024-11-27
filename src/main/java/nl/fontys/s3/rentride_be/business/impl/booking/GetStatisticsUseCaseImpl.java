@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetStatisticsUseCase;
 import nl.fontys.s3.rentride_be.domain.statistics.GeneralStatisticsResponse;
 import nl.fontys.s3.rentride_be.domain.statistics.GroupingDto;
+import nl.fontys.s3.rentride_be.domain.statistics.PopularCarOverTimeDto;
 import nl.fontys.s3.rentride_be.domain.statistics.StatisticsByCarResponse;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
@@ -84,6 +85,20 @@ public class GetStatisticsUseCaseImpl implements GetStatisticsUseCase {
     @Override
     public List<GroupingDto> getBookingsPerMonth() {
         return mapObjectToGroupingDto(this.bookingRepository.getBookingsPerMonth());
+    }
+
+    @Override
+    public List<PopularCarOverTimeDto> getPopularCarsOverTime() {
+        List<Object[]> rawData = this.bookingRepository.getPopularCarsOverTime();
+
+        return rawData.stream().map(record -> {
+            String car = (String) record[0];
+            int year = ((Number) record[1]).intValue();
+            String month = (String) record[2];
+            long count = ((Number) record[3]).longValue();
+
+            return new PopularCarOverTimeDto(car, year, month, count);
+        }).toList();
     }
 
     private List<GroupingDto> mapObjectToGroupingDto(List<Object[]> object){

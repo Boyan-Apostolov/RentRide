@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetStatisticsUseCase;
 import nl.fontys.s3.rentride_be.domain.statistics.GeneralStatisticsResponse;
 import nl.fontys.s3.rentride_be.domain.statistics.GroupingDto;
+import nl.fontys.s3.rentride_be.domain.statistics.PopularCarOverTimeDto;
 import nl.fontys.s3.rentride_be.domain.statistics.StatisticsByCarResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,13 @@ public class StatisticsController {
     @GetMapping("per-month")
     public ResponseEntity<List<GroupingDto>> getBookingsPerMonth(){
         List<GroupingDto> bookingsPerMonth = this.getBookingStatisticsUseCase.getBookingsPerMonth();
+
+        return ResponseEntity.ok().body(bookingsPerMonth);
+    }
+
+    @GetMapping("popular-over-time")
+    public ResponseEntity<List<PopularCarOverTimeDto>> getPopularCarsOverTime(){
+        List<PopularCarOverTimeDto> bookingsPerMonth = this.getBookingStatisticsUseCase.getPopularCarsOverTime();
 
         return ResponseEntity.ok().body(bookingsPerMonth);
     }
