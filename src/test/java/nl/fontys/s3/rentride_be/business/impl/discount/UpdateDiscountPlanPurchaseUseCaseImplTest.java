@@ -1,11 +1,14 @@
 package nl.fontys.s3.rentride_be.business.impl.discount;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
+import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +36,9 @@ class UpdateDiscountPlanPurchaseUseCaseImplTest {
 
     @Mock
     private AccessToken accessToken;
+
+    @Mock
+    private EmailerUseCase emailerUseCase;
 
     @BeforeEach
     void setUp() {
@@ -68,7 +74,10 @@ class UpdateDiscountPlanPurchaseUseCaseImplTest {
         Long discountPlanId = 1L;
         Long currentUserId = 1L;
 
-        DiscountPlanPurchaseEntity discountPlanPurchaseEntity = new DiscountPlanPurchaseEntity();
+        DiscountPlanPurchaseEntity discountPlanPurchaseEntity = DiscountPlanPurchaseEntity.builder()
+                .discountPlan(DiscountPlanEntity.builder().build())
+                .user(UserEntity.builder().email("").build())
+                .build();
         discountPlanPurchaseEntity.setRemainingUses(10);
 
         UpdateDiscountPaymentRequest request = UpdateDiscountPaymentRequest.builder()

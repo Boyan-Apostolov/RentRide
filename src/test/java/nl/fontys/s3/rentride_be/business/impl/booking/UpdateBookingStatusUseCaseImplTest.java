@@ -1,15 +1,13 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingsForCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.car.MoveCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.RefundPaymentUseCase;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
-import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
-import nl.fontys.s3.rentride_be.persistance.entity.CarEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
+import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +43,9 @@ class UpdateBookingStatusUseCaseImplTest {
     @Mock
     private RefundPaymentUseCase refundPaymentUseCase;
 
+    @Mock
+    private EmailerUseCase emailerUseCase;
+
     private BookingEntity mockBookingEntity;
     private CarEntity car;
     private CityEntity currentCity;
@@ -67,6 +68,8 @@ class UpdateBookingStatusUseCaseImplTest {
         mockBookingEntity.setCar(car);
         mockBookingEntity.setStatus(BookingStatus.Unpaid);
         mockBookingEntity.setStartCity(startCity);
+        mockBookingEntity.setUser(UserEntity.builder().email("").build());
+
     }
 
     @Test
