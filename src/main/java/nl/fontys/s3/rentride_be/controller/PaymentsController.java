@@ -4,6 +4,7 @@ import com.stripe.model.checkout.Session;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.impl.discount.CreateDiscountPlanPurchaseUseCaseImpl;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
@@ -16,6 +17,7 @@ import nl.fontys.s3.rentride_be.domain.discount.DiscountPlanPurchase;
 import nl.fontys.s3.rentride_be.domain.discount.UpdateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.CreatePaymentRequest;
 import nl.fontys.s3.rentride_be.domain.payment.Payment;
+import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import nl.fontys.s3.rentride_be.persistance.entity.PaymentEntity;
 import org.springframework.http.HttpStatus;
@@ -47,6 +49,7 @@ public class PaymentsController {
     private GetDiscountPlanPurchasesByUser getDiscountPlanPurchasesByUser;
 
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
+    private EmailerUseCase emailerUseCase;
 
     @GetMapping()
     public ResponseEntity<List<Payment>> getPayments() {
@@ -170,6 +173,11 @@ public class PaymentsController {
             }
 
             scheduleBookingJobsUseCase.scheduleStartAndEndJobs(booking.getId(), booking.getStartDateTime(), booking.getEndDateTime());
+
+            emailerUseCase.send(booking.getUser().getEmail(), "Booking reserved!",
+                    String.format("Your booking with number #%s from %s to %s has been successfully registered! You will receive a second confirmation email when the booking starts!",
+                    booking.getId(), booking.getStartCity().getName(), booking.getEndCity().getName()),
+                    EmailType.BOOKING);
 
             return ResponseEntity.accepted().build();
         } else {

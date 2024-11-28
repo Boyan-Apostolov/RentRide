@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.business.impl.discount;
 
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
@@ -34,6 +35,9 @@ class CreateDiscountPlanPurchaseUseCaseImplTest {
 
     @Mock
     private AccessToken accessToken;
+
+    @Mock
+    private EmailerUseCase emailerUseCase;
 
     @InjectMocks
     private CreateDiscountPlanPurchaseUseCaseImpl createDiscountPlanPurchaseUseCase;

@@ -2,10 +2,12 @@ package nl.fontys.s3.rentride_be.business.impl.discount;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.CreateDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.discount.DiscountPlanPurchase;
+import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -26,6 +28,8 @@ public class CreateDiscountPlanPurchaseUseCaseImpl implements CreateDiscountPlan
     private UserRepository userRepository;
 
     private AccessToken requestAccessToken;
+
+    private EmailerUseCase emailerUseCase;
 
     @Override
     public DiscountPlanPurchase createDiscountPlanPurchase(CreateDiscountPaymentRequest request) {
@@ -51,6 +55,11 @@ public class CreateDiscountPlanPurchaseUseCaseImpl implements CreateDiscountPlan
                 .build();
 
         discountPlanPurchaseRepository.save(purchaseEntity);
+
+        emailerUseCase.send(userEntity.getEmail(), "Discount plan purchased successfully",
+                String.format("We want to inform to that your purchase of \" %s \" has been successful! During your next booking, the discount plan with the highest discount value will be automatically applied",
+                        discountPlanEntity.getTitle()),
+                EmailType.PROMO);
 
         return DiscountPlanPurchaseConverter.convert(purchaseEntity);
 

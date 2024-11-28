@@ -1,6 +1,7 @@
 package nl.fontys.s3.rentride_be.business.impl.auth;
 
 import nl.fontys.s3.rentride_be.business.exception.AlreadyExistsException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.user.CreateUserUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
@@ -40,6 +41,9 @@ class RegisterUseCaseImplTest {
     private RegisterUseCaseImpl registerUseCase;
 
     private RegisterRequest registerRequest;
+
+    @Mock
+    private EmailerUseCase emailerUseCase;
 
     @BeforeEach
     void setUp() {
