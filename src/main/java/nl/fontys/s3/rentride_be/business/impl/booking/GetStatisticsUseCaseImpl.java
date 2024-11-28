@@ -91,11 +91,11 @@ public class GetStatisticsUseCaseImpl implements GetStatisticsUseCase {
     public List<PopularCarOverTimeDto> getPopularCarsOverTime() {
         List<Object[]> rawData = this.bookingRepository.getPopularCarsOverTime();
 
-        return rawData.stream().map(record -> {
-            String car = (String) record[0];
-            int year = ((Number) record[1]).intValue();
-            String month = (String) record[2];
-            long count = ((Number) record[3]).longValue();
+        return rawData.stream().map(dataFields -> {
+            String car = (String) dataFields[0];
+            int year = ((Number) dataFields[1]).intValue();
+            String month = (String) dataFields[2];
+            long count = ((Number) dataFields[3]).longValue();
 
             return new PopularCarOverTimeDto(car, year, month, count);
         }).toList();

@@ -1,12 +1,9 @@
 package nl.fontys.s3.rentride_be.domain.statistics;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PopularCarOverTimeDto {

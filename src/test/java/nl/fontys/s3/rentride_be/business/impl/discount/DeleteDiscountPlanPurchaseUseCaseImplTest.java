@@ -3,7 +3,6 @@ package nl.fontys.s3.rentride_be.business.impl.discount;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseKey;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,14 +29,13 @@ class DeleteDiscountPlanPurchaseUseCaseImplTest {
         Long discountPlanId = 2L;
 
         DiscountPlanPurchaseEntity purchaseEntity = new DiscountPlanPurchaseEntity();
-        DiscountPlanPurchaseKey key = new DiscountPlanPurchaseKey(userId, discountPlanId);
 
         when(purchaseRepository.findByUserIdAndDiscountPlanId(userId, discountPlanId))
                 .thenReturn(Optional.of(purchaseEntity));
 
         deleteDiscountPlanPurchaseUseCase.deleteDiscountPlanPurchase(userId, discountPlanId);
 
-        verify(purchaseRepository, times(1)).deleteById(key);
+        verify(purchaseRepository, times(1)).delete(purchaseEntity);
     }
 
     @Test

@@ -3,10 +3,7 @@ package nl.fontys.s3.rentride_be.controller;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.discount.GetDiscountPlanPurchaseUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.discount.GetDiscountPlanPurchasesByUser;
-import nl.fontys.s3.rentride_be.business.use_cases.discount.UpdateDiscountPlanPurchaseUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.discount.*;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.*;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.city.City;
@@ -62,6 +59,8 @@ class PaymentsControllerTest {
     @Mock
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
 
+    @Mock
+    private GetDiscountPlanUseCase getDiscountPlanUseCase;
     @InjectMocks
     private PaymentsController paymentsController;
 
@@ -96,6 +95,9 @@ class PaymentsControllerTest {
                 .build();
 
         paymentEntity = PaymentEntity.builder().id(1L).build();
+
+        lenient().when(getDiscountPlanUseCase.getDiscountPlan(1L)).thenReturn(discountPlanPurchase.getDiscountPlan());
+
     }
 
     @Test
@@ -112,7 +114,6 @@ class PaymentsControllerTest {
 
     @Test
     void createDiscountPaymentRequest_ShouldReturnPaymentUrl() throws Exception {
-        when(getDiscountPlanPurchaseUseCase.getDiscountPlanPurchaseByCurrentUserAndDiscountId(1L)).thenReturn(discountPlanPurchase);
         when(createPaymentSessionUseCase.createPaymentSession(anyString(), anyDouble(), eq("discount"), eq(1L))).thenReturn("http://payment-url.com");
 
         ResponseEntity<String> response = paymentsController.createPaymentRequest(createDiscountPaymentRequest);

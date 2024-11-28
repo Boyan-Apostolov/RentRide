@@ -6,7 +6,6 @@ import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.persistance.DiscountPlanPurchaseRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseEntity;
-import nl.fontys.s3.rentride_be.persistance.entity.DiscountPlanPurchaseKey;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
