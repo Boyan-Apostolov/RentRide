@@ -2,12 +2,14 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingsForCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.car.MoveCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.RefundPaymentUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
+import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.BookingRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
@@ -27,6 +29,7 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
     private MoveCarUseCase moveCarUseCase;
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
     private RefundPaymentUseCase refundPaymentUseCase;
+    private EmailerUseCase emailerUseCase;
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateBookingStatusUseCaseImpl.class);
 
@@ -38,6 +41,13 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
         if (isStatusTransitionValid(bookingEntity.getStatus(), newStatus)) {
             logger.info("Update Status->For car id: {}, Status: {}",
                     bookingEntity.getCar().getId(), newStatus.name());
+
+            if(bookingEntity.getStatus() != BookingStatus.Unpaid)
+                emailerUseCase.send(bookingEntity.getUser().getEmail(),
+                        "Booking status update!",
+                        String.format("Your booking #%s has a new status \"%s\". If you have any further questions, do not hesitate to contact us using the contact form in the website.",
+                                bookingEntity.getId(), bookingEntity.getStatus().name()),
+                        EmailType.BOOKING);
 
             bookingEntity.setStatus(newStatus);
             bookingRepository.save(bookingEntity);
@@ -80,6 +90,11 @@ public class UpdateBookingStatusUseCaseImpl implements UpdateBookingStatusUseCas
     private void refundAndStopSchedule(BookingEntity bookingEntity){
         if(!bookingEntity.getPaymentId().isEmpty()){
             refundPaymentUseCase.refundPayment(bookingEntity.getPaymentId());
+            emailerUseCase.send(bookingEntity.getUser().getEmail(),
+                    "Refund on its way!",
+                    String.format("Your refund of €%.2f, regarding booking #%s will be processed to your original payment method within 3-7 business days. If you have any further questions, do not hesitate to contact us using the contact form in the website.",
+                            bookingEntity.getTotalPrice(), bookingEntity.getId()),
+                    EmailType.BOOKING);
         }
 
         logger.info("Canceling schedules for booking with id: {}", bookingEntity.getId());
