@@ -14,7 +14,6 @@ public class GetCarUseCaseImpl implements GetCarUseCase {
 
     @Override
     public Car getCar(Long carId) {
-
         return CarConverter.convert(
                 this.carRepository.findById(carId).orElse(null)
         );

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.auction.CreateAuctionUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.auction.GetAllAuctionsUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.GetAuctionUseCase;
 import nl.fontys.s3.rentride_be.domain.auction.Auction;
 import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionRequest;
 import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionResponse;
@@ -19,6 +20,8 @@ import java.util.List;
 public class AuctionController {
     private final GetAllAuctionsUseCase getAllAuctionsUseCase;
     private final CreateAuctionUseCase createAuctionUseCase;
+    private final GetAuctionUseCase getAuctionUseCase;
+
 //    private final AuctionService auctionService;
 //
 //    @MessageMapping("/auctions/bid")
@@ -29,6 +32,16 @@ public class AuctionController {
 //    public List<Auction> getOngoingAuctions() {
 //        return auctionService.getActiveAuctions();
 //    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Auction> getAuction(@PathVariable(value = "id") final long id) {
+        Auction auction = getAuctionUseCase.getAuction(id);
+
+        if (auction == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(auction);
+    }
 
     @GetMapping
     public ResponseEntity<List<Auction>> getAuctions() {

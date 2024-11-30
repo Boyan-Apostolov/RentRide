@@ -47,7 +47,7 @@ public class AuctionEntity {
     private CarEntity car;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private UserEntity winnerUser;
