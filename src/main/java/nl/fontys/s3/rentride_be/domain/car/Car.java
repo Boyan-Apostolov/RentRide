@@ -22,4 +22,5 @@ public class Car {
     private City city;
     private List<String> photosBase64;
     private Double fuelPrice;
+    private boolean isExclusive;
 }

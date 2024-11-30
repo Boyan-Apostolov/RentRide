@@ -18,6 +18,7 @@ public final class CarConverter {
                 .city(CityConverter.convert(carEntity.getCity()))
                 .photosBase64(carEntity.getPhotosBase64())
                 .carFeatures(carEntity.getFeatures().stream().map(CarFeatureConverter::convert).toList())
+                .isExclusive(carEntity.isExclusive())
                 .build();
     }
 }

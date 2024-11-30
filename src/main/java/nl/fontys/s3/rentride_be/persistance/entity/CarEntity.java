@@ -24,6 +24,11 @@ public class CarEntity {
     private String make;
 
     @NotNull
+    @Column(name = "is_exclusive")
+    private boolean isExclusive;
+
+
+    @NotNull
     @Column(name = "model")
     private String model;
 
