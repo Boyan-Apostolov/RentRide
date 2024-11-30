@@ -76,6 +76,7 @@ public class UpdateCarUseCaseImpl implements UpdateCarUseCase {
         carEntity.setCity(request.getFoundCity());
         carEntity.setPhotosBase64(request.getPhotosBase64());
         carEntity.setFeatures(request.getFoundFeatures());
+        carEntity.setExclusive(request.isExclusive());
 
         this.carRepository.save(carEntity);
     }

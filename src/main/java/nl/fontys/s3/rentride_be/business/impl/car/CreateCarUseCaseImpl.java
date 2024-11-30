@@ -76,6 +76,7 @@ public class CreateCarUseCaseImpl implements CreateCarUseCase {
                 .fuelConsumption(request.getFuelConsumption())
                 .city(foundCity)
                 .photosBase64(request.getPhotosBase64())
+                .isExclusive(request.isExclusive())
                 .features(new ArrayList<>())
                 .build();
 

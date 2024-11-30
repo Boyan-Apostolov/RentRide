@@ -46,7 +46,13 @@ public class GetAvailableCarsUseCaseImpl implements GetAvailableCarsUseCase {
                     .map(CarConverter::convert)
                     .toList();
         }
-        availableCars.forEach(c -> c.setFuelPrice((distance / 100) * c.getFuelConsumption()));
+        availableCars = availableCars
+                .stream()
+                .filter(car -> !car.isExclusive())
+                .toList();
+
+        availableCars
+                .forEach(c -> c.setFuelPrice((distance / 100) * c.getFuelConsumption()));
         return availableCars;
     }
 }
