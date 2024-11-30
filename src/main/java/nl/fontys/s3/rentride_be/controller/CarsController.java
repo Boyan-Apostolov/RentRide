@@ -22,6 +22,7 @@ public class CarsController {
     private UpdateCarUseCase updateCarUseCase;
     private GetAvailableCarsUseCase getAvailableCarsUseCase;
     private GetAllCarFeatures getAllCarFeatures;
+    private GetExclusiveCarsUseCase getExclusiveCarsUseCase;
 
     @GetMapping("{id}")
     public ResponseEntity<Car> getCar(@PathVariable(value = "id") final long id) {
@@ -50,6 +51,12 @@ public class CarsController {
     public ResponseEntity<List<CarFeature>> getAllFeatures() {
         List<CarFeature> carFeatures = getAllCarFeatures.getAllCarFeatures();
         return ResponseEntity.ok(carFeatures);
+    }
+
+    @GetMapping("exclusive")
+    public ResponseEntity<List<Car>> getExclusiveCars() {
+        List<Car> cars = getExclusiveCarsUseCase.getCars();
+        return ResponseEntity.ok(cars);
     }
 
     @DeleteMapping("{id}")

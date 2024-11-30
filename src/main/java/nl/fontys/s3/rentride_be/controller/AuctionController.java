@@ -1,13 +1,24 @@
 package nl.fontys.s3.rentride_be.controller;
 
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.CreateAuctionUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.GetAllAuctionsUseCase;
+import nl.fontys.s3.rentride_be.domain.auction.Auction;
+import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionRequest;
+import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("auctions")
 public class AuctionController {
+    private final GetAllAuctionsUseCase getAllAuctionsUseCase;
+    private final CreateAuctionUseCase createAuctionUseCase;
 //    private final AuctionService auctionService;
 //
 //    @MessageMapping("/auctions/bid")
@@ -18,4 +29,18 @@ public class AuctionController {
 //    public List<Auction> getOngoingAuctions() {
 //        return auctionService.getActiveAuctions();
 //    }
+
+    @GetMapping
+    public ResponseEntity<List<Auction>> getAuctions() {
+        List<Auction> auctions = getAllAuctionsUseCase.getAllAuctions();
+
+        return ResponseEntity.ok(auctions);
+    }
+
+    @PostMapping
+    @RolesAllowed({"ADMIN"})
+    public ResponseEntity<CreateAuctionResponse> createAuction(@RequestBody @Valid CreateAuctionRequest request) {
+        CreateAuctionResponse createAuctionResponse = createAuctionUseCase.createAuction(request);
+        return ResponseEntity.ok(createAuctionResponse);
+    }
 }
