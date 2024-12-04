@@ -33,12 +33,8 @@ public class AuctionEntity {
     private LocalDateTime endDateTime;
 
     @NotNull
-    @Column(name = "unlock_code")
-    private String unlockCode;
-
-    @NotNull
-    @Column(name = "is_code_used")
-    private boolean isCodeUsed;
+    @Column(name = "can_be_claimed")
+    private int canBeClaimed;
 
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)

@@ -28,7 +28,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
     }
 
     private void updateEntity(UpdateUserRequest request) {
-        if (!accessToken.hasRole("ADMIN") && request.getId() != accessToken.getUserId())
+        if (!accessToken.hasRole("ADMIN") && !Objects.equals(request.getId(), accessToken.getUserId()))
             throw new InvalidAccessTokenException("Access denied");
 
         Optional<UserEntity> userEntityOptional = this.userRepository.findById(request.getId());

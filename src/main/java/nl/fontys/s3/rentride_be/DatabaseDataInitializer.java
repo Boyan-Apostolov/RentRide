@@ -73,7 +73,6 @@ public class DatabaseDataInitializer {
             AuctionEntity auction = auctionRepository.save(
                     AuctionEntity.builder()
                             .description("First test auction")
-                            .unlockCode("NEW-CODE-2024")
                             .car(carRepository.findById(1L).orElse(null))
                             .endDateTime(LocalDateTime.now().plusHours(1))
                             .minBidAmount(25)

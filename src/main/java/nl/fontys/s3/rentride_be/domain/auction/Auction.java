@@ -1,5 +1,7 @@
 package nl.fontys.s3.rentride_be.domain.auction;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.user.User;
@@ -19,9 +21,7 @@ public class Auction {
 
     private LocalDateTime endDateTime;
 
-    private String unlockCode;
-
-    private boolean isCodeUsed;
+    private int canBeClaimed;
 
     private Car car;
 

@@ -16,6 +16,7 @@ import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,9 +39,15 @@ public class PlaceBidUseCaseImpl implements PlaceBidUseCase {
         if (user.isEmpty()) throw new NotFoundException("Bid->User");
         UserEntity userEntity = user.get();
 
-        BidEntity currentHighestBid = auctionEntity.getBids().get(auctionEntity.getBids().size() - 1);
-        if (bidRequest.getBidAmount() > currentHighestBid.getAmount()
-                && currentHighestBid.getUser().getId() != bidRequest.getUserId()) {
+        BidEntity currentHighestBid = auctionEntity.getBids().isEmpty()
+                ? null
+                : auctionEntity.getBids().get(auctionEntity.getBids().size() - 1);
+
+        boolean shouldCreateBid = currentHighestBid == null
+                || (bidRequest.getBidAmount() > currentHighestBid.getAmount()
+                && !Objects.equals(currentHighestBid.getUser().getId(), bidRequest.getUserId()));
+
+        if (shouldCreateBid) {
 
             BidEntity bidEntity = BidEntity.builder()
                     .amount(bidRequest.getBidAmount())

@@ -18,8 +18,7 @@ public final class AuctionConverter {
                 .winnerUser(UserConverter.convert(auctionEntity.getWinnerUser()))
                 .car(CarConverter.convert(auctionEntity.getCar()))
                 .description(auctionEntity.getDescription())
-                .isCodeUsed(auctionEntity.isCodeUsed())
-                .unlockCode(auctionEntity.getUnlockCode())
+                .canBeClaimed(auctionEntity.getCanBeClaimed())
                 .minBidAmount(auctionEntity.getMinBidAmount())
                 .build();
     }

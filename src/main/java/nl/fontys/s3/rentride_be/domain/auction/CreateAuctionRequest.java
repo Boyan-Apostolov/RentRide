@@ -25,10 +25,6 @@ public class CreateAuctionRequest {
     @NotNull
     private LocalDateTime endDateTime;
 
-    @NotBlank
-    @Size(min = 1, max = 255)
-    private String unlockCode;
-
     @NotNull
     @Min(1)
     private Long car;

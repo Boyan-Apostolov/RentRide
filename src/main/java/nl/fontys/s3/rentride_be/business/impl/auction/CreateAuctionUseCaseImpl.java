@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.InvalidOperationException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.auction.CreateAuctionUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.ScheduleAuctionEndJobUseCase;
 import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionRequest;
 import nl.fontys.s3.rentride_be.domain.auction.CreateAuctionResponse;
 import nl.fontys.s3.rentride_be.persistance.AuctionRepository;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class CreateAuctionUseCaseImpl  implements CreateAuctionUseCase {
     private AuctionRepository auctionRepository;
     private CarRepository carRepository;
+    private ScheduleAuctionEndJobUseCase scheduleAuctionEndJobUseCase;
+
     @Override
     public CreateAuctionResponse createAuction(CreateAuctionRequest createAuctionRequest) {
         if(createAuctionRequest.getEndDateTime().isBefore(LocalDateTime.now()))
@@ -33,6 +36,8 @@ public class CreateAuctionUseCaseImpl  implements CreateAuctionUseCase {
 
         AuctionEntity newAuctionEntity = saveNewAuction(createAuctionRequest, car);
 
+        scheduleAuctionEndJobUseCase.scheduleAuctionEndJob(newAuctionEntity.getId(), newAuctionEntity.getEndDateTime());
+
         return CreateAuctionResponse.builder()
                 .auctionId(newAuctionEntity.getId())
                 .build();
@@ -44,7 +49,7 @@ public class CreateAuctionUseCaseImpl  implements CreateAuctionUseCase {
                 .car(car)
                 .minBidAmount(createAuctionRequest.getMinBidAmount())
                 .description(createAuctionRequest.getDescription())
-                .unlockCode(createAuctionRequest.getUnlockCode())
+                .canBeClaimed(-1)
                 .build();
 
         return this.auctionRepository.save(newAuctionEntity);
