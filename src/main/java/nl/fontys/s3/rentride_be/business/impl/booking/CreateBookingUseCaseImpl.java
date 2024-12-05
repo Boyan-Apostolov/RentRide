@@ -8,7 +8,6 @@ import nl.fontys.s3.rentride_be.business.use_cases.auction.UpdateAuctionCanBeCla
 import nl.fontys.s3.rentride_be.business.use_cases.booking.CreateBookingUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
-import nl.fontys.s3.rentride_be.domain.auction.Auction;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
 import nl.fontys.s3.rentride_be.persistance.*;

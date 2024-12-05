@@ -1,7 +1,6 @@
 package nl.fontys.s3.rentride_be.business.impl.auction;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.rentride_be.business.jobs.BookingStatusManagementJob;
 import nl.fontys.s3.rentride_be.business.use_cases.auction.ScheduleAuctionEndJobUseCase;
 import org.quartz.*;
 import org.slf4j.Logger;

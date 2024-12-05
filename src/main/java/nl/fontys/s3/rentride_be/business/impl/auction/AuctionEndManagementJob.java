@@ -2,6 +2,7 @@ package nl.fontys.s3.rentride_be.business.impl.auction;
 
 import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.exception.InvalidOperationException;
 import nl.fontys.s3.rentride_be.business.use_cases.auction.AuctionEndProcessUseCase;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -21,7 +22,7 @@ public class AuctionEndManagementJob implements Job {
         try {
             auctionEndProcessUseCase.triggerPostAuctionProcesses(auctionId);
         } catch (StripeException e) {
-            throw new RuntimeException(e);
+            throw new InvalidOperationException(e.getMessage());
         }
     }
 }

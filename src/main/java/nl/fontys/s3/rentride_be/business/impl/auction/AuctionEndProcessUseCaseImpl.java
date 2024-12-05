@@ -38,15 +38,16 @@ public class AuctionEndProcessUseCaseImpl implements AuctionEndProcessUseCase {
         if (auction.getEndDateTime().isAfter(LocalDateTime.now()))
             throw new InvalidOperationException("Auction not finished yet!");
 
+        if (auction.getBids().isEmpty()) {
+            //Auction has no bids
+            auction.setCanBeClaimed(0);
+            auctionRepository.save(auction);
+            return;
+        }
+
         BidEntity highestBid = auction
                 .getBids()
                 .get(auction.getBids().size() - 1);
-
-        if (highestBid == null) {
-            //Auction has no bids
-            auction.setCanBeClaimed(0);
-            return;
-        }
 
         auction.setWinnerUser(highestBid.getUser());
 
