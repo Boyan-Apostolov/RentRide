@@ -12,6 +12,7 @@ public class GetBookingCostsResponse {
     private double serviceFees;
     private double tollFees;
     private double userDiscount;
+    private double timeFees;
     private double coverageFee;
     private double total;
     private double newTotal = total;

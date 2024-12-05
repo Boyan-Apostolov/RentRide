@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
 import nl.fontys.s3.rentride_be.business.use_cases.damage.GetAllDamageUseCase;
-import nl.fontys.s3.rentride_be.domain.booking.Booking;
-import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
-import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
-import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
+import nl.fontys.s3.rentride_be.domain.booking.*;
 import nl.fontys.s3.rentride_be.domain.damage.Damage;
 import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
@@ -69,11 +66,9 @@ public class BookingsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("calculate-cost")
-    public GetBookingCostsResponse getBookingCosts(@RequestParam(value = "carId") final long carId,
-                                                   @RequestParam(value = "fromCityId") final long fromCityId,
-                                                   @RequestParam(value = "toCityId") final long toCityId) {
-        return getBookingCostsUseCase.getBookingCosts(carId, fromCityId, toCityId);
+    @PostMapping("calculate-cost")
+    public GetBookingCostsResponse getBookingCosts(@RequestBody @Valid GetBookingCostsRequest request) {
+        return getBookingCostsUseCase.getBookingCosts(request);
     }
 
     @PostMapping()

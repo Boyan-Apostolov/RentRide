@@ -2,10 +2,7 @@ package nl.fontys.s3.rentride_be.controller;
 
 import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
 import nl.fontys.s3.rentride_be.business.use_cases.damage.GetAllDamageUseCase;
-import nl.fontys.s3.rentride_be.domain.booking.Booking;
-import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
-import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
-import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
+import nl.fontys.s3.rentride_be.domain.booking.*;
 import nl.fontys.s3.rentride_be.domain.damage.Damage;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -116,12 +114,23 @@ class BookingsControllerTest {
 
     @Test
     void getBookingCosts_ShouldReturnBookingCosts() {
-        when(getBookingCostsUseCase.getBookingCosts(2L, 1L, 3L)).thenReturn(bookingCostsResponse);
+        // Use a fixed LocalDateTime for consistency
+        LocalDateTime now = LocalDateTime.now();
 
-        GetBookingCostsResponse response = bookingsController.getBookingCosts(2L, 1L, 3L);
+        GetBookingCostsRequest request = GetBookingCostsRequest.builder()
+                .carId(2L)
+                .fromCityId(1L)
+                .toCityId(3L)
+                .fromDateTime(now)
+                .toDateTime(now)
+                .build();
+
+        when(getBookingCostsUseCase.getBookingCosts(request)).thenReturn(bookingCostsResponse);
+
+        GetBookingCostsResponse response = bookingsController.getBookingCosts(request);
 
         assertEquals(10.0, response.getFuelCost());
-        verify(getBookingCostsUseCase, times(1)).getBookingCosts(2L, 1L, 3L);
+        verify(getBookingCostsUseCase, times(1)).getBookingCosts(request);
     }
 
     @Test

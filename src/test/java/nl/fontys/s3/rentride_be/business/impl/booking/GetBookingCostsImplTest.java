@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.business.impl.booking;
 import nl.fontys.s3.rentride_be.business.use_cases.car.GetCarUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.city.GetRouteBetweenCitiesUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
+import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsRequest;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
 import nl.fontys.s3.rentride_be.domain.car.Car;
 import nl.fontys.s3.rentride_be.domain.city.GetRouteResponse;
@@ -16,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,7 +67,13 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of());
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(GetBookingCostsRequest.builder()
+                .carId(1L)
+                .fromCityId(1L)
+                .toCityId(2L)
+                .fromDateTime(LocalDateTime.now())
+                .toDateTime(LocalDateTime.now())
+                .build());
 
         double distance = 150.0;
         double fuelCost = (distance / 100) * car.getFuelConsumption(); // Fuel cost calculation
@@ -86,7 +94,13 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of(discountPlanPurchase));
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(GetBookingCostsRequest.builder()
+                .carId(1L)
+                .fromCityId(1L)
+                .toCityId(2L)
+                .fromDateTime(LocalDateTime.now())
+                .toDateTime(LocalDateTime.now())
+                .build());
 
         double distance = 150.0;
         double fuelCost = (distance / 100) * car.getFuelConsumption(); // Fuel cost calculation
@@ -108,7 +122,13 @@ class GetBookingCostsImplTest {
         when(getCarUseCase.getCar(1L)).thenReturn(car);
         when(discountPlanPurchaseRepository.findAllByUserIdOrderByDiscountPlan_DiscountValueDesc(1L)).thenReturn(List.of());
 
-        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(1L, 1L, 2L);
+        GetBookingCostsResponse response = getBookingCosts.getBookingCosts(GetBookingCostsRequest.builder()
+                .carId(1L)
+                .fromCityId(1L)
+                .toCityId(2L)
+                .fromDateTime(LocalDateTime.now())
+                .toDateTime(LocalDateTime.now())
+                .build());
 
         assertEquals(0.0, response.getFuelCost());
         assertEquals(0.0, response.getServiceFees());
