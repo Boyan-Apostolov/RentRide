@@ -3,6 +3,7 @@ package nl.fontys.s3.rentride_be.controller;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
 import nl.fontys.s3.rentride_be.business.use_cases.damage.GetAllDamageUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
@@ -10,6 +11,7 @@ import nl.fontys.s3.rentride_be.domain.booking.CreateBookingRequest;
 import nl.fontys.s3.rentride_be.domain.booking.CreateBookingResponse;
 import nl.fontys.s3.rentride_be.domain.booking.GetBookingCostsResponse;
 import nl.fontys.s3.rentride_be.domain.damage.Damage;
+import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ public class BookingsController {
     private UpdateBookingStatusUseCase updateBookingStatusUseCase;
     private GetAllDamageUseCase getAllDamageUseCase;
     private GetBookingHistoryMapUseCase getBookingHistoryMapUseCase;
+    private EmailerUseCase emailerUseCase;
 
     @GetMapping
     @RolesAllowed({"ADMIN"})
@@ -76,6 +79,18 @@ public class BookingsController {
     @PostMapping()
     public ResponseEntity<CreateBookingResponse> createBooking(@RequestBody @Valid CreateBookingRequest request) {
         CreateBookingResponse response = createBookingUseCase.createBooking(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/claim")
+    public ResponseEntity<CreateBookingResponse> claimAuctionBooking(@RequestBody @Valid CreateBookingRequest request) {
+        CreateBookingResponse response = createBookingUseCase.createBooking(request);
+
+        emailerUseCase.send(response.getBooking().getUser().getEmail(), "Booking reserved!",
+                String.format("Your booking with number #%s from %s to %s has been successfully registered! You will receive a second confirmation email when the booking starts!",
+                        response.getBooking().getId(), response.getBooking().getStartCity().getName(), response.getBooking().getEndCity().getName()),
+                EmailType.BOOKING);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

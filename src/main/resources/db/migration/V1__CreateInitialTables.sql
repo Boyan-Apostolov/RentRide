@@ -13,6 +13,7 @@ CREATE TABLE car (
                      registration_number VARCHAR(255) NOT NULL,
                      fuel_consumption DOUBLE NOT NULL,
                      city_id BIGINT,
+                     is_exclusive BIT NOT NULL,
                      CONSTRAINT fk_car_city FOREIGN KEY (city_id) REFERENCES city(id)
 );
 

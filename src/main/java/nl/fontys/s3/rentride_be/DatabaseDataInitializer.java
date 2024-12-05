@@ -1,11 +1,8 @@
 package nl.fontys.s3.rentride_be;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
-import nl.fontys.s3.rentride_be.business.use_cases.discount.DeleteDiscountPlanPurchaseUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,8 +32,9 @@ public class DatabaseDataInitializer {
     private final ReviewRepository reviewRepository;
     private final DiscountPlanRepository discountPlanRepository;
     private final DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
+    private final AuctionRepository auctionRepository;
+    private final BidRepository bidRepository;
 
-    private final DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
     private final UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
     private final PasswordEncoder passwordEncoder;
@@ -62,8 +61,36 @@ public class DatabaseDataInitializer {
             populateDiscountPlans();
             populatePurchasedDiscountPlans();
 
+            populateAuctionsAndBids();
+
             tryFixMissedBookings();
-            tryFixEmptyDiscountPlanPurchases();        }
+            tryFixEmptyDiscountPlanPurchases();
+        }
+    }
+
+    private void populateAuctionsAndBids(){
+        if(auctionRepository.count() == 0){
+            AuctionEntity auction = auctionRepository.save(
+                    AuctionEntity.builder()
+                            .description("First test auction")
+                            .car(carRepository.findById(1L).orElse(null))
+                            .endDateTime(LocalDateTime.now().plusHours(1))
+                            .minBidAmount(25)
+                            .build()
+            );
+
+            BidEntity bid = BidEntity.builder()
+                    .amount(30)
+                    .dateTime(LocalDateTime.now())
+                    .auction(auction) // Associate the bid with the auction
+                    .user(userRepository.findById(1L).orElse(null))
+                    .build();
+
+            auction.setBids(new ArrayList<>(List.of(bid)));
+
+            bidRepository.save(bid);
+            auctionRepository.save(auction);
+        }
     }
 
     private void tryFixEmptyDiscountPlanPurchases() {

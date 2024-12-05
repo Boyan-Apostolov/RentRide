@@ -40,6 +40,8 @@ public class CreateCarRequest {
     @Min(1)
     private Long cityId;
 
+    private boolean isExclusive;
+
     private List<String> photosBase64;
 
     private CityEntity foundCity;

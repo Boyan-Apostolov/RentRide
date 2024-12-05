@@ -42,6 +42,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/cars/features").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/discountPlans").permitAll()
                                 .requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))

@@ -2,10 +2,8 @@ package nl.fontys.s3.rentride_be.business.impl.auth;
 
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
-import nl.fontys.s3.rentride_be.business.impl.booking.ScheduleBookingJobsUseCaseImpl;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.domain.user.EmailType;
-import nl.fontys.s3.rentride_be.domain.user.User;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
 import org.slf4j.Logger;

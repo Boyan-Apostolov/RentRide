@@ -4,12 +4,15 @@ import com.stripe.model.checkout.Session;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.impl.discount.CreateDiscountPlanPurchaseUseCaseImpl;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.GetAuctionUseCase;
+import nl.fontys.s3.rentride_be.business.use_cases.auction.UpdateAuctionCanBeClaimedUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingByIdUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.ScheduleBookingJobsUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.discount.*;
 import nl.fontys.s3.rentride_be.business.use_cases.payment.*;
+import nl.fontys.s3.rentride_be.domain.auction.Auction;
 import nl.fontys.s3.rentride_be.domain.booking.Booking;
 import nl.fontys.s3.rentride_be.domain.discount.CreateDiscountPaymentRequest;
 import nl.fontys.s3.rentride_be.domain.discount.DiscountPlan;
@@ -47,7 +50,8 @@ public class PaymentsController {
     private UpdateDiscountPlanPurchaseUseCase updateDiscountPlanPurchaseUseCase;
     private DeleteDiscountPlanPurchaseUseCase deleteDiscountPlanPurchaseUseCase;
     private GetDiscountPlanPurchasesByUser getDiscountPlanPurchasesByUser;
-
+    private GetAuctionUseCase getAuctionUseCase;
+    private UpdateAuctionCanBeClaimedUseCase updateAuctionCanBeClaimedUseCase;
     private ScheduleBookingJobsUseCase scheduleBookingJobsUseCase;
     private EmailerUseCase emailerUseCase;
 
@@ -116,6 +120,8 @@ public class PaymentsController {
                 return ResponseEntity.accepted().build();
             } else if (paymentType.equals("discount")) {
                 return handlePaymentSuccessForDiscountPlan(entityId, paymentStatus);
+            } else if (paymentType.equals("auction")) {
+                return handlePaymentSuccessForAuction(entityId, paymentStatus);
             }
 
         } catch (Exception e) {
@@ -123,6 +129,23 @@ public class PaymentsController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    private ResponseEntity<String> handlePaymentSuccessForAuction(Long entityId, String paymentStatus) {
+        Auction auction = getAuctionUseCase.getAuction(entityId);
+
+        if (Objects.equals(paymentStatus, "paid") && auction.getWinnerUser() != null) {
+            updateAuctionCanBeClaimedUseCase.updateState(entityId, 1);
+
+            emailerUseCase.send(auction.getWinnerUser().getEmail(), "Auction can be claimed!",
+                    String.format("You have successfully paid you winning bid for auction #%s and can now create a booking with the winning car from the auction page!",
+                            auction.getId()),
+                    EmailType.BOOKING);
+
+            return ResponseEntity.accepted().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancelled");
     }
 
     private ResponseEntity<String> handlePaymentSuccessForDiscountPlan(Long entityId, String paymentStatus) {
@@ -167,8 +190,8 @@ public class PaymentsController {
                 DiscountPlanPurchase currentPlan = currentPlanOptional.get();
 
                 updateDiscountPlanPurchaseUseCase.updateDiscountPlanPurchase(UpdateDiscountPaymentRequest.builder()
-                                .discountPlanId(currentPlan.getDiscountPlan().getId())
-                                .remainingUses(currentPlan.getRemainingUses() - 1)
+                        .discountPlanId(currentPlan.getDiscountPlan().getId())
+                        .remainingUses(currentPlan.getRemainingUses() - 1)
                         .build());
             }
 
@@ -176,7 +199,7 @@ public class PaymentsController {
 
             emailerUseCase.send(booking.getUser().getEmail(), "Booking reserved!",
                     String.format("Your booking with number #%s from %s to %s has been successfully registered! You will receive a second confirmation email when the booking starts!",
-                    booking.getId(), booking.getStartCity().getName(), booking.getEndCity().getName()),
+                            booking.getId(), booking.getStartCity().getName(), booking.getEndCity().getName()),
                     EmailType.BOOKING);
 
             return ResponseEntity.accepted().build();
@@ -219,15 +242,15 @@ public class PaymentsController {
 
     @GetMapping("/cancel")
     public ResponseEntity<String> cancel(@RequestParam("sessionId") String sessionId,
-                                       @RequestParam("paymentType") String paymentType,
-                                       @RequestParam("entityId") Long entityId) {
+                                         @RequestParam("paymentType") String paymentType,
+                                         @RequestParam("entityId") Long entityId) {
 
         try {
             Session session = Session.retrieve(sessionId);
             String paymentStatus = session.getPaymentStatus();
             String paymentId = session.getPaymentIntent();
 
-            if(Objects.equals(paymentStatus, "paid")) return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            if (Objects.equals(paymentStatus, "paid")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
             if (paymentType.equals("booking")) {
                 return handlePaymentFailedForBooking(entityId, paymentStatus, paymentId);

@@ -34,6 +34,8 @@ public class UpdateCarRequest {
     @Min(1)
     private Long cityId;
 
+    private boolean isExclusive;
+
     private List<String> features;
     private List<CarFeatureEntity> foundFeatures;
 
