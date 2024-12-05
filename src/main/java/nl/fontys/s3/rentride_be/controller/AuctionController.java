@@ -25,6 +25,8 @@ public class AuctionController {
 
 
     @MessageMapping("/auction/bid")
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+
     public void handleBid(BidRequest bidRequest) {
         placeBidUseCase.placeBid(bidRequest); // Handles bid validation and broadcasting
     }
@@ -37,6 +39,8 @@ public class AuctionController {
     }
 
     @GetMapping("{id}")
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+
     public ResponseEntity<Auction> getAuction(@PathVariable(value = "id") final long id) {
         Auction auction = getAuctionUseCase.getAuction(id);
 
@@ -47,6 +51,8 @@ public class AuctionController {
     }
 
     @GetMapping
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+
     public ResponseEntity<List<Auction>> getAuctions() {
         List<Auction> auctions = getAllAuctionsUseCase.getAllAuctions();
 
@@ -56,6 +62,13 @@ public class AuctionController {
     @PostMapping
     @RolesAllowed({"ADMIN"})
     public ResponseEntity<CreateAuctionResponse> createAuction(@RequestBody @Valid CreateAuctionRequest request) {
+        CreateAuctionResponse createAuctionResponse = createAuctionUseCase.createAuction(request);
+        return ResponseEntity.ok(createAuctionResponse);
+    }
+
+    @PostMapping("/claim")
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+    public ResponseEntity<CreateAuctionResponse> claimAuction(@RequestBody @Valid CreateAuctionRequest request) {
         CreateAuctionResponse createAuctionResponse = createAuctionUseCase.createAuction(request);
         return ResponseEntity.ok(createAuctionResponse);
     }

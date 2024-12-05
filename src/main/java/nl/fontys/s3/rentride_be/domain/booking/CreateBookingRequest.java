@@ -35,7 +35,7 @@ public class CreateBookingRequest {
     private LocalDateTime endDateTime;
     @Min(0)
 
+    private long auctionId;
     private double totalPrice;
-    @Min(0)
     private long userId;
 }
