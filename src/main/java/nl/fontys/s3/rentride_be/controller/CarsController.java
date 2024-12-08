@@ -40,6 +40,18 @@ public class CarsController {
         return ResponseEntity.ok(cars);
     }
 
+    @GetMapping("/paged")
+    public ResponseEntity<List<Car>> getAllPagedCars(@RequestParam(defaultValue = "0") int page) {
+        List<Car> cars = this.getCarsUseCase.getCars(page);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getAllCount() {
+        Long count = this.getCarsUseCase.getCount();
+        return ResponseEntity.ok(count);
+    }
+
     @PostMapping("availableCars")
     public ResponseEntity<List<Car>> getAvailableCars(@RequestBody @Valid GetAvailableCarsRequest request) {
        //TODO: implement bookings and filter availability

@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface GetAllAuctionsUseCase {
     List<Auction> getAllAuctions();
+    List<Auction> getAllAuctions(int page);
+
+    Long getCount();
 }

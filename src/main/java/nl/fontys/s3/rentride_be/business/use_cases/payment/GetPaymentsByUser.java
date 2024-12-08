@@ -8,4 +8,8 @@ public interface GetPaymentsByUser {
     List<Payment> getPaymentsByUser(Long userId);
 
     List<Payment> getPaymentsBySessionUser();
+
+    Long getCount();
+
+    List<Payment> getPaymentsBySessionUser(int page);
 }

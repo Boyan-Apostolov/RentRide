@@ -8,6 +8,7 @@ import nl.fontys.s3.rentride_be.business.use_cases.booking.*;
 import nl.fontys.s3.rentride_be.business.use_cases.damage.GetAllDamageUseCase;
 import nl.fontys.s3.rentride_be.domain.booking.*;
 import nl.fontys.s3.rentride_be.domain.damage.Damage;
+import nl.fontys.s3.rentride_be.domain.payment.Payment;
 import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,19 @@ public class BookingsController {
         List<Booking> allBookings = getBookingsForUserUseCase.getBookingsForUser();
 
         return ResponseEntity.ok(allBookings);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getAllCountByUser() {
+        Long count = this.getBookingsForUserUseCase.getCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<List<Booking>> getPagedBookings(@RequestParam(defaultValue = "0") int page) {
+        List<Booking> userBookings = getBookingsForUserUseCase.getBookingsForUser(page);
+
+        return ResponseEntity.ok(userBookings);
     }
 
     @GetMapping("by-car")
