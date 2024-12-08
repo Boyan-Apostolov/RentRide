@@ -2,6 +2,7 @@ package nl.fontys.s3.rentride_be.persistance;
 
 import nl.fontys.s3.rentride_be.persistance.entity.BookingEntity;
 import nl.fontys.s3.rentride_be.persistance.entity.BookingStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     Long countByCarId(Long carId);
 
-    List<BookingEntity> findByUserId(Long userId);
+    List<BookingEntity> findByUserId(Long userId, Pageable pageable);
 
     List<BookingEntity> findBookingsByCarIdOrderByStartDateTime(@Param("carId") Long carId);
 

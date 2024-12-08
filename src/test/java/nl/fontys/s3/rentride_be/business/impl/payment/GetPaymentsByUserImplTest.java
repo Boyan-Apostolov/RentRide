@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,7 +55,7 @@ class GetPaymentsByUserImplTest {
     @Test
     void getPaymentsByUser_ShouldReturnPaymentsForUser() {
         Long userId = 1L;
-        when(paymentRepository.findAllByUserId(userId)).thenReturn(List.of(paymentEntity1, paymentEntity2));
+        when(paymentRepository.findAllByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE))).thenReturn(List.of(paymentEntity1, paymentEntity2));
 
         List<Payment> result = getPaymentsByUser.getPaymentsByUser(userId);
 
@@ -61,18 +63,18 @@ class GetPaymentsByUserImplTest {
         assertEquals(payment1, result.get(0));
         assertEquals(payment2, result.get(1));
 
-        verify(paymentRepository, times(1)).findAllByUserId(userId);
+        verify(paymentRepository, times(1)).findAllByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE));
     }
 
     @Test
     void getPaymentsByUser_ShouldReturnEmptyList_WhenNoPaymentsExist() {
         Long userId = 1L;
-        when(paymentRepository.findAllByUserId(userId)).thenReturn(List.of());
+        when(paymentRepository.findAllByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE))).thenReturn(List.of());
 
         List<Payment> result = getPaymentsByUser.getPaymentsByUser(userId);
 
         assertEquals(0, result.size());
 
-        verify(paymentRepository, times(1)).findAllByUserId(userId);
+        verify(paymentRepository, times(1)).findAllByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE));
     }
 }

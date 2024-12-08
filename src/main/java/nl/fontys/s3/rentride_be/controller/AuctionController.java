@@ -25,8 +25,6 @@ public class AuctionController {
 
 
     @MessageMapping("/auction/bid")
-    @RolesAllowed({"ADMIN", "CUSTOMER"})
-
     public void handleBid(BidRequest bidRequest) {
         placeBidUseCase.placeBid(bidRequest); // Handles bid validation and broadcasting
     }
@@ -57,6 +55,23 @@ public class AuctionController {
         List<Auction> auctions = getAllAuctionsUseCase.getAllAuctions();
 
         return ResponseEntity.ok(auctions);
+    }
+
+    @GetMapping("/paged")
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+
+    public ResponseEntity<List<Auction>> getPagedAuctions(@RequestParam(defaultValue = "0") int page) {
+        List<Auction> auctions = getAllAuctionsUseCase.getAllAuctions(page);
+
+        return ResponseEntity.ok(auctions);
+    }
+
+    @GetMapping("/count")
+    @RolesAllowed({"ADMIN", "CUSTOMER"})
+
+    public ResponseEntity<Long> getAllCount() {
+        Long count = this.getAllAuctionsUseCase.getCount();
+        return ResponseEntity.ok(count);
     }
 
     @PostMapping

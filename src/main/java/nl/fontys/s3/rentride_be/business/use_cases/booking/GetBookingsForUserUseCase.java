@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface GetBookingsForUserUseCase {
     List<Booking> getBookingsForUser();
+
+    Long getCount();
+
+    List<Booking> getBookingsForUser(int page);
 }

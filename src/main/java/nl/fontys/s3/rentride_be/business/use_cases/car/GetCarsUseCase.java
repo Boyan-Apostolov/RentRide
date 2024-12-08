@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface GetCarsUseCase {
     List<Car> getCars();
+
+    List<Car> getCars(int page);
+
+    Long getCount();
 }

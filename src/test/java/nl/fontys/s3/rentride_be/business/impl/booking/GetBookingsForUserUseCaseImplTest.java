@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,7 +56,7 @@ class GetBookingsForUserUseCaseImplTest {
     @Test
     void getBookingsForUser_ShouldReturnBookings_WhenBookingsExistForUser() {
         Long userId = 1L;
-        when(bookingRepository.findByUserId(userId)).thenReturn(List.of(bookingEntity1, bookingEntity2));
+        when(bookingRepository.findByUserId(userId, PageRequest.of(0, Integer.MAX_VALUE))).thenReturn(List.of(bookingEntity1, bookingEntity2));
 
         List<Booking> result = getBookingsForUserUseCase.getBookingsForUser();
 
@@ -62,18 +64,18 @@ class GetBookingsForUserUseCaseImplTest {
         assertEquals(bookingEntity1.getId(), result.get(0).getId());
         assertEquals(bookingEntity2.getId(), result.get(1).getId());
 
-        verify(bookingRepository, times(1)).findByUserId(userId);
+        verify(bookingRepository, times(1)).findByUserId(userId,PageRequest.of(0, Integer.MAX_VALUE));
     }
 
     @Test
     void getBookingsForUser_ShouldReturnEmptyList_WhenNoBookingsExistForUser() {
         Long userId = 1L;
-        when(bookingRepository.findByUserId(userId)).thenReturn(List.of());
+        when(bookingRepository.findByUserId(userId,PageRequest.of(0, Integer.MAX_VALUE))).thenReturn(List.of());
 
         List<Booking> result = getBookingsForUserUseCase.getBookingsForUser();
 
         assertEquals(0, result.size());
 
-        verify(bookingRepository, times(1)).findByUserId(userId);
+        verify(bookingRepository, times(1)).findByUserId(userId,PageRequest.of(0, Integer.MAX_VALUE));
     }
 }

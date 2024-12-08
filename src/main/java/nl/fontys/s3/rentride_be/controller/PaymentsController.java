@@ -62,6 +62,19 @@ public class PaymentsController {
         return ResponseEntity.ok(userPayments);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getAllCount() {
+        Long count = this.getPaymentsByUser.getCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<List<Payment>> getPagedPayments(@RequestParam(defaultValue = "0") int page) {
+        List<Payment> userPayments = getPaymentsByUser.getPaymentsBySessionUser(page);
+
+        return ResponseEntity.ok(userPayments);
+    }
+
     @GetMapping("by-user")
     public ResponseEntity<List<Payment>> getPaymentsByUser() {
         List<Payment> userPayments = getPaymentsByUser.getPaymentsBySessionUser();
