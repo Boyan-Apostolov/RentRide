@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.booking;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.GetBookingsForUserUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;

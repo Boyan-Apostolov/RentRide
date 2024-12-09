@@ -34,6 +34,7 @@ public class DatabaseDataInitializer {
     private final DiscountPlanPurchaseRepository discountPlanPurchaseRepository;
     private final AuctionRepository auctionRepository;
     private final BidRepository bidRepository;
+    private final MessageRepositoy messageRepositoy;
 
     private final UpdateBookingStatusUseCase updateBookingStatusUseCase;
 
@@ -62,14 +63,25 @@ public class DatabaseDataInitializer {
             populatePurchasedDiscountPlans();
 
             populateAuctionsAndBids();
+            populateMessages();
 
             tryFixMissedBookings();
             tryFixEmptyDiscountPlanPurchases();
         }
     }
 
-    private void populateAuctionsAndBids(){
-        if(auctionRepository.count() == 0){
+    private void populateMessages() {
+        if (this.messageRepositoy.count() == 0) {
+            messageRepositoy.save(MessageEntity.builder()
+                            .message("Can i get a refund ?")
+                            .answer("Please submit a new message and provide an OrderId and more details.")
+                            .user(userRepository.findById(1L).orElse(null))
+                    .build());
+        }
+    }
+
+    private void populateAuctionsAndBids() {
+        if (auctionRepository.count() == 0) {
             AuctionEntity auction = auctionRepository.save(
                     AuctionEntity.builder()
                             .description("First test auction")
@@ -99,23 +111,23 @@ public class DatabaseDataInitializer {
     }
 
     private void populatePurchasedDiscountPlans() {
-        if(discountPlanPurchaseRepository.count() == 0){
+        if (discountPlanPurchaseRepository.count() == 0) {
             DiscountPlanEntity discountPlanEntity = discountPlanRepository.findById(1L).orElse(DiscountPlanEntity.builder().build());
             discountPlanPurchaseRepository.save(DiscountPlanPurchaseEntity.builder()
-                            .discountPlan(discountPlanEntity)
-                            .purchaseDate(LocalDateTime.now())
-                            .remainingUses(discountPlanEntity.getRemainingUses())
-                            .user(userRepository.findById(1L).orElse(null))
-                            .id(DiscountPlanPurchaseKey.builder()
-                                    .discountPlanId(1L)
-                                    .userId(1L)
-                                    .build())
+                    .discountPlan(discountPlanEntity)
+                    .purchaseDate(LocalDateTime.now())
+                    .remainingUses(discountPlanEntity.getRemainingUses())
+                    .user(userRepository.findById(1L).orElse(null))
+                    .id(DiscountPlanPurchaseKey.builder()
+                            .discountPlanId(1L)
+                            .userId(1L)
+                            .build())
                     .build());
         }
     }
 
-    private void populateDiscountPlans(){
-        if(discountPlanRepository.count() == 0){
+    private void populateDiscountPlans() {
+        if (discountPlanRepository.count() == 0) {
             discountPlanRepository.save(DiscountPlanEntity.builder()
                     .title("Silver Plan")
                     .description("Enjoy 15% discount on 10 rides!")
@@ -149,22 +161,23 @@ public class DatabaseDataInitializer {
                     .build());
         }
     }
-    private void populateReviews(){
-        if(reviewRepository.count() == 0){
+
+    private void populateReviews() {
+        if (reviewRepository.count() == 0) {
             reviewRepository.save(ReviewEntity.builder()
-                            .booking(bookingRepository.findById(1L).orElse(null))
-                            .text("I liked the experience")
-                            .carCondition(3)
-                            .carSpeed(5)
-                            .valueForMoney(4)
-                            .createdOn(LocalDateTime.now())
-                            .user(userRepository.findById(1L).orElse(null))
+                    .booking(bookingRepository.findById(1L).orElse(null))
+                    .text("I liked the experience")
+                    .carCondition(3)
+                    .carSpeed(5)
+                    .valueForMoney(4)
+                    .createdOn(LocalDateTime.now())
+                    .user(userRepository.findById(1L).orElse(null))
                     .build());
         }
     }
 
-    private void populateBookings(){
-        if(bookingRepository.count() == 0) {
+    private void populateBookings() {
+        if (bookingRepository.count() == 0) {
             bookingRepository.save(BookingEntity.builder()
                     .status(BookingStatus.Rated)
                     .startCity(this.cityRepository.findById(1L).orElse(null))
@@ -251,12 +264,12 @@ public class DatabaseDataInitializer {
         }
     }
 
-    private void populateDamages(){
-        if(this.damageRepository.count() == 0){
+    private void populateDamages() {
+        if (this.damageRepository.count() == 0) {
             this.damageRepository.save(DamageEntity.builder()
-                            .name("Keys")
-                            .cost(10)
-                            .iconUrl("https://img.freepik.com/premium-vector/vector-design-lost-key-icon-style_1134108-11142.jpg")
+                    .name("Keys")
+                    .cost(10)
+                    .iconUrl("https://img.freepik.com/premium-vector/vector-design-lost-key-icon-style_1134108-11142.jpg")
                     .build());
 
             this.damageRepository.save(DamageEntity.builder()
@@ -403,16 +416,16 @@ public class DatabaseDataInitializer {
 
     private void populateUsers() {
         if (this.userRepository.count() == 0) {
-                    UserEntity adminUser = UserEntity
+            UserEntity adminUser = UserEntity
                     .builder()
                     .name("Boyan Apostolov")
                     .email("admin@admin.com")
                     .password(passwordEncoder.encode("12345678"))
                     .birthDate(LocalDate.of(2004, 3, 12))
-                            .bookingsEmails(true)
-                            .damageEmails(true)
-                            .promoEmails(false)
-                            .build();
+                    .bookingsEmails(true)
+                    .damageEmails(true)
+                    .promoEmails(false)
+                    .build();
             UserRoleEntity adminRole = UserRoleEntity.builder().role(UserRole.ADMIN).user(adminUser).build();
             adminUser.setUserRoles(Set.of(adminRole));
             this.userRepository.save(adminUser);

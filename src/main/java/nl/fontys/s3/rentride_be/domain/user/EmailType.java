@@ -4,4 +4,5 @@ public enum EmailType {
     BOOKING,
     DAMAGE,
     PROMO,
+    SUPPORT
 }

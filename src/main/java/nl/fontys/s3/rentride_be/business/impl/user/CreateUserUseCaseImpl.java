@@ -32,6 +32,9 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
                 .password(request.getPassword())
                 .name(request.getName())
                 .birthDate(request.getBirthDate())
+                .damageEmails(true)
+                .promoEmails(true)
+                .bookingsEmails(true)
                 .build();
 
         UserRoleEntity customerRole = UserRoleEntity.builder().role(UserRole.CUSTOMER).user(userEntity).build();

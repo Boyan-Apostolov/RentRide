@@ -31,14 +31,15 @@ public class EmailerUseCaseImpl implements EmailerUseCase {
 
     @Override
     public void send(String to, String subject, String body, EmailType emailType) {
-        try{
+        try {
             Optional<UserEntity> optionalUser = userRepository.findByEmail(to);
             if (optionalUser.isEmpty()) throw new NotFoundException("EmailSender->User");
 
             UserEntity user = optionalUser.get();
-            if((user.isPromoEmails() && emailType.equals(EmailType.PROMO))
-            || (user.isDamageEmails() && emailType.equals(EmailType.DAMAGE))
-            ||(user.isBookingsEmails() && emailType.equals(EmailType.BOOKING))){
+            if (emailType == EmailType.SUPPORT ||
+                    (user.isPromoEmails() && emailType.equals(EmailType.PROMO))
+                    || (user.isDamageEmails() && emailType.equals(EmailType.DAMAGE))
+                    || (user.isBookingsEmails() && emailType.equals(EmailType.BOOKING))) {
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
                 mailMessage.setFrom(sender);
                 mailMessage.setTo(to);
@@ -47,8 +48,8 @@ public class EmailerUseCaseImpl implements EmailerUseCase {
 
                 javaMailSender.send(mailMessage);
             }
+        } catch (Exception e) {
+            logger.error(String.format("Could not send email to %s: %s", to, e.getMessage()));
         }
-        catch (Exception e){
-            logger.error(String.format("Could not send email to %s: %s", to, e.getMessage()));        }
     }
 }
