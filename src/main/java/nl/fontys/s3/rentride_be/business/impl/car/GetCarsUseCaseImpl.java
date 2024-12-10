@@ -1,6 +1,5 @@
 package nl.fontys.s3.rentride_be.business.impl.car;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.car.GetCarsUseCase;
 import nl.fontys.s3.rentride_be.domain.car.Car;
