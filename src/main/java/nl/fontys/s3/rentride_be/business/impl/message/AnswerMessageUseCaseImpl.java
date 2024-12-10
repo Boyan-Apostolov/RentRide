@@ -31,5 +31,6 @@ public class AnswerMessageUseCaseImpl implements AnswerMessageUseCase {
                         messageEntity.getMessage(), messageEntity.getAnswer()),
                 EmailType.SUPPORT);
 
+        this.messageRepositoy.save(messageEntity);
     }
 }

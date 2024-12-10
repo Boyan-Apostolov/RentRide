@@ -22,6 +22,5 @@ public class AuctionMessengerUseCaseImpl implements AuctionMessengerUseCase {
 
     public void broadcastNewUser(Long auctionId, String userName) {
         messagingTemplate.convertAndSend("/auction/" + auctionId + "/new-user", userName);
-
     }
 }
