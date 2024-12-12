@@ -24,6 +24,7 @@ CREATE TABLE car_feature (
 );
 
 CREATE TABLE car_photos (
+                            id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             car_id BIGINT,
                             photo_base64 MEDIUMTEXT NOT NULL,
                             CONSTRAINT fk_car_photos_car FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE CASCADE
