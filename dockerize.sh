@@ -1,16 +1,27 @@
- # Assemble Spring Boot executable JAR
+echo "=========="
+echo "[1/4]: Building Gradle Application"
+echo "=========="
+
 ./gradlew clean assemble
 
-# Build the Docker image
+echo "=========="
+echo "[2/4]: Building Docker Image"
+echo "=========="
+
 docker build -t rentride-backend .
 
-# Check if the container exists
-if [ "$(docker ps -a -q -f name=rentride_be_staging)" ]; then
-    # Stop the container if it's running
-    docker stop rentride_be_staging
-    # Remove the container
-    docker rm rentride_be_staging
-fi
+echo "=========="
+echo "[3/4]: Updating image in hub.docker.com"
+echo "=========="
 
-# Run the Docker container in net sem3_network_staging, exposing port 8090
-docker run -d --name rentride_be_staging -p 8090:8080 --network rentride_network --env SPRING_PROFILES_ACTIVE=staging rentride-backend
+docker tag rentride-backend bobby156/rentride-be
+docker push bobby156/rentride-be
+
+echo "=========="
+echo "[4/4]: Started deployment to render.com"
+echo "=========="
+
+curl -X POST \
+  -H "Authorization: Bearer rnd_eFXYJOxzO3Ao16PPAipkrJYn5OyT" \
+  -H "Accept: application/json" \
+  https://api.render.com/v1/services/srv-cte3hk5umphs739be5ig/deploys

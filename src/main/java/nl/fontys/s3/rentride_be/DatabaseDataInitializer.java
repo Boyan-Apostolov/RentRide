@@ -2,8 +2,10 @@ package nl.fontys.s3.rentride_be;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nl.fontys.s3.rentride_be.business.use_cases.auth.EmailerUseCase;
 import nl.fontys.s3.rentride_be.business.use_cases.booking.UpdateBookingStatusUseCase;
 import nl.fontys.s3.rentride_be.domain.car.CarFeatureType;
+import nl.fontys.s3.rentride_be.domain.user.EmailType;
 import nl.fontys.s3.rentride_be.persistance.*;
 import nl.fontys.s3.rentride_be.persistance.entity.*;
 import org.slf4j.Logger;
@@ -42,6 +44,8 @@ public class DatabaseDataInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
+    private final EmailerUseCase emailerUseCase;
+
     @Value("${spring.profiles.active:default}")
     private String activeProfile;
 
@@ -67,6 +71,13 @@ public class DatabaseDataInitializer {
 
             tryFixMissedBookings();
             tryFixEmptyDiscountPlanPurchases();
+        }
+
+        if ("production".equals(activeProfile)) {
+            emailerUseCase.send("boian4934@gmail.com",
+                    "Backend deployed successfully!",
+                    "You spring boot has been deployed successfully on render.com and can be accessed by the frontend at \" https://rentride-be.onrender.com \"",
+                    EmailType.SUPPORT);
         }
     }
 

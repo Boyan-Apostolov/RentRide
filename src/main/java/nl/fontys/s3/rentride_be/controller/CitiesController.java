@@ -23,6 +23,11 @@ public class CitiesController {
     private LookupCityUseCase lookupCityUseCase;
     private GetRouteBetweenCitiesUseCase getRouteBetweenCitiesUseCase;
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok().body("Backend is working");
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<City> getCity(@PathVariable(value = "id") final long id) {
         City cityOptional = getCityUseCase.getCity(id);
