@@ -32,24 +32,31 @@ public class EmailerUseCaseImpl implements EmailerUseCase {
     @Override
     public void send(String to, String subject, String body, EmailType emailType) {
         try {
-            Optional<UserEntity> optionalUser = userRepository.findByEmail(to);
-            if (optionalUser.isEmpty()) throw new NotFoundException("EmailSender->User");
+            if (emailType == EmailType.SUPPORT) {
+                sendEmail(to, subject, body);
+            } else {
+                Optional<UserEntity> optionalUser = userRepository.findByEmail(to);
+                if (optionalUser.isEmpty()) throw new NotFoundException("EmailSender->User");
 
-            UserEntity user = optionalUser.get();
-            if (emailType == EmailType.SUPPORT ||
-                    (user.isPromoEmails() && emailType.equals(EmailType.PROMO))
-                    || (user.isDamageEmails() && emailType.equals(EmailType.DAMAGE))
-                    || (user.isBookingsEmails() && emailType.equals(EmailType.BOOKING))) {
-                SimpleMailMessage mailMessage = new SimpleMailMessage();
-                mailMessage.setFrom(sender);
-                mailMessage.setTo(to);
-                mailMessage.setText(body);
-                mailMessage.setSubject(subject);
-
-                javaMailSender.send(mailMessage);
+                UserEntity user = optionalUser.get();
+                if (user.isPromoEmails() && emailType.equals(EmailType.PROMO)
+                        || (user.isDamageEmails() && emailType.equals(EmailType.DAMAGE))
+                        || (user.isBookingsEmails() && emailType.equals(EmailType.BOOKING))) {
+                    sendEmail(to, subject, body);
+                }
             }
         } catch (Exception e) {
             logger.error(String.format("Could not send email to %s: %s", to, e.getMessage()));
         }
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(to);
+        mailMessage.setText(body);
+        mailMessage.setSubject(subject);
+
+        javaMailSender.send(mailMessage);
     }
 }
