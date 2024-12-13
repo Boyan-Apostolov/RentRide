@@ -1,16 +1,19 @@
 package nl.fontys.s3.rentride_be.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") //all endpoints
-                .allowedOriginPatterns("http://localhost:*", "https://localhost:*") // Allow localhost on any port
+                .allowedOriginPatterns(frontendUrl) // Allow localhost on any port
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*") // Allow all headers
                 .allowCredentials(true); // Allow credentials cookies auth headers
