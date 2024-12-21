@@ -24,10 +24,14 @@ import java.util.Map;
 @Service
 public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, AccessTokenDecoder {
     private final Key key;
+    private final int AUTH_KEY_EXPIRY_MINS;
 
-    public AccessTokenEncoderDecoderImpl(@Value("${jwt.secret}") String secretKey) {
+    public AccessTokenEncoderDecoderImpl(@Value("${jwt.secret}") String secretKey,
+                                         @Value("${AUTH_KEY_EXPIRY_MINS}") int authExpiryMins) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+
+        this.AUTH_KEY_EXPIRY_MINS = authExpiryMins;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
         return Jwts.builder()
                 .setSubject(accessToken.getSubject())
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(5, ChronoUnit.MINUTES)))
+                .setExpiration(Date.from(now.plus(AUTH_KEY_EXPIRY_MINS, ChronoUnit.MINUTES)))
                 .addClaims(claimsMap)
                 .signWith(key)
                 .compact();
