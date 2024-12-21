@@ -56,6 +56,9 @@ class CarsControllerTest {
     @MockBean
     private GetAllCarFeatures getAllCarFeatures;
 
+    @MockBean
+    private GetExclusiveCarsUseCase getExclusiveCarsUseCase;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 

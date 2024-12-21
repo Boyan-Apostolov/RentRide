@@ -46,7 +46,6 @@ public class DatabaseDataInitializer {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataInitializer.class);
 
     private final EmailerUseCase emailerUseCase;
-    private final RenderManagementUseCase deploymentManagementUseCase;
 
     @Value("${spring.profiles.active:default}")
     private String activeProfile;
