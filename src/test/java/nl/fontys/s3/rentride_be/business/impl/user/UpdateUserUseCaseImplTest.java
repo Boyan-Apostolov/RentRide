@@ -55,14 +55,12 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
         when(accessToken.getUserId()).thenReturn(1L);
-        when(accessToken.hasRole("ADMIN")).thenReturn(false);
 
         assertThatThrownBy(() -> updateUserUseCase.updateUser(request))
                 .isInstanceOf(InvalidAccessTokenException.class)
                 .hasMessage("401 UNAUTHORIZED \"Access denied\"");
 
         verify(accessToken).getUserId();
-        verify(accessToken).hasRole("ADMIN");
         verifyNoInteractions(userRepository);
     }
 
@@ -73,7 +71,6 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
         when(accessToken.getUserId()).thenReturn(1L);
-        when(accessToken.hasRole("ADMIN")).thenReturn(false);
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> updateUserUseCase.updateUser(request))
@@ -92,7 +89,6 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
         when(accessToken.getUserId()).thenReturn(1L);
-        when(accessToken.hasRole("ADMIN")).thenReturn(false);
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
 
@@ -115,7 +111,6 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
         when(accessToken.getUserId()).thenReturn(1L);
-        when(accessToken.hasRole("ADMIN")).thenReturn(false);
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches("currentPassword", "encodedPassword")).thenReturn(true);
         when(userRepository.findByEmail("new.email@example.com")).thenReturn(Optional.empty());

@@ -4,9 +4,12 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.rentride_be.business.use_cases.user.*;
+import nl.fontys.s3.rentride_be.domain.auth.GoogleOAuthRequest;
+import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserEmailSettingsRequest;
 import nl.fontys.s3.rentride_be.domain.user.User;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +47,16 @@ public class UsersController {
     }
 
     @PutMapping("{id}")
-    @RolesAllowed({"ADMIN"})
     public ResponseEntity<Void> updateUser(@PathVariable("id") long id,
                                            @RequestBody @Valid UpdateUserRequest request) {
+        request.setId(id);
+        updateUserUseCase.updateUser(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/gauth/{id}")
+    public ResponseEntity<LoginResponse> updateGoogleOAuthId(@PathVariable("id") long id,
+                                                             @RequestBody @Valid GoogleOAuthRequest request) {
         request.setId(id);
         updateUserUseCase.updateUser(request);
         return ResponseEntity.noContent().build();
