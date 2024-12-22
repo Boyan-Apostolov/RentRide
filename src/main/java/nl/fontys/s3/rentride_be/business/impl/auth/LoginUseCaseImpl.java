@@ -1,10 +1,12 @@
 package nl.fontys.s3.rentride_be.business.impl.auth;
 
 import lombok.AllArgsConstructor;
+import nl.fontys.s3.rentride_be.business.exception.InvalidOperationException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.auth.LoginUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.s3.rentride_be.configuration.security.token.impl.AccessTokenImpl;
+import nl.fontys.s3.rentride_be.domain.auth.LoginOAuthRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
@@ -37,6 +39,18 @@ public class LoginUseCaseImpl implements LoginUseCase {
         String accessToken = generateAccessToken(userEntity);
         return LoginResponse.builder().accessToken(accessToken).build();
 
+    }
+
+    @Override
+    public LoginResponse login(LoginOAuthRequest loginRequest) {
+        Optional<UserEntity> optionalUser = userRepository.findByGoogleOAuthId(loginRequest.getOAuthId());
+        if (optionalUser.isEmpty()) {
+            throw new InvalidOperationException("User with this Google ID not found");
+        }
+        UserEntity userEntity = optionalUser.get();
+
+        String accessToken = generateAccessToken(userEntity);
+        return LoginResponse.builder().accessToken(accessToken).build();
     }
 
     private boolean matchesPassword(String rawPassword, String encodedPassword) {

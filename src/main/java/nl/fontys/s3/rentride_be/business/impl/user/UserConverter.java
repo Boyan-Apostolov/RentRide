@@ -14,6 +14,7 @@ public final class UserConverter {
                 .password(userEntity.getPassword())
                 .name(userEntity.getName())
                 .birthDate(userEntity.getBirthDate())
+                .googleOAuthId(userEntity.getGoogleOAuthId())
                 .bookingsEmails(userEntity.isBookingsEmails())
                 .damageEmails(userEntity.isDamageEmails())
                 .promoEmails(userEntity.isPromoEmails())

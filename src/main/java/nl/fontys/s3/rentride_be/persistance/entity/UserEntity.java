@@ -28,6 +28,9 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "google_oauth_id")
+    private String googleOAuthId;
+
     @NotNull
     @Column(name = "password")
     private String password;

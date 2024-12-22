@@ -13,6 +13,7 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    private String googleOAuthId;
     private String password;
     private LocalDate birthDate;
     private boolean bookingsEmails;
