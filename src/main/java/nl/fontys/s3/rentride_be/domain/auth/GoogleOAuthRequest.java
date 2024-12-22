@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginOAuthRequest {
-    @NotBlank
+public class GoogleOAuthRequest {
     @JsonProperty("oAuthId")
     private String oAuthId;
+
+    private long id;
 }

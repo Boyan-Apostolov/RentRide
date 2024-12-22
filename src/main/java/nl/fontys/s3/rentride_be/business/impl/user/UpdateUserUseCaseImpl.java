@@ -6,6 +6,7 @@ import nl.fontys.s3.rentride_be.business.exception.InvalidOperationException;
 import nl.fontys.s3.rentride_be.business.exception.NotFoundException;
 import nl.fontys.s3.rentride_be.business.use_cases.user.UpdateUserUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
+import nl.fontys.s3.rentride_be.domain.auth.GoogleOAuthRequest;
 import nl.fontys.s3.rentride_be.domain.user.UpdateUserRequest;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.UserEntity;
@@ -27,17 +28,17 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
         updateEntity(request);
     }
 
+    @Override
+    public void updateUser(GoogleOAuthRequest request) {
+        UserEntity userEntity = tryGetUser(request.getId());
+
+        userEntity.setGoogleOAuthId(request.getOAuthId());
+
+        userRepository.save(userEntity);
+    }
+
     private void updateEntity(UpdateUserRequest request) {
-        if (!accessToken.hasRole("ADMIN") && !Objects.equals(request.getId(), accessToken.getUserId()))
-            throw new InvalidAccessTokenException("Access denied");
-
-        Optional<UserEntity> userEntityOptional = this.userRepository.findById(request.getId());
-
-        if (userEntityOptional.isEmpty()) {
-            throw new NotFoundException("Update->User");
-        }
-
-        UserEntity userEntity = userEntityOptional.get();
+        UserEntity userEntity = tryGetUser(request.getId());
 
         if (!request.getCurrentPassword().isEmpty()) {
             if (!passwordEncoder.matches(request.getCurrentPassword(), userEntity.getPassword())) {
@@ -58,5 +59,18 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
         userEntity.setBirthDate(request.getBirthDate());
 
         this.userRepository.save(userEntity);
+    }
+
+    private UserEntity tryGetUser(Long request) {
+        if (!Objects.equals(request, accessToken.getUserId()))
+            throw new InvalidAccessTokenException("Access denied");
+
+        Optional<UserEntity> userEntityOptional = this.userRepository.findById(request);
+
+        if (userEntityOptional.isEmpty()) {
+            throw new NotFoundException("Update->User");
+        }
+
+        return userEntityOptional.get();
     }
 }

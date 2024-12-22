@@ -7,7 +7,7 @@ import nl.fontys.s3.rentride_be.business.use_cases.auth.RegisterUseCase;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessToken;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenDecoder;
 import nl.fontys.s3.rentride_be.configuration.security.token.AccessTokenEncoder;
-import nl.fontys.s3.rentride_be.domain.auth.LoginOAuthRequest;
+import nl.fontys.s3.rentride_be.domain.auth.GoogleOAuthRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginRequest;
 import nl.fontys.s3.rentride_be.domain.auth.LoginResponse;
 import nl.fontys.s3.rentride_be.domain.auth.RegisterRequest;
@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login/google")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginOAuthRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid GoogleOAuthRequest loginRequest) {
         LoginResponse loginResponse = loginUseCase.login(loginRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
