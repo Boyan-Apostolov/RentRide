@@ -140,17 +140,17 @@ class GetStatisticsUseCaseImplTest {
                 new Object[]{"Car B", 2023, "February", 15L}
         );
 
-        when(bookingRepository.getPopularCarsOverTime()).thenReturn(mockData);
+        when(bookingRepository.getPopularCarsOverTime(null, null)).thenReturn(mockData);
 
         List<PopularCarOverTimeDto> expectedResult = List.of(
                 new PopularCarOverTimeDto("Car A", 2023, "January", 10L),
                 new PopularCarOverTimeDto("Car B", 2023, "February", 15L)
         );
 
-        List<PopularCarOverTimeDto> actualResult = getStatisticsUseCase.getPopularCarsOverTime();
+        List<PopularCarOverTimeDto> actualResult = getStatisticsUseCase.getPopularCarsOverTime(null, null);
 
         CollectionAssert.assertThatCollection(actualResult).isEqualTo(expectedResult);
 
-        verify(bookingRepository).getPopularCarsOverTime();
+        verify(bookingRepository).getPopularCarsOverTime(null, null);
     }
 }

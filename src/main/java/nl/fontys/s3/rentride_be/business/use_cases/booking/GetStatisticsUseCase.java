@@ -5,6 +5,7 @@ import nl.fontys.s3.rentride_be.domain.statistics.GroupingDto;
 import nl.fontys.s3.rentride_be.domain.statistics.PopularCarOverTimeDto;
 import nl.fontys.s3.rentride_be.domain.statistics.StatisticsByCarResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface GetStatisticsUseCase {
@@ -17,5 +18,5 @@ public interface GetStatisticsUseCase {
 
     List<GroupingDto> getBookingsPerMonth();
 
-    List<PopularCarOverTimeDto> getPopularCarsOverTime();
+    List<PopularCarOverTimeDto> getPopularCarsOverTime(LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

@@ -12,6 +12,7 @@ import nl.fontys.s3.rentride_be.persistance.ReviewRepository;
 import nl.fontys.s3.rentride_be.persistance.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -88,8 +89,8 @@ public class GetStatisticsUseCaseImpl implements GetStatisticsUseCase {
     }
 
     @Override
-    public List<PopularCarOverTimeDto> getPopularCarsOverTime() {
-        List<Object[]> rawData = this.bookingRepository.getPopularCarsOverTime();
+    public List<PopularCarOverTimeDto> getPopularCarsOverTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        List<Object[]> rawData = this.bookingRepository.getPopularCarsOverTime(startDateTime, endDateTime);
 
         return rawData.stream().map(dataFields -> {
             String car = (String) dataFields[0];

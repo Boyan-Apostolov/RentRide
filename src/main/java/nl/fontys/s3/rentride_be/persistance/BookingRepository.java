@@ -44,6 +44,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     @Query(value = "CALL get_bookings_per_month()", nativeQuery = true)
     List<Object[]> getBookingsPerMonth();
 
-    @Query(value = "CALL get_popular_cars_over_time()", nativeQuery = true)
-    List<Object[]> getPopularCarsOverTime();
+    @Query(value = "CALL get_popular_cars_over_time(:startDateTime, :endDateTime)", nativeQuery = true)
+    List<Object[]> getPopularCarsOverTime(@Param("startDateTime") LocalDateTime startDateTime,
+                                          @Param("endDateTime") LocalDateTime endDateTime);
 }
