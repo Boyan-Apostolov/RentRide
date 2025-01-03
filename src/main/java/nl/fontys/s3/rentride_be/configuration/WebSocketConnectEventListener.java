@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketEventListener {
+public class WebSocketConnectEventListener {
     private final GetUserUseCase getUserUseCase;
     private final AuctionMessengerUseCase auctionMessengerUseCase;
 
