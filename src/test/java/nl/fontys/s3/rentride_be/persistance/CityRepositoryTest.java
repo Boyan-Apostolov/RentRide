@@ -1,7 +1,6 @@
-package nl.fontys.s3.rentride_be.repository;
+package nl.fontys.s3.rentride_be.persistance;
 
 import jakarta.persistence.EntityManager;
-import nl.fontys.s3.rentride_be.persistance.CityRepository;
 import nl.fontys.s3.rentride_be.persistance.entity.CityEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
