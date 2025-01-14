@@ -68,11 +68,11 @@ public class StatisticsController {
 
     @GetMapping("popular-over-time")
     public ResponseEntity<List<PopularCarOverTimeDto>> getPopularCarsOverTime(@RequestParam(value = "startDateTime", required = false)
-                                                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                               LocalDateTime startDateTime,
 
                                                                               @RequestParam(value = "endDateTime", required = false)
-                                                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime) {
+                                                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDateTime) {
         List<PopularCarOverTimeDto> bookingsPerMonth = this.getBookingStatisticsUseCase.getPopularCarsOverTime(startDateTime, endDateTime);
 
         return ResponseEntity.ok().body(bookingsPerMonth);
