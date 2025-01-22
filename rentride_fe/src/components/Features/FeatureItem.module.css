@@ -1,0 +1,11 @@
+.featureItem {
+  background-color: var(--light-gray);
+  flex-grow: 1;
+  width: 25%;
+  font-size: 20px;
+}
+
+.featureIcon {
+  font-size: 70px;
+  margin-right: 20px;
+}

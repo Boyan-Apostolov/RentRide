@@ -1,0 +1,13 @@
+.logo {
+  background-color: white;
+  padding: 5px 10px;
+  color: var(--light-gray);
+}
+
+.hero {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(85, 78, 82, 0.5)),
+    url("/car-background.png");
+  background-size: cover;
+
+  min-height: 30%;
+}

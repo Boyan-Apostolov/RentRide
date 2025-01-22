@@ -1,0 +1,11 @@
+.fb30 {
+  flex-basis: 30%;
+}
+
+.featureWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}

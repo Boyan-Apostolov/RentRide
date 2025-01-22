@@ -1,0 +1,37 @@
+.filterPageWrapper {
+  width: 90%;
+  color: white;
+  margin: 0 auto;
+}
+
+.leftColumn {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 35%;
+}
+
+.rightColumn {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 70%;
+}
+.img {
+  max-width: 70%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.routeInfo {
+  font-size: 25px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 30%;
+}

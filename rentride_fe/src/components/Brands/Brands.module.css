@@ -1,0 +1,12 @@
+.brandsWrapper {
+  background-color: var(--light-gray);
+  padding: 20px 20px;
+}
+.img {
+  flex-grow: 1;
+  max-width: 10%;
+}
+.imagesHolder {
+  display: flex;
+  justify-content: space-evenly;
+}

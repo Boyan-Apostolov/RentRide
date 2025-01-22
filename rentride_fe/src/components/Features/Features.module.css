@@ -1,0 +1,7 @@
+.featuresWrapper {
+  background-color: var(--dark-gray);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 30px;
+}
